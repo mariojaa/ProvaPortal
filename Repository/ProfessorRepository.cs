@@ -45,7 +45,7 @@ namespace ProvaPortal.Repository
             return _context.Professores.ToList();
         }
 
-        public bool Remover(int id)
+        public void Remover(int id)
         {
             ProfessorModel professorPorId = BuscarPorId(id);
             if(professorPorId == null)
@@ -53,8 +53,7 @@ namespace ProvaPortal.Repository
                 throw new Exception($"Professor com Id {id}, não encontrado na base de dados do sistema! Contate o suporte@ugb.edu.br");
             }
             _context.Professores.Remove(professorPorId);
-            _context.SaveChanges();
-            return true;
+            _context.SaveChanges(true);
         }
 
         public void Update(ProfessorModel obj)

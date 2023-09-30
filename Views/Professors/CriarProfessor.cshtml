@@ -1,0 +1,53 @@
+﻿@model ProfessorModel
+@*@using ProvaPortal.Models.Enum*@
+
+<h1 class="display-4 text-center">Cadastro de Professores</h1>
+
+<form class="needs-validation" method="post" asp-controller="Professors" asp-action="CriarProfessor" novalidate>
+
+    <input asp-for="Matricula" type="text" class="form-control" placeholder="Digite sua matrícula" required>
+
+    <input asp-for="NomeCompleto" type="text" class="form-control" placeholder="Digite seu Nome completo" required>
+
+    <input asp-for="Email" type="text" class="form-control" placeholder="Digite seu Email" required>
+
+    @*<select class="form-control mb-3" asp-for="Perfil" asp-items="Html.GetEnumSelectList<Perfil>()"></select>*@
+
+    <input asp-for="SenhaProfessor" type="password" class="form-control" placeholder="Digite sua Senha" required>
+
+    <input asp-for="ConfirmarSenhaProfessor" type="password" class="form-control" placeholder="Confirme sua senha" required>
+
+
+    <br />
+    <div class="text-center fs-6">
+        <input type='submit' value='Voltar' asp-controller="Professors" asp-action="ListarProfessores">
+        <input class="submit" type="submit" name="commit" value="Cadastrar">
+    </div>
+</form>
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('keyup', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+    </script>
+}

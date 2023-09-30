@@ -4,10 +4,10 @@ using ProvaPortal.Repository;
 
 namespace ProvaPortal.Controllers
 {
-    public class ProfessorModelsController : Controller
+    public class ProfessorsController : Controller
     {
         private readonly ProfessorRepository _professorRepository;
-        public ProfessorModelsController(ProfessorRepository professorRepository)
+        public ProfessorsController(ProfessorRepository professorRepository)
         {
             _professorRepository = professorRepository;
         }
@@ -22,7 +22,7 @@ namespace ProvaPortal.Controllers
             catch (Exception)
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "ProfessorModels");
+                return View("Erro", "Professors");
             }
 
         }
@@ -35,7 +35,7 @@ namespace ProvaPortal.Controllers
             catch
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "ProfessorModel");
+                return View("Erro", "Professors");
             }
         }
 
@@ -50,14 +50,14 @@ namespace ProvaPortal.Controllers
 
                     TempData["MensagemSucesso"] = "Novo usuário adicionado com sucesso!";
                     _professorRepository.Adicionar(professorModel);
-                    return RedirectToAction("ListarProfessores", "ProfessorModels");
+                    return RedirectToAction("ListarProfessores", "Professors");
                 }
                 return View();
             }
             catch (Exception)
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "ProfessorModels");
+                return View("Erro", "Professors");
             }
 
         }
@@ -82,12 +82,12 @@ namespace ProvaPortal.Controllers
             {
                 TempData["MensagemSucesso"] = "Professor excluido com sucesso!";
                 _professorRepository.Remover(id);
-                return RedirectToAction("ListarProfessores", "ProfessorModels");
+                return RedirectToAction("ListarProfessores", "Professors");
             }
             catch (Exception)
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "ProfessorModels");
+                return View("Erro", "Professors");
             }
         }
         /*public IActionResult DetalhesUsuario(int? id)
@@ -125,7 +125,7 @@ namespace ProvaPortal.Controllers
             {
                 TempData["MensagemSucesso"] = "Contato alterado com sucesso!";
                 _professorRepository.Update(professorModel);
-                return RedirectToAction("ListarProfessores", "ProfessorModels");
+                return RedirectToAction("ListarProfessores", "Professors");
             }
             catch (Exception)
             {

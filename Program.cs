@@ -20,6 +20,7 @@ namespace ProvaPortal
             });
 
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
+            builder.Services.AddScoped<ProfessorRepository>();
 
             var app = builder.Build();
 
