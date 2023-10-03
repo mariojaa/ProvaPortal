@@ -10,5 +10,6 @@ namespace ProvaPortal.Data
             
         }
         public DbSet<ProfessorModel> Professores { get; set; }
+        public DbSet<ProvaModel> Provas { get; set; }
     }
 }

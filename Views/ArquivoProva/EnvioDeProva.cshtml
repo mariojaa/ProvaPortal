@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Provas</title>
+</head>
+<body>
+    <h1>Envio de Provas</h1>
+    <form action="processar_envio.php" method="post" enctype="multipart/form-data">
+        <label for="arquivo">Envio de Arquivo:</label>
+        <input type="file" name="arquivo" id="arquivo" accept=".pdf, .doc, .docx"> @*Alterar Somente PDF (Testar)*@
+        <br>
+
+        <!-- Exibição do nome do arquivo e data de envio após o envio -->
+        <div id="info-envio" style="display: none;">
+            <p><strong>Nome do Arquivo:</strong> <span id="nome-arquivo"></span></p>
+            <p><strong>Data e Hora de Envio:</strong> <span id="data-envio"></span></p>
+        </div>
+
+        <input type="submit" value="Enviar Prova">
+    </form>
+
+    <script>
+        // Função para exibir informações do arquivo após o envio
+        document.querySelector('#arquivo').addEventListener('change', function () {
+            const fileInput = this;
+            const infoEnvio = document.querySelector('#info-envio');
+            const nomeArquivo = document.querySelector('#nome-arquivo');
+            const dataEnvio = document.querySelector('#data-envio');
+
+            if (fileInput.files.length > 0) {
+                const arquivo = fileInput.files[0];
+                const dataAtual = new Date();
+
+                nomeArquivo.textContent = arquivo.name;
+                dataEnvio.textContent = dataAtual.toLocaleString();
+                infoEnvio.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

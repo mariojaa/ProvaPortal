@@ -16,3 +16,40 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*___________________________________________________________________*/
+
+/*-----IMAGENS DOS BOTOES-------*/
+
+.Adc-Usuario::before {
+    content: url('/Content/add-user.png');
+}
+
+.btnDetalhes::before {
+    content: url('/Content/Info-user.png')
+}
+
+.btnEditar::before {
+    content: url('/Content/edit-user.png')
+}
+
+.btnDeletar::before {
+    content: url('/Content/recycle-bin.png')
+}
+
+.Adc-Contato::before {
+    content: url('/Content/add-user.png');
+}
+
+#ComboPerfil::before {
+    width: 1110px;
+    height: 40px;
+}
+
+#keypassword::before {
+    content: "\1F511";
+}
+
+#usericon::before {
+    content: "\1F464";
+}

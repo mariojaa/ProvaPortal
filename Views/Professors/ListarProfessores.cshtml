@@ -47,14 +47,14 @@
                         @item.Email
                     </td>
                     @*<td>
-                        @item.Perfil
-                    </td>*@
+            @item.Perfil
+            </td>*@
 
                     <td class="align-items-baseline">
 
-                        <a title="Editar" class="btnEditar" asp-route-id="@item.Id" asp-controller="Professors" asp-action="EditarProfesspr" title="Editar">
+                        @*<a title="Editar" class="btnEditar" asp-route-id="@item.Id" asp-controller="Professors" asp-action="EditarProfessor" title="Editar">
                             <!--Editar-->
-                        </a>
+                        </a>*@
 
                         <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir">
                             <!--Excluir-->
@@ -84,7 +84,7 @@
         $(document).ready(function () {
             $(".btnDeletar").click(function () {
                 var id = $(this).data("value");
-                $("#conteudomodal").load("/Usuario/DeletarUsuario/" + id,
+                $("#conteudomodal").load("/Professors/DeletarProfessor/" + id,
                     function () {
                         $('#exampleModal').modal("show");
                     }
@@ -134,7 +134,43 @@
 
         });
 
+        //var Toast = Swal.mixin({
+        //    toast: false,
+        //    position: 'center',
+        //    showConfirmButton: false,
+        //    timer: 1500
+        //});
 
+        //if (@(TempData["success"] is null ? "false" : "true")) {
+        //    Toast.fire({
+        //        icon: 'success',
+        //        title: '@(TempData["Success"])'
+        //    })
+        //}
+        //if (@(TempData["info"] is null ? "false" : "true")) {
+        //    Toast.fire({
+        //        icon: 'info',
+        //        title: '@(TempData["info"])'
+        //    })
+        //}
+        //if (@(TempData["error"] is null ? "false" : "true")) {
+        //    Toast.fire({
+        //        icon: 'error',
+        //        title: '@(TempData["error"])'
+        //    })
+        //}
+        //if (@(TempData["warning"] is null ? "false" : "true")) {
+        //    Toast.fire({
+        //        icon: 'warning',
+        //        title: '@(TempData["warning"])'
+        //    })
+        //}
+        //if (@(TempData["question"] is null ? "false" : "true")) {
+        //    Toast.fire({
+        //        icon: 'question',
+        //        title: '@(TempData["question"])'
+        //    })
+        //}
     </script>
 }
 

@@ -1,0 +1,8 @@
+﻿@model ProvaPortal.Models.ProfessorModel
+
+<h3 class="display-7 text-center">Deseja realmente excluir o Contato <b>@Model.NomeCompleto</b>?</h3>
+<br />
+<form method="post" asp-controller="Professors" asp-action="DeletarProfessor" asp-route-id="@Model.Id">
+    <button type="submit" class="btn btn-danger btn-block">Confirmar</button>
+    <button class="btn btn-primary btn-block" asp-controller="Professors" asp-action="ListarProfessores">Cancelar</button>
+</form>

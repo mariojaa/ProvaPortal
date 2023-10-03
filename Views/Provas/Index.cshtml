@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Enviar Prova";
+}
+
+<h1>Enviar Prova</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="arquivoProva">Arquivo da Prova (PDF)</label>
+        <input type="file" name="arquivoProva" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

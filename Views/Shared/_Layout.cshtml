@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - ProvaPortal</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/ProvaPortal.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -26,7 +27,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Professors" asp-action="ListarProfessores">Professores</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Professors" asp-action="CriarProfessor">Professores</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Provas" asp-action="EnviarProva">Envio de Provas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Provas" asp-action="Index">Envio de Provas Teste</a>
                         </li>
                     </ul>
                 </div>
@@ -46,6 +50,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

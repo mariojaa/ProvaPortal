@@ -48,7 +48,7 @@ namespace ProvaPortal.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    TempData["MensagemSucesso"] = "Novo usuário adicionado com sucesso!";
+                    TempData["MensagemSucesso"] = "Professor adicionado com sucesso!";
                     _professorRepository.Adicionar(professorModel);
                     return RedirectToAction("ListarProfessores", "Professors");
                 }

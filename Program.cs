@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProvaPortal.Controllers;
 using ProvaPortal.Data;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
@@ -9,6 +10,7 @@ namespace ProvaPortal
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -19,6 +21,8 @@ namespace ProvaPortal
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
             });
 
+            builder.Services.AddScoped<IProvaRepository, ProvaRepository>();
+            builder.Services.AddScoped<ProvaRepository>();
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();
 
