@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 
 public class ProvasController : Controller
 {
@@ -13,51 +9,47 @@ public class ProvasController : Controller
         _provaRepository = provaRepository;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        var provas = await _provaRepository.GetProvasAsync();
-        return View(provas);
-    }
-
+    [HttpGet]
     public IActionResult EnviarProva()
     {
-        return View();
+        // Verifique o último acesso aqui e armazene-o em uma variável, se necessário.
+        DateTime ultimoAcesso = DateTime.Now; // Exemplo de obtenção da data/hora de acesso.
+
+        // Verifique se um arquivo já foi enviado e passe o modelo para a view.
+        var prova = _provaRepository.ObterTodasProvas().FirstOrDefault();
+
+        return View(prova);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EnviarProva(IFormFile arquivoProva)
+    public IActionResult EnviarProva(IFormFile arquivo, int nrCopias)
     {
-        if (arquivoProva != null && arquivoProva.Length > 0)
+        if (arquivo != null && arquivo.Length > 0)
         {
-            var nomeArquivo = Guid.NewGuid().ToString() + ".pdf";
-            var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", nomeArquivo);
+            
+            // Salve o arquivo e as informações necessárias no repositório.
+            string nomeArquivo = arquivo.FileName + $"{Guid.NewGuid()}__{nrCopias}_Copias_.pdf"; // Gere um nome de arquivo único.
+            string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo); // Especifique o caminho onde deseja salvar o arquivo.
 
-            using (var stream = new FileStream(caminhoArquivo, FileMode.Create))
+            using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
             {
-                await arquivoProva.CopyToAsync(stream);
+                arquivo.CopyTo(fileStream);
             }
 
             var prova = new ProvaModel
             {
-                Nome = arquivoProva.FileName,
-                CaminhoArquivo = nomeArquivo,
+                NrCopias = nrCopias,
+                NomeArquivo = nomeArquivo,
                 DataEnvio = DateTime.Now
             };
 
-            await _provaRepository.AddProvaAsync(prova);
+            _provaRepository.AdicionarProva(prova);
+
+            // Redirecione para a ação Get EnviarProva, passando o modelo.
+            return RedirectToAction("EnviarProva");
         }
 
-        return RedirectToAction("Index");
-    }
-
-    public async Task<IActionResult> Detalhes(int id)
-    {
-        var prova = await _provaRepository.GetProvaByIdAsync(id);
-        if (prova == null)
-        {
-            return NotFound();
-        }
-
-        return View(prova);
+        // Se não foi enviado um arquivo, simplesmente volte para a página de envio de prova.
+        return RedirectToAction("EnviarProva");
     }
 }

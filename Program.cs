@@ -21,8 +21,8 @@ namespace ProvaPortal
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
             });
 
-            builder.Services.AddScoped<IProvaRepository, ProvaRepository>();
-            builder.Services.AddScoped<ProvaRepository>();
+            builder.Services.AddSingleton<IProvaRepository, ProvaRepository>();
+
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();
 

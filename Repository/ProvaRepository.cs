@@ -1,31 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProvaPortal.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-public class ProvaRepository : IProvaRepository
+﻿public class ProvaRepository : IProvaRepository
 {
-    private readonly ProvaPortalContext _context;
+    private List<ProvaModel> _provas = new List<ProvaModel>();
 
-    public ProvaRepository(ProvaPortalContext context)
+    public List<ProvaModel> ObterTodasProvas()
     {
-        _context = context;
+        return _provas;
     }
 
-    public async Task<IEnumerable<ProvaModel>> GetProvasAsync()
+    public void AdicionarProva(ProvaModel prova)
     {
-        return await _context.Provas.ToListAsync();
-    }
-
-    public async Task<ProvaModel> GetProvaByIdAsync(int id)
-    {
-        return await _context.Provas.FindAsync(id);
-    }
-
-    public async Task AddProvaAsync(ProvaModel prova)
-    {
-        _context.Provas.Add(prova);
-        await _context.SaveChangesAsync();
+        _provas.Add(prova);
     }
 }

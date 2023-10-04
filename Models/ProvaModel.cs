@@ -1,16 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-public class ProvaModel
+﻿public class ProvaModel
 {
-    public int Id { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    public string Nome { get; set; }
-
-    [Required]
-    public string CaminhoArquivo { get; set; }
-
+    public int ProvaId { get; set; }
+    public string NomeArquivo { get; set; }
     public DateTime DataEnvio { get; set; }
+    public int NrCopias { get; set; }
 }
