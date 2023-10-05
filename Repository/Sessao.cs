@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using ProvaPortal.Models;
+using ProvaPortal.Repository.Interface;
 
-namespace ProvaPortal.Helper
+namespace ProvaPortal.Repository
 {
     public class Sessao : ISessao
     {

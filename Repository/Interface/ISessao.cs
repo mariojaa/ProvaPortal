@@ -1,6 +1,6 @@
 ﻿using ProvaPortal.Models;
 
-namespace ProvaPortal.Helper
+namespace ProvaPortal.Repository.Interface
 {
     public interface ISessao
     {

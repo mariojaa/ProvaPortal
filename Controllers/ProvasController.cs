@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProvaPortal.Helper;
 using ProvaPortal.Models;
+using ProvaPortal.Repository.Interface;
 using System.Drawing.Text;
 using System.Text.RegularExpressions;
 
@@ -39,7 +39,7 @@ public class ProvasController : Controller
                 return RedirectToAction("EnviarProva");
             }
 
-            string nomeArquivo = $"{usuarioLogin}_{Guid.NewGuid()}_{numeroCopias}_Copias_.pdf";
+            string nomeArquivo = $"{usuarioLogin}_{Guid.NewGuid()}__{numeroCopias}_Copias_.pdf";
             string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo); // Especifique o caminho onde deseja salvar o arquivo.
 
             using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))

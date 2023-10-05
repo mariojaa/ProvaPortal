@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Controllers;
 using ProvaPortal.Data;
-using ProvaPortal.Helper;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
 
