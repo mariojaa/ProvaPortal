@@ -1,4 +1,5 @@
-﻿@model ProfessorModel
+﻿@using ProvaPortal.Models.Enum;
+@model ProfessorModel
 @*@using ProvaPortal.Models.Enum*@
 
 <h1 class="display-4 text-center">Cadastro de Professores</h1>
@@ -22,10 +23,26 @@
         <div class="invalid-feedback">Preencha este campo</div>
     </div>
     <div class="form-check mb-3">
-        <input asp-for="ConfirmarSenhaProfessor" type="password" class="form-control" placeholder="Confirme sua senha" id="validationFormCheck1" required>
+        <input asp-for="ConfirmarSenhaProfessor" type="text" class="form-control" placeholder="Confirme sua senha" id="validationFormCheck1" required>
         <div class="invalid-feedback">Preencha este campo</div>
     </div>
-
+    <select class="form-control mb-3" asp-for="Perfil" asp-items="Html.GetEnumSelectList<Perfil>()"></select>
+    <div class="form-check mb-3">
+        <input asp-for="CursoProfessor" type="text" class="form-control" placeholder="Confirme seu curso" id="validationFormCheck1" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="PeriodoProfessor" type="text" class="form-control" placeholder="Confirme seu periodo" id="validationFormCheck1" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="TurmaProfessor" type="text" class="form-control" placeholder="Confirme sua turma" id="validationFormCheck1" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="UsuarioLogin" type="text" class="form-control" placeholder="Confirme seu usuário de Login" id="validationFormCheck1" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
     @*<div class="mb-3">
         <input type="file" class="form-control" aria-label="file example" required>
         <div class="invalid-feedback">Example invalid form file feedback</div>

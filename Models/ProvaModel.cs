@@ -1,7 +1,11 @@
-﻿public class ProvaModel
+﻿using ProvaPortal.Models;
+
+public class ProvaModel
 {
-    public int ProvaId { get; set; }
+    public int Id { get; set; }
     public string NomeArquivo { get; set; }
     public DateTime DataEnvio { get; set; }
-    public int NrCopias { get; set; }
+    public int NumeroCopias { get; set; }
+    public int IdProfessor { get; set; }
+    public ProfessorModel UsuarioLogin { get; set; }
 }

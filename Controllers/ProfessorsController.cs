@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Repository;
 
 namespace ProvaPortal.Controllers
 {
+    [PaginaSomenteAdmin]
     public class ProfessorsController : Controller
     {
         private readonly ProfessorRepository _professorRepository;

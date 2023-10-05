@@ -28,4 +28,10 @@
     <Folder Include="ArquivosProva\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Login\Index.cshtml" />
+    <None Include="Views\Restrito\Index.cshtml" />
+    <None Include="Views\Shared\Components\Menu\Default.cshtml" />
+  </ItemGroup>
+
 </Project>

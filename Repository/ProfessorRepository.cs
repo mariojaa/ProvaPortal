@@ -18,7 +18,10 @@ namespace ProvaPortal.Repository
             _context.SaveChanges();
             return professorModel;
         }
-
+        public ProfessorModel BuscarPorLogin(string login)
+        {
+            return _context.Professores.FirstOrDefault(x => x.UsuarioLogin.ToUpper() == login.ToUpper());
+        }
         public ProfessorModel Atualizar(ProfessorModel professorModel, int id)
         {
             ProfessorModel professorPorId = BuscarPorId(id);

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Controllers;
 using ProvaPortal.Data;
+using ProvaPortal.Helper;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
 
@@ -20,12 +21,18 @@ namespace ProvaPortal
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
             });
-
+            
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddSingleton<IProvaRepository, ProvaRepository>();
-
+            builder.Services.AddScoped<ISessao, Sessao>();
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();
-
+            builder.Services.AddSession(o =>
+            {
+                o.Cookie.HttpOnly = true;
+                o.Cookie.IsEssential = true;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -43,9 +50,11 @@ namespace ProvaPortal
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Login}/{action=Index}/{id?}");
 
             app.Run();
         }

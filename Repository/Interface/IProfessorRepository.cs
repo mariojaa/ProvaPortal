@@ -6,6 +6,7 @@ namespace ProvaPortal.Repository.Interface
     {
         List<ProfessorModel> BuscarTodosProfessores();
         ProfessorModel BuscarPorId(int id);
+        ProfessorModel BuscarPorLogin(string login);
         ProfessorModel Adicionar(ProfessorModel professorModel);
         ProfessorModel Atualizar(ProfessorModel ProfessorModel, int id);
         void Remover(int id);
