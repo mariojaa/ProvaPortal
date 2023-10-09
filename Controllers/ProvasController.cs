@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProvaPortal.Models;
+using Microsoft.EntityFrameworkCore;
+using ProvaPortal.Data;
 using ProvaPortal.Repository.Interface;
-using System.Drawing.Text;
-using System.Text.RegularExpressions;
 
 public class ProvasController : Controller
 {
     private readonly IProvaRepository _provaRepository;
+    private readonly ProvaPortalContext _context;
     private readonly ISessao _sessao;
 
-    public ProvasController(IProvaRepository provaRepository, ISessao sessao)
+    public ProvasController(IProvaRepository provaRepository, ISessao sessao, ProvaPortalContext context)
     {
         _provaRepository = provaRepository;
         _sessao = sessao;
+        _context = context;
     }
 
     [HttpGet]
@@ -31,16 +32,14 @@ public class ProvasController : Controller
     {
         if (arquivo != null && arquivo.Length > 0)
         {
-
-            string usuarioLogin = _sessao.BuscarUsuarioLoginNaSessao();
-            if (string.IsNullOrEmpty(usuarioLogin))
+            string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo();
+            if(string.IsNullOrEmpty(dadosSessaoProfessor))
             {
-
                 return RedirectToAction("EnviarProva");
             }
 
-            string nomeArquivo = $"{usuarioLogin}_{Guid.NewGuid()}__{numeroCopias}_Copias_.pdf";
-            string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo); // Especifique o caminho onde deseja salvar o arquivo.
+            string nomeArquivo = $"{dadosSessaoProfessor}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf";
+            string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
 
             using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
             {
@@ -55,15 +54,12 @@ public class ProvasController : Controller
             };
 
             _provaRepository.AdicionarProva(prova);
+            _context.Provas.Add(prova);
+            _context.SaveChanges();
 
-            // Redirecione para a ação Get EnviarProva, passando o modelo.
             return RedirectToAction("EnviarProva");
         }
 
-        // Se não foi enviado um arquivo, simplesmente volte para a página de envio de prova.
         return RedirectToAction("EnviarProva");
     }
-
-
-
 }

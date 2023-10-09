@@ -31,12 +31,14 @@ namespace ProvaPortal.Repository
         {
             _httpContext.HttpContext.Session.Remove("sessaoUsuarioLogado");
         }
-        public string BuscarUsuarioLoginNaSessao()
+
+        public string BuscarDadosDaSessaoParaNomearArquivo()
         {
-            ProfessorModel usuario = BuscarSessaoUsuario();
-            if (usuario != null)
+            ProfessorModel dadosDoCursoDoProfessorNaSessao = BuscarSessaoUsuario();
+            if(dadosDoCursoDoProfessorNaSessao != null)
             {
-                return usuario.UsuarioLogin;
+                return dadosDoCursoDoProfessorNaSessao.UsuarioLogin +"_" + dadosDoCursoDoProfessorNaSessao.CursoProfessor + "_"+
+                    dadosDoCursoDoProfessorNaSessao.PeriodoProfessor + "_" + "Periodo" + "_" + "Turma" + "_" + dadosDoCursoDoProfessorNaSessao.TurmaProfessor;
             }
             return null;
         }

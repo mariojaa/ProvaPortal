@@ -33,9 +33,6 @@ namespace ProvaPortal.Migrations
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdProfessor")
-                        .HasColumnType("int");
-
                     b.Property<string>("NomeArquivo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -43,12 +40,7 @@ namespace ProvaPortal.Migrations
                     b.Property<int>("NumeroCopias")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioLoginId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioLoginId");
 
                     b.ToTable("Provas");
                 });
@@ -97,17 +89,6 @@ namespace ProvaPortal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professores");
-                });
-
-            modelBuilder.Entity("ProvaModel", b =>
-                {
-                    b.HasOne("ProvaPortal.Models.ProfessorModel", "UsuarioLogin")
-                        .WithMany()
-                        .HasForeignKey("UsuarioLoginId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UsuarioLogin");
                 });
 #pragma warning restore 612, 618
         }

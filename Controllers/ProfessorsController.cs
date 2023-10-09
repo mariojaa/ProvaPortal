@@ -9,6 +9,7 @@ namespace ProvaPortal.Controllers
     public class ProfessorsController : Controller
     {
         private readonly ProfessorRepository _professorRepository;
+        
         public ProfessorsController(ProfessorRepository professorRepository)
         {
             _professorRepository = professorRepository;

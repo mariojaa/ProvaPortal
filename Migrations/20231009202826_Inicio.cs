@@ -38,34 +38,21 @@ namespace ProvaPortal.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NomeArquivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataEnvio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NumeroCopias = table.Column<int>(type: "int", nullable: false),
-                    IdProfessor = table.Column<int>(type: "int", nullable: false),
-                    UsuarioLoginId = table.Column<int>(type: "int", nullable: false)
+                    NumeroCopias = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Provas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Provas_Professores_UsuarioLoginId",
-                        column: x => x.UsuarioLoginId,
-                        principalTable: "Professores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Provas_UsuarioLoginId",
-                table: "Provas",
-                column: "UsuarioLoginId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Provas");
+                name: "Professores");
 
             migrationBuilder.DropTable(
-                name: "Professores");
+                name: "Provas");
         }
     }
 }

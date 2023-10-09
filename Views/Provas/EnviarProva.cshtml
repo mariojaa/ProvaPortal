@@ -12,27 +12,23 @@
     <input type="file" id="inputArquivo" accept=".pdf" name="arquivo" required />
     <input type="number" id="numeroCopias" name="numeroCopias" placeholder="Quantidade de Cópias" required />
     <input type="submit" value="Enviar Arquivo" id="btnEnviar" />
+    <input type="reset" value="Resetar Formulário" id="btnReset" />
 </form>
 
 @if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo) && Model.DataEnvio != null)
 {
     <p>Arquivo Enviado: @Model.NomeArquivo</p>
     <p>Data de Envio: @Model.DataEnvio</p>
+    <script>
+        // Após o envio do arquivo, desabilitar os campos e o botão de envio
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputArquivo = document.getElementById("inputArquivo");
+            var numeroCopias = document.getElementById("numeroCopias");
+            var btnEnviar = document.getElementById("btnEnviar");
+            var btnReset = document.getElementById("btnReset");
+
+            inputArquivo.disabled = true;
+            numeroCopias.disabled = true;
+            btnEnviar.disabled = true;
+    </script>
 }
-
-<script>
-    // Verifica se o botão de envio foi clicado.
-    var isSubmitted = false;
-
-    // Desabilita o botão de seleção de arquivo após o envio.
-    document.getElementById("enviarArquivoForm").addEventListener("submit", function () {
-        if (isSubmitted) {
-            // Se já foi enviado, desabilita o botão de seleção de arquivo.
-            document.getElementById("inputArquivo").disabled = true;
-            document.getElementById("btnEnviar").disabled = true;
-        } else {
-            // Se ainda não foi enviado, marque a variável isSubmitted como verdadeira.
-            isSubmitted = true;
-        }
-    });
-</script>
