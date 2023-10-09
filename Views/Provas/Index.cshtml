@@ -1,4 +1,4 @@
-﻿@model List<ProfessorModel>
+﻿@model List<ProvaModel>
 
 <h1 class="text-center display-4">Lista de Provas Enviadas</h1>
 
@@ -27,10 +27,9 @@
 
         <thead class="table-light">
             <tr>
-                <th scope="col">Prova</th>
-                <th scope="col">Curso</th>
-                <th scope="col">Periodo</th>
-                <th scope="col">Turma</th>
+                <th scope="col">Nome Arquivo</th>
+                <th scope="col">Cópias</th>
+                <th scope="col">Data do Envio</th>
                 <th></th>
             </tr>
         </thead>
@@ -38,17 +37,14 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    @*<td>
-                        @item.NomeArquivoProva
-                    </td>*@
                     <td>
-                        @item.CursoProfessor
+                        @item.NomeArquivo
                     </td>
                     <td>
-                        @item.PeriodoProfessor
+                        @item.NumeroCopias
                     </td>
                     <td>
-                        @item.TurmaProfessor
+                        @item.DataEnvio
                     </td>
                     @*<td>
             @item.Perfil

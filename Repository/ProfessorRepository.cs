@@ -36,7 +36,7 @@ namespace ProvaPortal.Repository
 
             _context.Professores.Update(professorPorId);
             _context.SaveChanges();
-            return professorPorId; // testar caso não, trocar por professorModel
+            return professorPorId;
         }
 
         public ProfessorModel BuscarPorId(int id)

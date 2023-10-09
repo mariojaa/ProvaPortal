@@ -24,8 +24,6 @@ namespace ProvaPortal.Models
         [Compare("SenhaProfessor", ErrorMessage = "Senhas não conferem! Verifique e tente novamente.")]
         public string ConfirmarSenhaProfessor { get; set; }
 
-
-
         public bool SenhaValida(string senha)
         {
             return SenhaProfessor == senha.GerarHash();

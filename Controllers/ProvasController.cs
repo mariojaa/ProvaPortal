@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data;
+using ProvaPortal.Models;
+using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
 
 public class ProvasController : Controller
@@ -33,12 +35,13 @@ public class ProvasController : Controller
         if (arquivo != null && arquivo.Length > 0)
         {
             string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo();
-            if(string.IsNullOrEmpty(dadosSessaoProfessor))
+            if (string.IsNullOrEmpty(dadosSessaoProfessor))
             {
                 return RedirectToAction("EnviarProva");
             }
 
             string nomeArquivo = $"{dadosSessaoProfessor}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf";
+            string nomeProvaOriginal = $"{arquivo.FileName}";
             string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
 
             using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
@@ -49,7 +52,7 @@ public class ProvasController : Controller
             var prova = new ProvaModel
             {
                 NumeroCopias = numeroCopias,
-                NomeArquivo = nomeArquivo,
+                NomeArquivo = nomeProvaOriginal,
                 DataEnvio = DateTime.Now,
             };
 
@@ -61,5 +64,19 @@ public class ProvasController : Controller
         }
 
         return RedirectToAction("EnviarProva");
+    }
+    public IActionResult Index()
+    {
+        try
+        {
+
+            return View(_provaRepository.ObterTodasProvas());
+        }
+
+        catch (Exception)
+        {
+            TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+            return View("Erro", "Professors");
+        }
     }
 }

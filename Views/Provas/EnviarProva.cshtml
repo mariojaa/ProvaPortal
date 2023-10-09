@@ -19,16 +19,37 @@
 {
     <p>Arquivo Enviado: @Model.NomeArquivo</p>
     <p>Data de Envio: @Model.DataEnvio</p>
-    <script>
-        // Após o envio do arquivo, desabilitar os campos e o botão de envio
-        document.addEventListener("DOMContentLoaded", function () {
-            var inputArquivo = document.getElementById("inputArquivo");
-            var numeroCopias = document.getElementById("numeroCopias");
-            var btnEnviar = document.getElementById("btnEnviar");
-            var btnReset = document.getElementById("btnReset");
+    
+}
+<a title="Lista de Provas" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="Index"></a>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputArquivo = document.getElementById("inputArquivo");
+        var numeroCopias = document.getElementById("numeroCopias");
+        var btnEnviar = document.getElementById("btnEnviar");
+        var btnReset = document.getElementById("btnReset");
+
+        // Função para desabilitar os campos e botão
+        function desabilitarCampos() {
             inputArquivo.disabled = true;
             numeroCopias.disabled = true;
             btnEnviar.disabled = true;
-    </script>
-}
+        }
+
+        // Função para habilitar os campos e botão
+        function habilitarCampos() {
+            inputArquivo.disabled = false;
+            numeroCopias.disabled = false;
+            btnEnviar.disabled = false;
+        }
+
+        // Inicialmente, desabilitar os campos e o botão
+        desabilitarCampos();
+
+        // Quando o botão "reset" for clicado, habilitar os campos e o botão
+        btnReset.addEventListener("click", function () {
+            habilitarCampos();
+        });
+    });
+</script>
