@@ -2,6 +2,7 @@
 using ProvaPortal.Models;
 using System.Diagnostics;
 
+[PaginaSomenteAdmin]
 namespace ProvaPortal.Controllers
 {
     public class HomeController : Controller

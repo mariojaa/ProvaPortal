@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Repository;
@@ -9,10 +11,12 @@ namespace ProvaPortal.Controllers
     public class ProfessorsController : Controller
     {
         private readonly ProfessorRepository _professorRepository;
-        
-        public ProfessorsController(ProfessorRepository professorRepository)
+        private readonly ProvaPortalContext _context;
+
+        public ProfessorsController(ProfessorRepository professorRepository, ProvaPortalContext provaPortalContext)
         {
             _professorRepository = professorRepository;
+            _context = provaPortalContext;
         }
         public IActionResult ListarProfessores()
         {
@@ -93,20 +97,6 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Professors");
             }
         }
-        /*public IActionResult DetalhesUsuario(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var obj = _usuarioRepositorio.FindById(id.Value);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return PartialView(obj);
-        }*/
-
         public IActionResult EditarProfessor(int? id)
         {
             if (id == null)

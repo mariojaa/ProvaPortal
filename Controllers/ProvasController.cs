@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 using ProvaPortal.Data;
 using ProvaPortal.Models;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
+using System.Security.Claims;
 
 public class ProvasController : Controller
 {
@@ -78,5 +80,15 @@ public class ProvasController : Controller
             TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
             return View("Erro", "Professors");
         }
+    }
+    public ActionResult MostrarDados()
+    {
+        ClaimsPrincipal user = HttpContext.User;
+        string nomeArquivo = user.Identity.Name;
+        var provaModel = new ProvaModel
+        {
+            NomeArquivo = nomeArquivo
+        };
+        return View("Index");
     }
 }
