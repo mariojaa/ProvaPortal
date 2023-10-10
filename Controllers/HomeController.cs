@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using System.Diagnostics;
 
-[PaginaSomenteAdmin]
+
 namespace ProvaPortal.Controllers
 {
+    [PaginaUsuarioLogado]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
