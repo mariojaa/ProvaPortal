@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="ArquivosProva\" />
-    <Folder Include="Data\Map\" />
   </ItemGroup>
 
   <ItemGroup>
