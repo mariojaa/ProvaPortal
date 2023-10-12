@@ -42,7 +42,7 @@ namespace ProvaPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Provas");
+                    b.ToTable("Provas", (string)null);
                 });
 
             modelBuilder.Entity("ProvaPortal.Models.ProfessorModel", b =>
@@ -88,7 +88,7 @@ namespace ProvaPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Professores");
+                    b.ToTable("Professores", (string)null);
                 });
 #pragma warning restore 612, 618
         }

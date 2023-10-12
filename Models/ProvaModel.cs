@@ -6,7 +6,5 @@ public class ProvaModel
     public string NomeArquivo { get; set; }
     public DateTime DataEnvio { get; set; }
     public int NumeroCopias { get; set; }
-    //public string CursoProva { get; set; }
-    //public int PeriodoProva { get; set; }
-    //public string TurmaProva { get; set; }
+    public int ProfessorId { get; set; }
 }
