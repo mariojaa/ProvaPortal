@@ -20,7 +20,8 @@ namespace ProvaPortal.Models
         public int PeriodoProfessor { get; set; }
         public string TurmaProfessor { get; set; }
         public string UsuarioLogin { get; set; }
-        public virtual List<ProvaModel> ProvaModelList { get; set;}
+        public virtual List<ProvaModel> ProvaModels { get; set;}
+
         [NotMapped]
         [Compare("SenhaProfessor", ErrorMessage = "Senhas não conferem! Verifique e tente novamente.")]
         public string ConfirmarSenhaProfessor { get; set; }

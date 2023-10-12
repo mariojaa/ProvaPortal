@@ -4,9 +4,9 @@ public class ProvaRepository : IProvaRepository
 {
     private List<ProvaModel> _provas = new List<ProvaModel>();
 
-    public List<ProvaModel> ObterTodasProvas()
+    public List<ProvaModel> ObterTodasProvas(int professorId)
     {
-        return _provas.ToList();
+        return _provas.Where(x => x.ProfessorId == professorId).ToList();
     }
 
     public void AdicionarProva(ProvaModel prova)

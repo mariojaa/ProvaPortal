@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProvaPortal.Data.Map;
 using ProvaPortal.Models;
 
 namespace ProvaPortal.Data
@@ -11,5 +12,11 @@ namespace ProvaPortal.Data
         }
         public DbSet<ProfessorModel> Professores { get; set; }
         public DbSet<ProvaModel> Provas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ProvaMap());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Repository;
+using ProvaPortal.Repository.Interface;
 
 namespace ProvaPortal.Controllers
 {
@@ -11,19 +11,24 @@ namespace ProvaPortal.Controllers
     public class ProfessorsController : Controller
     {
         private readonly ProfessorRepository _professorRepository;
+        private readonly IProvaRepository _provaRepository;
         private readonly ProvaPortalContext _context;
+        private readonly ISessao _sessao;
 
-        public ProfessorsController(ProfessorRepository professorRepository, ProvaPortalContext provaPortalContext)
+        public ProfessorsController(ProfessorRepository professorRepository, ProvaPortalContext provaPortalContext, ISessao sessao, IProvaRepository provaRepository)
         {
             _professorRepository = professorRepository;
             _context = provaPortalContext;
+            _sessao = sessao;
+            _provaRepository = provaRepository;
         }
         public IActionResult ListarProfessores()
         {
             try
             {
-
-                return View(_professorRepository.BuscarTodosProfessores());
+                ProfessorModel professorLogado = _sessao.BuscarSessaoUsuario();
+                List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
+                return View(provas);
             }
 
             catch (Exception)

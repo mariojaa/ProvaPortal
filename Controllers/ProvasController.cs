@@ -16,12 +16,14 @@ namespace ProvaPortal.Controllers
         private readonly IProvaRepository _provaRepository;
         private readonly ProvaPortalContext _context;
         private readonly ISessao _sessao;
+        private readonly IProfessorRepository _professorRepository;
 
-        public ProvasController(IProvaRepository provaRepository, ISessao sessao, ProvaPortalContext context)
+        public ProvasController(IProvaRepository provaRepository, ISessao sessao, ProvaPortalContext context, IProfessorRepository professorRepository)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
             _context = context;
+            _professorRepository = professorRepository;
         }
 
         [HttpGet]
@@ -30,9 +32,9 @@ namespace ProvaPortal.Controllers
 
             DateTime ultimoAcesso = DateTime.Now;
 
-            var prova = _provaRepository.ObterTodasProvas().FirstOrDefault();
+            //var prova = _provaRepository.ObterTodasProvas().FirstOrDefault();
 
-            return View(prova);
+            return View(/*prova*/);
         }
 
         [HttpPost]
@@ -76,7 +78,7 @@ namespace ProvaPortal.Controllers
             try
             {
 
-                return View(_provaRepository.ObterTodasProvas());
+                return View(/*_provaRepository.ObterTodasProvas()*/);
             }
 
             catch (Exception)

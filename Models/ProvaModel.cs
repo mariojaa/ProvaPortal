@@ -6,5 +6,6 @@ public class ProvaModel
     public string NomeArquivo { get; set; }
     public DateTime DataEnvio { get; set; }
     public int NumeroCopias { get; set; }
-    public int ProfessorId { get; set; }
+    public int? ProfessorId { get; set; }
+    public ProfessorModel ProfessorModels { get; set; }
 }
