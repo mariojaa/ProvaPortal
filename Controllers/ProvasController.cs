@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using ProvaPortal.Data;
@@ -31,13 +32,10 @@ namespace ProvaPortal.Controllers
         {
 
             DateTime ultimoAcesso = DateTime.Now;
-
-            //var prova = _provaRepository.ObterTodasProvas().FirstOrDefault();
-
-            return View(/*prova*/);
+            return View();
         }
 
-        [HttpPost]
+        [HttpPost]  
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias)
         {
             if (arquivo != null && arquivo.Length > 0)
@@ -56,17 +54,14 @@ namespace ProvaPortal.Controllers
                 {
                     arquivo.CopyTo(fileStream);
                 }
-
                 var prova = new ProvaModel
                 {
                     NumeroCopias = numeroCopias,
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
-                };
-
+                };     
                 _provaRepository.AdicionarProva(prova);
                 _context.Provas.Add(prova);
-                _context.SaveChanges();
 
                 return RedirectToAction("EnviarProva");
             }
@@ -77,8 +72,9 @@ namespace ProvaPortal.Controllers
         {
             try
             {
-
-                return View(/*_provaRepository.ObterTodasProvas()*/);
+                ProfessorModel professorLogado = _sessao.BuscarSessaoUsuario();
+                List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
+                return View(provas);
             }
 
             catch (Exception)

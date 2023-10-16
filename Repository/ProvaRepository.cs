@@ -1,21 +1,25 @@
 ﻿using ProvaPortal.Data;
+using ProvaPortal.Models;
 
 public class ProvaRepository : IProvaRepository
 {
-    private List<ProvaModel> _provas = new List<ProvaModel>();
+    private readonly ProvaPortalContext _context;
 
     public List<ProvaModel> ObterTodasProvas(int professorId)
     {
-        return _provas.Where(x => x.ProfessorId == professorId).ToList();
+        return _context.Provas.Where(x => x.ProfessorId == professorId).ToList();
     }
 
-    public void AdicionarProva(ProvaModel prova)
+    public ProvaModel AdicionarProva(ProvaModel prova)
     {
-        _provas.Add(prova);
+        _context.Provas.Add(prova);
+        _context.SaveChanges();
+        return prova;
+        
     }
 
     public ProvaModel BuscarProvaPorId(int id)
     {
-        return _provas.FirstOrDefault(x => x.Id == id);
+        return _context.Provas.FirstOrDefault(x => x.Id == id);
     }
 }

@@ -8,9 +8,9 @@ namespace ProvaPortal.Data.Map
         public void Configure(EntityTypeBuilder<ProvaModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.ProfessorModels) // Propriedade de navegação correta
-                   .WithMany() // Defina isto de acordo com o relacionamento
-                   .HasForeignKey(x => x.ProfessorId); // Chave estrangeira
+            builder.HasOne(x => x.ProfessorModel)
+                   .WithMany()
+                   .HasForeignKey(x => x.ProfessorId);
         }
     }
 }

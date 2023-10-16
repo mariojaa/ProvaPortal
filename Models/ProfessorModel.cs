@@ -8,8 +8,9 @@ using System.Drawing;
 namespace ProvaPortal.Models
 {
     
-    public class ProfessorModel
+    public class ProfessorModel  //Pessoa //Usuário
     {
+        [Key]
         public int Id { get; set; }
         public int Matricula { get; set; }
         public string NomeCompleto { get; set; }

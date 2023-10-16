@@ -1,6 +1,8 @@
-﻿public interface IProvaRepository
+﻿using ProvaPortal.Models;
+
+public interface IProvaRepository
 {
     List<ProvaModel> ObterTodasProvas(int professorId);
-    void AdicionarProva(ProvaModel prova);
+    ProvaModel AdicionarProva(ProvaModel prova);
     ProvaModel BuscarProvaPorId(int id);
 }

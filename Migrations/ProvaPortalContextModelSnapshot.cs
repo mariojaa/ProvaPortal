@@ -40,17 +40,12 @@ namespace ProvaPortal.Migrations
                     b.Property<int>("NumeroCopias")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProfessorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProfessorModelId")
+                    b.Property<int>("ProfessorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProfessorId");
-
-                    b.HasIndex("ProfessorModelId");
 
                     b.ToTable("Provas");
                 });
@@ -103,15 +98,13 @@ namespace ProvaPortal.Migrations
 
             modelBuilder.Entity("ProvaModel", b =>
                 {
-                    b.HasOne("ProvaPortal.Models.ProfessorModel", "ProfessorModels")
-                        .WithMany()
-                        .HasForeignKey("ProfessorId");
-
-                    b.HasOne("ProvaPortal.Models.ProfessorModel", null)
+                    b.HasOne("ProvaPortal.Models.ProfessorModel", "ProfessorModel")
                         .WithMany("ProvaModels")
-                        .HasForeignKey("ProfessorModelId");
+                        .HasForeignKey("ProfessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ProfessorModels");
+                    b.Navigation("ProfessorModel");
                 });
 
             modelBuilder.Entity("ProvaPortal.Models.ProfessorModel", b =>
