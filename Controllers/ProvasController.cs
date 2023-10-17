@@ -35,7 +35,7 @@ namespace ProvaPortal.Controllers
             return View();
         }
 
-        [HttpPost]  
+        [HttpPost]
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias)
         {
             if (arquivo != null && arquivo.Length > 0)
@@ -59,9 +59,10 @@ namespace ProvaPortal.Controllers
                     NumeroCopias = numeroCopias,
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
-                };     
-                _provaRepository.AdicionarProva(prova);
+                };
+                
                 _context.Provas.Add(prova);
+                _context.SaveChanges();
 
                 return RedirectToAction("EnviarProva");
             }

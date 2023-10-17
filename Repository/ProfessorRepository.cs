@@ -8,7 +8,7 @@ namespace ProvaPortal.Repository
     public class ProfessorRepository : IProfessorRepository
     {
         public readonly ProvaPortalContext _context;
-        private static List<ProvaModel> arquivos = new List<ProvaModel>();
+        //private static List<ProvaModel> _arquivos = new List<ProvaModel>();
         public ProfessorRepository(ProvaPortalContext provaDbContext)
         {
             _context = provaDbContext;

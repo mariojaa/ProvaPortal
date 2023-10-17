@@ -17,7 +17,7 @@ namespace ProvaPortal.Repository
         {
             string sessaoUsuario = _httpContext.HttpContext.Session.GetString("sessaoUsuarioLogado");
             if (string.IsNullOrEmpty(sessaoUsuario)) return null;
-
+            
             return JsonConvert.DeserializeObject<ProfessorModel>(sessaoUsuario);
         }
 
@@ -37,10 +37,20 @@ namespace ProvaPortal.Repository
             ProfessorModel dadosDoCursoDoProfessorNaSessao = BuscarSessaoUsuario();
             if(dadosDoCursoDoProfessorNaSessao != null)
             {
-                return dadosDoCursoDoProfessorNaSessao.UsuarioLogin +"_" + dadosDoCursoDoProfessorNaSessao.CursoProfessor + "_"+
+                return dadosDoCursoDoProfessorNaSessao.UsuarioLogin + "_" + dadosDoCursoDoProfessorNaSessao.CursoProfessor + "_" +
                     dadosDoCursoDoProfessorNaSessao.PeriodoProfessor + "_" + "Periodo" + "_" + "Turma" + "_" + dadosDoCursoDoProfessorNaSessao.TurmaProfessor;
             }
             return null;
         }
+        //public string BuscarIdProfessor()
+        //{
+        //    ProfessorModel professorPorId
+        //}
+        //public ProfessorModel BuscarIdProfessorLogado()
+        //{
+        //    ProvaModel professorId = new ProvaModel();
+        //    professorId.ProfessorModels = BuscarSessaoUsuario();
+        //    return professorId.ProfessorModels;
+        //}
     }
 }

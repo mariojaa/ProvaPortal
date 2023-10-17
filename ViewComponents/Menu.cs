@@ -6,7 +6,7 @@ namespace ProvaPortal.ViewComponents
 {
     public class Menu : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
             string sessaoUsuario = HttpContext.Session.GetString("sessaoUsuarioLogado");
             if (string.IsNullOrEmpty(sessaoUsuario)) return null;

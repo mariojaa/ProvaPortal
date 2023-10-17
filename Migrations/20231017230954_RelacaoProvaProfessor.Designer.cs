@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231016152648_RelacaoProvaProfessor")]
+    [Migration("20231017230954_RelacaoProvaProfessor")]
     partial class RelacaoProvaProfessor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,11 @@ namespace ProvaPortal.Migrations
 
             modelBuilder.Entity("ProvaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
@@ -100,13 +100,13 @@ namespace ProvaPortal.Migrations
 
             modelBuilder.Entity("ProvaModel", b =>
                 {
-                    b.HasOne("ProvaPortal.Models.ProfessorModel", "ProfessorModel")
+                    b.HasOne("ProvaPortal.Models.ProfessorModel", "ProfessorModels")
                         .WithMany("ProvaModels")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProfessorModel");
+                    b.Navigation("ProfessorModels");
                 });
 
             modelBuilder.Entity("ProvaPortal.Models.ProfessorModel", b =>

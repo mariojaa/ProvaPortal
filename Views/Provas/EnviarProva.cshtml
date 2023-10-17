@@ -8,6 +8,7 @@
 
 <p>Último Acesso: @DateTime.Now</p>
 
+
 <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
     <input type="file" id="inputArquivo" accept=".pdf" name="arquivo" required />
     <input type="number" id="numeroCopias" name="numeroCopias" placeholder="Quantidade de Cópias" required />
@@ -15,7 +16,7 @@
     <input type="reset" value="Resetar Formulário" id="btnReset" />
 </form>
 
-@if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo) && Model.DataEnvio != null)
+@if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
 {
     <p>Arquivo Enviado: @Model.NomeArquivo</p>
     <p>Data de Envio: @Model.DataEnvio</p>
