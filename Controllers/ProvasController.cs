@@ -40,6 +40,7 @@ namespace ProvaPortal.Controllers
         {
             if (arquivo != null && arquivo.Length > 0)
             {
+                var professorId = _sessao.BuscarSessaoUsuario();
                 string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo();
                 if (string.IsNullOrEmpty(dadosSessaoProfessor))
                 {
@@ -59,6 +60,7 @@ namespace ProvaPortal.Controllers
                     NumeroCopias = numeroCopias,
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
+                    ProfessorId = professorId.Id,
                 };
                 
                 _context.Provas.Add(prova);

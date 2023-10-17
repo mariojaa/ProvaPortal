@@ -11,5 +11,5 @@ public class ProvaModel //Dependente //Contato
     public int NumeroCopias { get; set; }
     [ForeignKey("ProfessorModel")]
     public int ProfessorId { get; set; }
-    public ProfessorModel ProfessorModels { get; set; }
+    public ProfessorModel Professor { get; set; }
 }
