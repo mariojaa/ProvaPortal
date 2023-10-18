@@ -8,6 +8,6 @@ namespace ProvaPortal.Repository.Interface
         void RemoverSessaoUsuario();
         string BuscarDadosDaSessaoParaNomearArquivo();
         ProfessorModel BuscarSessaoUsuario();
-        //ProfessorModel BuscarIdProfessorLogado();
+
     }
 }

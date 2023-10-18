@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
-using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
 using System.Security.Claims;
 
@@ -76,16 +72,22 @@ namespace ProvaPortal.Controllers
             try
             {
                 ProfessorModel professorLogado = _sessao.BuscarSessaoUsuario();
+                if (professorLogado == null)
+                {
+                    return RedirectToAction("Login", "Index");
+                }
+
                 List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
+                
                 return View(provas);
             }
-
             catch (Exception)
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
                 return View("Erro", "Professors");
             }
         }
+
         public ActionResult MostrarDados()
         {
             ClaimsPrincipal user = HttpContext.User;

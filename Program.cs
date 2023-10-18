@@ -23,7 +23,7 @@ namespace ProvaPortal
             
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddSingleton<IProvaRepository, ProvaRepository>();
+            builder.Services.AddScoped<IProvaRepository, ProvaRepository>();
             builder.Services.AddScoped<ISessao, Sessao>();
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();

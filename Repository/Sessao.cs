@@ -41,16 +41,6 @@ namespace ProvaPortal.Repository
                     dadosDoCursoDoProfessorNaSessao.PeriodoProfessor + "_" + "Periodo" + "_" + "Turma" + "_" + dadosDoCursoDoProfessorNaSessao.TurmaProfessor;
             }
             return null;
-        }
-        //public string BuscarIdProfessor()
-        //{
-        //    ProfessorModel professorPorId
-        //}
-        //public ProfessorModel BuscarIdProfessorLogado()
-        //{
-        //    ProvaModel professorId = new ProvaModel();
-        //    professorId.ProfessorModels = BuscarSessaoUsuario();
-        //    return professorId.ProfessorModels;
-        //}
+        }    
     }
 }
