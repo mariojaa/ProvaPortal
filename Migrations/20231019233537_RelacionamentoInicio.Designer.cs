@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProvaPortal.Data;
 
@@ -11,9 +12,10 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    partial class ProvaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20231019233537_RelacionamentoInicio")]
+    partial class RelacionamentoInicio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

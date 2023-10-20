@@ -1,5 +1,6 @@
 ﻿using ProvaPortal.Data;
 using ProvaPortal.Models;
+using ProvaPortal.Repository.Interface;
 
 public class ProvaRepository : IProvaRepository
 {

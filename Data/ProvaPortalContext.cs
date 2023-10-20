@@ -12,10 +12,18 @@ namespace ProvaPortal.Data
         }
         public DbSet<ProfessorModel> Professores { get; set; }
         public DbSet<ProvaModel> Provas { get; set; }
+        public DbSet<CursoModel> Cursos { get; set; }
+        public DbSet<PeriodoModel> Periodos { get; set; }
+        public DbSet<DisciplinaModel> Disciplinas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ProfessorMap());
+            modelBuilder.ApplyConfiguration(new CursoMap());
+            modelBuilder.ApplyConfiguration(new PeriodoMap());
+            modelBuilder.ApplyConfiguration(new DisciplinaMap());
             modelBuilder.ApplyConfiguration(new ProvaMap());
+
             base.OnModelCreating(modelBuilder);
         }
     }

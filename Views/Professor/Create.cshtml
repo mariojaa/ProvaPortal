@@ -1,0 +1,41 @@
+﻿@using ProvaPortal.Models.Enum;
+@model ProvaPortal.Models.ViewModel.CreateProfessorViewModel
+
+<h1 class="display-4 text-center">Cadastro de Professores</h1>
+
+<form method="post" asp-action="Create" asp-controller="Professor" class="needs-validation" novalidate>
+    <div class="form-check mb-3">
+        <input asp-for="Matricula" class="form-control" placeholder="Digite sua matrícula" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="NomeCompleto" class="form-control" placeholder="Digite seu nome completo" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Email" class="form-control" placeholder="Digite seu Email" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="SenhaProfessor" class="form-control" type="password" placeholder="Digite sua senha" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="UsuarioLogin" class="form-control" type="text" placeholder="Digite seu Usuário" required>
+        <div class="invalid-feedback">Preencha este campo</div>
+    </div>
+
+    <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<Perfil>()" class="form-control mb-3"></select>
+    <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<Curso>()" class="form-control mb-3"></select>
+    <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<Disciplina>()" class="form-control mb-3"></select>
+    <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<Periodo>()" class="form-control mb-3"></select>
+
+
+    <div class="text-center fs-6">
+        <a asp-controller="Professor" asp-action="ListarProfessores" class="btn btn-primary">Voltar</a>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </div>
+</form>

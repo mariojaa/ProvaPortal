@@ -32,12 +32,12 @@ namespace ProvaPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias)
+        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
                 var professorId = _sessao.BuscarSessaoUsuario();
-                string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo();
+                string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo(numeroCopias);
                 if (string.IsNullOrEmpty(dadosSessaoProfessor))
                 {
                     return RedirectToAction("EnviarProva");
@@ -51,22 +51,24 @@ namespace ProvaPortal.Controllers
                 {
                     arquivo.CopyTo(fileStream);
                 }
+
                 var prova = new ProvaModel
                 {
                     NumeroCopias = numeroCopias,
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
                     ProfessorId = professorId.Id,
+                    ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva, // Defina um valor padrão para obsProva se for nulo ou vazio
                 };
-                
-                _context.Provas.Add(prova);
-                _context.SaveChanges();
+
+                _provaRepository.AdicionarProva(prova);
 
                 return RedirectToAction("EnviarProva");
             }
 
             return RedirectToAction("EnviarProva");
         }
+
         public IActionResult Index()
         {
             try

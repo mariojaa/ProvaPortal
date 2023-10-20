@@ -4,7 +4,10 @@ using ProvaPortal.Models.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
-
+//public string CursoProfessor { get; set; }
+//public int PeriodoProfessor { get; set; }
+//public string TurmaProfessor { get; set; }
+//8b6baafeccd4dcfe46721e1b796cde1c5b3b3d47
 namespace ProvaPortal.Models
 {
     
@@ -16,11 +19,12 @@ namespace ProvaPortal.Models
         public string Email { get; set; }
         public Perfil Perfil { get; set; }
         public string SenhaProfessor { get; set; }
-        public string CursoProfessor { get; set; }
-        public int PeriodoProfessor { get; set; }
-        public string TurmaProfessor { get; set; }
         public string UsuarioLogin { get; set; }
-        public virtual List<ProvaModel> ProvaModels { get; set;}
+
+        public List<CursoModel> CursoModels { get; set; }
+
+        public List<ProvaModel> ProvaModels { get; set; }
+
 
         [NotMapped]
         [Compare("SenhaProfessor", ErrorMessage = "Senhas não conferem! Verifique e tente novamente.")]
