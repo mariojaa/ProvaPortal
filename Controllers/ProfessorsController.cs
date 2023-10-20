@@ -138,12 +138,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using ProvaPortal.Data;
 using ProvaPortal.Models.ViewModel;
+using ProvaPortal.Filters;
 
+[PaginaSomenteAdmin]
 public class ProfessorController : Controller
 {
     private readonly IProfessorRepository _professorRepository;

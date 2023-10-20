@@ -1,7 +1,25 @@
-﻿@using ProvaPortal.Models.Enum;
-@model ProvaPortal.Models.ViewModel.CreateProfessorViewModel
+﻿@model CreateProfessorViewModel
+@using ProvaPortal.Models.Enum
+@using ProvaPortal.Models.ViewModel;
 
-<h1 class="display-4 text-center">Cadastro de Professores</h1>
+@{
+    Layout = "_layoutNovoUsuario";
+    ViewData["Title"] = "Criar Novo Usuario";
+}
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<h1>Criar Usuário</h1>
 
 <form method="post" asp-action="Create" asp-controller="Professor" class="needs-validation" novalidate>
     <div class="form-check mb-3">
@@ -49,3 +67,32 @@
         <button type="submit" class="btn btn-primary">Cadastrar</button>
     </div>
 </form>
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('keyup', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+
+    </script>
+}

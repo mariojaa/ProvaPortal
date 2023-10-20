@@ -1,6 +1,8 @@
-﻿using ProvaPortal.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ProvaPortal.Filters;
 using ProvaPortal.Helper;
 using ProvaPortal.Models.Enum;
+using ProvaPortal.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
@@ -22,9 +24,7 @@ namespace ProvaPortal.Models
         public string UsuarioLogin { get; set; }
 
         public List<CursoModel> CursoModels { get; set; }
-
         public List<ProvaModel> ProvaModels { get; set; }
-
 
         [NotMapped]
         [Compare("SenhaProfessor", ErrorMessage = "Senhas não conferem! Verifique e tente novamente.")]

@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231019233537_RelacionamentoInicio")]
+    [Migration("20231020210019_RelacionamentoInicio")]
     partial class RelacionamentoInicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

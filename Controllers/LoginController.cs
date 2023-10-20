@@ -19,7 +19,7 @@ namespace ProvaPortal.Controllers
             // quando logado redirecionar para lista contatos
             if (_sessao.BuscarSessaoUsuario() != null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ListarProfessores", "Professor");
             }
 
             return View();

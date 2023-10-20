@@ -11,6 +11,8 @@ namespace ProvaPortal.Models.ViewModel
         public Perfil Perfil { get; set; }
         public string SenhaProfessor { get; set; }
         public string UsuarioLogin { get; set; }
+        public int ProfessorId { get; set; }
+        public ProfessorModel Professor { get; set; }
 
         public List<SelectListItem> CursoOptions { get; set; }
         public List<SelectListItem> PeriodoOptions { get; set; }
