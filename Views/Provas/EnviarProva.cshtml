@@ -1,4 +1,5 @@
-﻿@model ProvaModel
+﻿@using ProvaPortal.Models.Enum;
+@model ProvaModel
 
 @{
     ViewData["Title"] = "Enviar Prova";
@@ -8,11 +9,12 @@
 
 <p>Último Acesso: @DateTime.Now</p>
 
-
 <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
-    <input type="file" id="inputArquivo" accept=".pdf" name="arquivo" required />
+    <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" required />
     <input type="number" id="numeroCopias" name="numeroCopias" placeholder="Quantidade de Cópias" required />
-    <input type="text" id="ObservacaoDaProva" name="ObservacaoDaProva" placeholder="Observação" required />
+    <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" class="form-control mb-3"></select>
+    <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" class="form-control mb-3"></select>
+    <input type="text" id="obsProva" name="obsProva" placeholder="Observação" required />
     <input type="submit" value="Enviar Arquivo" id="btnEnviar" />
     <input type="reset" value="Resetar Formulário" id="btnReset" />
 </form>
@@ -21,7 +23,7 @@
 {
     <p>Arquivo Enviado: @Model.NomeArquivo</p>
     <p>Data de Envio: @Model.DataEnvio</p>
-    
+
 }
 <a title="Lista de Provas" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="Index"></a>
 

@@ -42,7 +42,7 @@ namespace ProvaPortal.Repository
             };
             if (dadosDoCursoDoProfessorNaSessao != null)
             {
-                return dadosDoCursoDoProfessorNaSessao.UsuarioLogin + numeroCopias;
+                return dadosDoCursoDoProfessorNaSessao.UsuarioLogin;
             }
             return null;
         }

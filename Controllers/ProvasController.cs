@@ -2,6 +2,7 @@
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
+using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
 using System.Security.Claims;
 
@@ -32,7 +33,7 @@ namespace ProvaPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva)
+        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -43,7 +44,7 @@ namespace ProvaPortal.Controllers
                     return RedirectToAction("EnviarProva");
                 }
 
-                string nomeArquivo = $"{dadosSessaoProfessor}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf";
+                string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; //Renomeia o arquivo
                 string nomeProvaOriginal = $"{arquivo.FileName}";
                 string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
 
@@ -86,10 +87,38 @@ namespace ProvaPortal.Controllers
             catch (Exception)
             {
                 TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "Professors");
+                return View("Erro", "Provas");
             }
         }
-
+        public IActionResult DeletarProva(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _provaRepository.BuscarProvaPorId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return PartialView(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletarProva(int id)
+        {
+            try
+            {
+                TempData["MensagemSucesso"] = "Professor excluido com sucesso!";
+                _provaRepository.DeleteProva(id);
+                return RedirectToAction("Index", "Provas");
+            }
+            catch (Exception)
+            {
+                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+                return View("Erro", "Provas");
+            }
+        }
         public ActionResult MostrarDados()
         {
             ClaimsPrincipal user = HttpContext.User;

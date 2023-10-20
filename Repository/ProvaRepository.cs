@@ -1,6 +1,4 @@
 ﻿using ProvaPortal.Data;
-using ProvaPortal.Models;
-using ProvaPortal.Repository.Interface;
 
 public class ProvaRepository : IProvaRepository
 {
@@ -27,5 +25,23 @@ public class ProvaRepository : IProvaRepository
     public ProvaModel BuscarProvaPorId(int id)
     {
         return _context.Provas.FirstOrDefault(x => x.Id == id);
+    }
+    public void DeleteProfessor(int id)
+    {
+        var prova = BuscarProvaPorId(id);
+        if (prova != null)
+        {
+            _context.Provas.Remove(prova);
+            _context.SaveChanges();
+        }
+    }
+    public void DeleteProva(int id)
+    {
+        var prova = BuscarProvaPorId(id);
+        if (prova != null)
+        {
+            _context.Provas.Remove(prova);
+            _context.SaveChanges();
+        }
     }
 }

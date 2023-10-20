@@ -30,6 +30,8 @@
                 <th scope="col">Nome Arquivo</th>
                 <th scope="col">Cópias</th>
                 <th scope="col">Data do Envio</th>
+                <th scope="col">Tipo de Prova</th>
+                <th scope="col">Tipo da Avaliação</th>
                 <th></th>
             </tr>
         </thead>
@@ -45,6 +47,12 @@
                     </td>
                     <td>
                         @item.DataEnvio
+                    </td>
+                    <td>
+                        @item.TipoDeProva
+                    </td>
+                    <td>
+                        @item.TipoDaAvaliacao
                     </td>
                     <td class="align-items-baseline">
 
@@ -80,7 +88,7 @@
         $(document).ready(function () {
             $(".btnDeletar").click(function () {
                 var id = $(this).data("value");
-                $("#conteudomodal").load("/Professors/DeletarProfessor/" + id,
+                $("#conteudomodal").load("/Provas/DeletarProva/" + id,
                     function () {
                         $('#exampleModal').modal("show");
                     }
