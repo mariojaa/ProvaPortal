@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231020210019_RelacionamentoInicio")]
+    [Migration("20231021124959_RelacionamentoInicio")]
     partial class RelacionamentoInicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace ProvaPortal.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Conteudo")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");

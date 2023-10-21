@@ -1,0 +1,23 @@
+﻿@model List<ProvaModel>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome do Arquivo</th>
+            <th>Data de Envio</th>
+            <th>Visualizar e Imprimir</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prova in Model)
+        {
+            <tr>
+                <td>@prova.NomeArquivo</td>
+                <td>@prova.DataEnvio</td>
+                <td>
+                    <a href="@Url.Action("VisualizarProva", "Provas", new { id = prova.Id })" target="_blank">Visualizar e Imprimir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

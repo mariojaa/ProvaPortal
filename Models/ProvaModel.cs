@@ -8,6 +8,7 @@ public class ProvaModel //Dependente //Contato
     public string NomeArquivo { get; set; }
     public DateTime DataEnvio { get; set; }
     public int NumeroCopias { get; set; }
+    public byte[] Conteudo { get; set; }
     [ForeignKey("ProfessorModel")]
     public int ProfessorId { get; set; }
     public TipoDaAvaliacao TipoDaAvaliacao { get; set; }

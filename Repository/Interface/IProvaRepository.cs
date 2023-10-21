@@ -7,4 +7,5 @@ public interface IProvaRepository
     ProvaModel BuscarProvaPorId(int id);
     //List<ProvaModel> ObterProvasEnviadas(int id);
     void DeleteProva(int id);
+    List<ProvaModel> ObterTodasProvasAdministrador();
 }

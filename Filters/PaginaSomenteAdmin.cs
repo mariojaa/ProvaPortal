@@ -14,7 +14,7 @@ namespace ProvaPortal.Filters
             string sessaoUsuario = context.HttpContext.Session.GetString("sessaoUsuarioLogado");
             if (string.IsNullOrEmpty(sessaoUsuario))
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { {"controller", "Login" }, {"action", "Index" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
             }
             else
             {
@@ -23,7 +23,7 @@ namespace ProvaPortal.Filters
                 {
                     context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
                 }
-                if(usuario.Perfil != Models.Enum.Perfil.Administrador)
+                else if (usuario.Perfil != Models.Enum.Perfil.Administrador)
                 {
                     context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Restrito" }, { "action", "Index" } });
                 }

@@ -4,7 +4,8 @@ using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace ProvaPortal.Controllers
 {
@@ -15,13 +16,17 @@ namespace ProvaPortal.Controllers
         private readonly ProvaPortalContext _context;
         private readonly ISessao _sessao;
         private readonly IProfessorRepository _professorRepository;
+        private readonly PaginaSomenteAdmin _paginaSomenteAdmin;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ProvasController(IProvaRepository provaRepository, ISessao sessao, ProvaPortalContext context, IProfessorRepository professorRepository)
+        public ProvasController(IProvaRepository provaRepository, IWebHostEnvironment hostingEnvironment, PaginaSomenteAdmin paginaSomenteAdmin, ISessao sessao, ProvaPortalContext context, IProfessorRepository professorRepository)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
             _context = context;
             _professorRepository = professorRepository;
+            _paginaSomenteAdmin = paginaSomenteAdmin;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -44,7 +49,15 @@ namespace ProvaPortal.Controllers
                     return RedirectToAction("EnviarProva");
                 }
 
-                string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; //Renomeia o arquivo
+                // Lê o conteúdo do arquivo em um array de bytes
+                byte[] conteudoArquivo;
+                using (var ms = new MemoryStream())
+                {
+                    arquivo.CopyTo(ms);
+                    conteudoArquivo = ms.ToArray();
+                }
+
+                string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; // Renomeia o arquivo
                 string nomeProvaOriginal = $"{arquivo.FileName}";
                 string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
 
@@ -59,7 +72,8 @@ namespace ProvaPortal.Controllers
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
                     ProfessorId = professorId.Id,
-                    ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva, // Defina um valor padrão para obsProva se for nulo ou vazio
+                    ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva,
+                    Conteudo = conteudoArquivo // Atribui o conteúdo do arquivo ao campo Conteudo
                 };
 
                 _provaRepository.AdicionarProva(prova);
@@ -69,6 +83,7 @@ namespace ProvaPortal.Controllers
 
             return RedirectToAction("EnviarProva");
         }
+
 
         public IActionResult Index()
         {
@@ -81,7 +96,7 @@ namespace ProvaPortal.Controllers
                 }
 
                 List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
-                
+
                 return View(provas);
             }
             catch (Exception)
@@ -119,15 +134,66 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
-        public ActionResult MostrarDados()
+        [HttpGet]
+        [ServiceFilter(typeof(PaginaSomenteAdmin))]
+        public IActionResult VisualizarTodasProvas()
         {
-            ClaimsPrincipal user = HttpContext.User;
-            string nomeArquivo = user.Identity.Name;
-            var provaModel = new ProvaModel
+            var usuario = _sessao.BuscarSessaoUsuario();
+
+            if (usuario.Perfil == Models.Enum.Perfil.Administrador)
             {
-                NomeArquivo = nomeArquivo
-            };
-            return View("Index");
+                List<ProvaModel> todasAsProvas = _provaRepository.ObterTodasProvasAdministrador();
+                return View(todasAsProvas);
+            }
+            else
+            {
+                // Professor: Redirecionar ou mostrar mensagem de erro, conforme necessário
+                return RedirectToAction("AcessoNegado"); // Redirecione para uma página de acesso negado, por exemplo
+            }
         }
+        public IActionResult VisualizarProva(int id)
+        {
+            var prova = _provaRepository.BuscarProvaPorId(id);
+
+            if (prova == null)
+            {
+                return NotFound();
+            }
+
+            // Obtém o conteúdo do arquivo PDF do campo Conteudo
+            byte[] arquivoPDF = prova.Conteudo;
+
+            if (arquivoPDF == null || arquivoPDF.Length == 0)
+            {
+                return NotFound();
+            }
+
+            // Gere uma resposta para o arquivo PDF
+            return File(arquivoPDF, "application/pdf");
+        }
+        [HttpGet]
+        public IActionResult ImprimirProva(int id)
+        {
+            var prova = _provaRepository.BuscarProvaPorId(id);
+
+            if (prova == null)
+            {
+                return NotFound();
+            }
+
+            // Certifique-se de que seu modelo de dados contenha o campo correto que armazena o conteúdo do arquivo PDF
+            byte[] arquivoPDF = prova.Conteudo;
+
+            if (arquivoPDF == null || arquivoPDF.Length == 0)
+            {
+                return NotFound();
+            }
+
+            // Gere uma resposta para o arquivo PDF com o cabeçalho para impressão
+            Response.Headers["Content-Disposition"] = "inline; filename=Prova.pdf";
+            return File(arquivoPDF, "application/pdf");
+        }
+
+
     }
 }

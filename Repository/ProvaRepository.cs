@@ -13,6 +13,10 @@ public class ProvaRepository : IProvaRepository
     {
         return _context.Provas.Where(x => x.ProfessorId == professorId).ToList();
     }
+    public List<ProvaModel> ObterTodasProvasAdministrador()
+    {
+        return _context.Provas.ToList();
+    }
 
     public ProvaModel AdicionarProva(ProvaModel prova)
     {

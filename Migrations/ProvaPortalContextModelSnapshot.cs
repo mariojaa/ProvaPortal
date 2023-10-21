@@ -30,6 +30,10 @@ namespace ProvaPortal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
+                    b.Property<byte[]>("Conteudo")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
 

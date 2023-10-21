@@ -57,6 +57,7 @@ namespace ProvaPortal.Migrations
                     NomeArquivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataEnvio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NumeroCopias = table.Column<int>(type: "int", nullable: false),
+                    Conteudo = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     ProfessorId = table.Column<int>(type: "int", nullable: false),
                     TipoDaAvaliacao = table.Column<int>(type: "int", nullable: false),
                     StatusDaProva = table.Column<int>(type: "int", nullable: false),
