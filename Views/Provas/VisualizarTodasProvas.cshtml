@@ -1,23 +1,125 @@
 ﻿@model List<ProvaModel>
 
-<table>
-    <thead>
-        <tr>
-            <th>Nome do Arquivo</th>
-            <th>Data de Envio</th>
-            <th>Visualizar e Imprimir</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var prova in Model)
-        {
+<h1 class="text-center display-4">Lista de Provas Enviadas</h1>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["MensagemErro"]
+    </div>
+}
+<div class="container mt-3">
+    <input class="form-control" id="buscador" type="search" placeholder="Buscar..." aria-controls="table-usuarios">
+</div>
+
+<a title="Enviar Prova" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="EnviarProva"></a>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table id="table-usuarios" class="table table-hover">
+        <thead class="table-light">
             <tr>
-                <td>@prova.NomeArquivo</td>
-                <td>@prova.DataEnvio</td>
-                <td>
-                    <a href="@Url.Action("VisualizarProva", "Provas", new { id = prova.Id })" target="_blank">Visualizar e Imprimir</a>
-                </td>
+                <th scope="col">Professor</th>
+                <th scope="col">Nome Arquivo</th>
+                <th scope="col">Cópias</th>
+                <th scope="col">Data do Envio</th>
+                <th scope="col">Tipo de Prova</th>
+                <th scope="col">Tipo da Avaliação</th>
+                <th scope="col">Observação</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.Professor != null)
+                        {
+                            @item.Professor.UsuarioLogin
+                        }
+                    </td>
+                    <td>
+                        @item.NomeArquivo
+                    </td>
+                    <td>
+                        @item.NumeroCopias
+                    </td>
+                    <td>
+                        @item.DataEnvio
+                    </td>
+                    <td>
+                        @item.TipoDeProva
+                    </td>
+                    <td>
+                        @item.TipoDaAvaliacao
+                    </td>
+                    <td>
+                        @item.ObservacaoDaProva
+                    </td>
+                    <td class="align-items-baseline">
+                        <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnImprimir" data-value="@item.Id">Imprimir</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table-usuarios').DataTable({
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "pageLength": 10,
+                "info": false,
+                "lengthChange": false,
+                "dom": 'lrtip',
+                "oLanguage": {
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sSearch": "Pesquisa",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "oPaginate": {
+                        "sNext": "Proximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Ultimo"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $(".btnImprimir").click(function () {
+                var id = $(this).data("value");
+                $.ajax({
+                    url: "/Provas/AtualizarStatusImpresso/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        // Lida com a resposta do servidor, se necessário
+                        // Agora, após atualizar o status, você pode abrir a prova para impressão
+                        window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
+                    },
+                    error: function (error) {
+                        // Lida com erros, se necessário
+                    }
+                });
+            });
+        });
+    </script>
+}

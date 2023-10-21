@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
 using Microsoft.AspNetCore.Hosting;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ProvaPortal.Controllers
 {
@@ -13,19 +16,15 @@ namespace ProvaPortal.Controllers
     public class ProvasController : Controller
     {
         private readonly IProvaRepository _provaRepository;
-        private readonly ProvaPortalContext _context;
         private readonly ISessao _sessao;
         private readonly IProfessorRepository _professorRepository;
-        private readonly PaginaSomenteAdmin _paginaSomenteAdmin;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ProvasController(IProvaRepository provaRepository, IWebHostEnvironment hostingEnvironment, PaginaSomenteAdmin paginaSomenteAdmin, ISessao sessao, ProvaPortalContext context, IProfessorRepository professorRepository)
+        public ProvasController(IProvaRepository provaRepository, ISessao sessao, IProfessorRepository professorRepository, IWebHostEnvironment hostingEnvironment)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
-            _context = context;
             _professorRepository = professorRepository;
-            _paginaSomenteAdmin = paginaSomenteAdmin;
             _hostingEnvironment = hostingEnvironment;
         }
 
@@ -41,7 +40,12 @@ namespace ProvaPortal.Controllers
         {
             if (arquivo != null && arquivo.Length > 0)
             {
-                var professorId = _sessao.BuscarSessaoUsuario();
+                var professorLogado = _sessao.BuscarSessaoUsuario();
+                if (professorLogado == null)
+                {
+                    return RedirectToAction("Login", "Index");
+                }
+
                 string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo(numeroCopias);
                 if (string.IsNullOrEmpty(dadosSessaoProfessor))
                 {
@@ -59,10 +63,10 @@ namespace ProvaPortal.Controllers
 
                 // Lê o conteúdo do arquivo em um array de bytes
                 byte[] conteudoArquivo;
-                using (var ms = new MemoryStream())
+                using (var fileStream = new FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read))
                 {
-                    arquivo.CopyTo(ms);
-                    conteudoArquivo = ms.ToArray();
+                    conteudoArquivo = new byte[fileStream.Length];
+                    fileStream.Read(conteudoArquivo, 0, (int)fileStream.Length);
                 }
 
                 var prova = new ProvaModel
@@ -70,19 +74,17 @@ namespace ProvaPortal.Controllers
                     NumeroCopias = numeroCopias,
                     NomeArquivo = nomeProvaOriginal,
                     DataEnvio = DateTime.Now,
-                    ProfessorId = professorId.Id,
+                    ProfessorId = professorLogado.Id,
                     ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva,
                     Conteudo = conteudoArquivo // Atribui o conteúdo do arquivo ao campo Conteudo
                 };
 
                 _provaRepository.AdicionarProva(prova);
-
                 return RedirectToAction("EnviarProva");
             }
 
             return RedirectToAction("EnviarProva");
         }
-
 
         public IActionResult Index()
         {
@@ -104,6 +106,7 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
+
         public IActionResult DeletarProva(int? id)
         {
             if (id == null)
@@ -117,15 +120,16 @@ namespace ProvaPortal.Controllers
             }
             return PartialView(obj);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeletarProva(int id)
         {
             try
             {
-                TempData["MensagemSucesso"] = "Professor excluido com sucesso!";
+                TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
                 _provaRepository.DeleteProva(id);
-                return RedirectToAction("Index", "Provas");
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {
@@ -133,23 +137,31 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
+
         [HttpGet]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarTodasProvas()
         {
-            var usuario = _sessao.BuscarSessaoUsuario();
-
-            if (usuario.Perfil == Models.Enum.Perfil.Administrador)
+            try
             {
-                List<ProvaModel> todasAsProvas = _provaRepository.ObterTodasProvasAdministrador();
+                ProfessorModel professorLogado = _sessao.BuscarSessaoUsuario();
+                if (professorLogado == null)
+                {
+                    return RedirectToAction("Login", "Index");
+                }
+
+                // Aqui você deve incluir os dados do professor relacionado às provas
+                List<ProvaModel> todasAsProvas = _provaRepository.ObterTodasProvasAdministradorComProfessores();
+
                 return View(todasAsProvas);
             }
-            else
+            catch (Exception)
             {
-
-                return RedirectToAction("AcessoNegado");
+                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+                return View("Erro", "Provas");
             }
         }
+
         public IActionResult VisualizarProva(int id)
         {
             var prova = _provaRepository.BuscarProvaPorId(id);
@@ -168,28 +180,31 @@ namespace ProvaPortal.Controllers
 
             return File(arquivoPDF, "application/pdf");
         }
-        //[HttpGet]
-        //public IActionResult ImprimirProva(int id)
-        //{
-        //    var prova = _provaRepository.BuscarProvaPorId(id);
+        [HttpPost]
+        [HttpPost]
+        public IActionResult AtualizarStatusImpresso(int id)
+        {
+            try
+            {
+                var prova = _provaRepository.BuscarProvaPorId(id);
 
-        //    if (prova == null)
-        //    {
-        //        return NotFound();
-        //    }
+                if (prova == null)
+                {
+                    return NotFound();
+                }
 
-        //    byte[] arquivoPDF = prova.Conteudo;
+                prova.StatusDaProva = StatusDaProva.Impresso; // Define o status para "Impresso"
+                _provaRepository.AtualizarProva(prova); // Atualiza a prova no banco de dados
 
-        //    if (arquivoPDF == null || arquivoPDF.Length == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    Response.Headers["Content-Disposition"] = "inline; filename=Prova.pdf";
-        //    return File(arquivoPDF, "application/pdf");
-        //}
-
-
+                // Agora, após atualizar o status, você pode retornar uma URL para a ação que exibe a prova
+                return Json(new { urlParaProva = Url.Action("VisualizarProva", "Provas", new { id = id }) });
+            }
+            catch (Exception)
+            {
+                // Lida com erros, se necessário
+                return Json(new { error = "Ocorreu um erro ao atualizar o status da prova." });
+            }
+        }
 
     }
 }

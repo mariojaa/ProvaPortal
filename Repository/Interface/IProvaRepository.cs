@@ -8,4 +8,6 @@ public interface IProvaRepository
     //List<ProvaModel> ObterProvasEnviadas(int id);
     void DeleteProva(int id);
     List<ProvaModel> ObterTodasProvasAdministrador();
+    public List<ProvaModel> ObterTodasProvasAdministradorComProfessores();
+    void AtualizarProva(ProvaModel prova);
 }
