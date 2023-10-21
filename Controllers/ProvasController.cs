@@ -32,7 +32,6 @@ namespace ProvaPortal.Controllers
         [HttpGet]
         public IActionResult EnviarProva()
         {
-
             DateTime ultimoAcesso = DateTime.Now;
             return View();
         }
@@ -49,14 +48,6 @@ namespace ProvaPortal.Controllers
                     return RedirectToAction("EnviarProva");
                 }
 
-                // Lê o conteúdo do arquivo em um array de bytes
-                byte[] conteudoArquivo;
-                using (var ms = new MemoryStream())
-                {
-                    arquivo.CopyTo(ms);
-                    conteudoArquivo = ms.ToArray();
-                }
-
                 string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; // Renomeia o arquivo
                 string nomeProvaOriginal = $"{arquivo.FileName}";
                 string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
@@ -64,6 +55,14 @@ namespace ProvaPortal.Controllers
                 using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
                 {
                     arquivo.CopyTo(fileStream);
+                }
+
+                // Lê o conteúdo do arquivo em um array de bytes
+                byte[] conteudoArquivo;
+                using (var ms = new MemoryStream())
+                {
+                    arquivo.CopyTo(ms);
+                    conteudoArquivo = ms.ToArray();
                 }
 
                 var prova = new ProvaModel
@@ -147,8 +146,8 @@ namespace ProvaPortal.Controllers
             }
             else
             {
-                // Professor: Redirecionar ou mostrar mensagem de erro, conforme necessário
-                return RedirectToAction("AcessoNegado"); // Redirecione para uma página de acesso negado, por exemplo
+
+                return RedirectToAction("AcessoNegado");
             }
         }
         public IActionResult VisualizarProva(int id)
@@ -160,7 +159,6 @@ namespace ProvaPortal.Controllers
                 return NotFound();
             }
 
-            // Obtém o conteúdo do arquivo PDF do campo Conteudo
             byte[] arquivoPDF = prova.Conteudo;
 
             if (arquivoPDF == null || arquivoPDF.Length == 0)
@@ -168,31 +166,29 @@ namespace ProvaPortal.Controllers
                 return NotFound();
             }
 
-            // Gere uma resposta para o arquivo PDF
             return File(arquivoPDF, "application/pdf");
         }
-        [HttpGet]
-        public IActionResult ImprimirProva(int id)
-        {
-            var prova = _provaRepository.BuscarProvaPorId(id);
+        //[HttpGet]
+        //public IActionResult ImprimirProva(int id)
+        //{
+        //    var prova = _provaRepository.BuscarProvaPorId(id);
 
-            if (prova == null)
-            {
-                return NotFound();
-            }
+        //    if (prova == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            // Certifique-se de que seu modelo de dados contenha o campo correto que armazena o conteúdo do arquivo PDF
-            byte[] arquivoPDF = prova.Conteudo;
+        //    byte[] arquivoPDF = prova.Conteudo;
 
-            if (arquivoPDF == null || arquivoPDF.Length == 0)
-            {
-                return NotFound();
-            }
+        //    if (arquivoPDF == null || arquivoPDF.Length == 0)
+        //    {
+        //        return NotFound();
+        //    }
 
-            // Gere uma resposta para o arquivo PDF com o cabeçalho para impressão
-            Response.Headers["Content-Disposition"] = "inline; filename=Prova.pdf";
-            return File(arquivoPDF, "application/pdf");
-        }
+        //    Response.Headers["Content-Disposition"] = "inline; filename=Prova.pdf";
+        //    return File(arquivoPDF, "application/pdf");
+        //}
+
 
 
     }
