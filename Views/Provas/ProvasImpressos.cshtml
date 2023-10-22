@@ -95,7 +95,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <!-- Botões de ação, se houver -->
+                                @* <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a> *@
                             </td>
                         </tr>
                     }
@@ -105,8 +105,28 @@
     </div>
 </div>
 
+@* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="conteudomodal"></div>
+            </div>
+        </div>
+    </div>
+</div> *@
 @section Scripts{
     <script type="text/javascript">
+        // $(document).ready(function () {
+        //     $(".btnDeletar").click(function () {
+        //         var id = $(this).data("value");
+        //         $("#conteudomodal").load("/Provas/DeletarProva/" + id,
+        //             function () {
+        //                 $('#exampleModal').modal("show");
+        //             }
+        //         );
+        //     });
+
+        // });
         $(document).ready(function () {
             // Inicialize o DataTable nas duas tabelas
             $('#table-provas').DataTable({

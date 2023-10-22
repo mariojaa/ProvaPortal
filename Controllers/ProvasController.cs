@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
-using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace ProvaPortal.Controllers
 {
@@ -19,13 +14,17 @@ namespace ProvaPortal.Controllers
         private readonly ISessao _sessao;
         private readonly IProfessorRepository _professorRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly ProvaPortalContext _context;
 
-        public ProvasController(IProvaRepository provaRepository, ISessao sessao, IProfessorRepository professorRepository, IWebHostEnvironment hostingEnvironment)
+        public ProvasController(IProvaRepository provaRepository, ISessao sessao,
+            IProfessorRepository professorRepository, IWebHostEnvironment hostingEnvironment,
+            ProvaPortalContext context)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
             _professorRepository = professorRepository;
             _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
 
         [HttpGet]
@@ -184,8 +183,7 @@ namespace ProvaPortal.Controllers
             return File(arquivoPDF, "application/pdf");
         }
         [HttpPost]
-        [HttpPost]
-        public IActionResult AtualizarStatusImpresso(int id)
+        public IActionResult AtualizarStatusImpresso(int id, string usuarioLogadoAdministrador)
         {
             try
             {
@@ -197,6 +195,7 @@ namespace ProvaPortal.Controllers
                 }
 
                 prova.StatusDaProva = StatusDaProva.Impresso; // Define o status para "Impresso"
+                prova.Professor = _professorRepository.BuscarPorLogin(usuarioLogadoAdministrador);
                 _provaRepository.AtualizarProva(prova); // Atualiza a prova no banco de dados
 
                 // Agora, após atualizar o status, você pode retornar uma URL para a ação que exibe a prova
@@ -208,6 +207,5 @@ namespace ProvaPortal.Controllers
                 return Json(new { error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
-
     }
 }
