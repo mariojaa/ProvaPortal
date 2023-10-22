@@ -36,7 +36,8 @@ namespace ProvaPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso)
+        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao, 
+            TipoDeProva tipoDeProva)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -76,7 +77,9 @@ namespace ProvaPortal.Controllers
                     DataEnvio = DateTime.Now,
                     ProfessorId = professorLogado.Id,
                     ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva,
-                    Conteudo = conteudoArquivo // Atribui o conteúdo do arquivo ao campo Conteudo
+                    Conteudo = conteudoArquivo,
+                    TipoDaAvaliacao = tipoDaAvaliacao,
+                    TipoDeProva = tipoDeProva
                 };
 
                 _provaRepository.AdicionarProva(prova);

@@ -19,7 +19,6 @@
 <div class="container mt-3">
     <input class="form-control" id="buscador" type="search" placeholder="Buscar..." aria-controls="table-provas">
 </div>
-<a title="Enviar Prova" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="EnviarProva"></a>
 
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -32,71 +31,77 @@
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="provas" role="tabpanel" aria-labelledby="provas-tab">
-        <table id="table-provas" class="table table-hover">
-            <!-- Cabeçalho da tabela -->
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">Nome Arquivo</th>
-                    <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
-                    <th scope="col">Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <!-- Corpo da tabela -->
-            <tbody>
-                @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso))
-                {
+        @if (Model != null && Model.Count > 0)
+        {
+            <table id="table-provas" class="table table-hover">
+                <!-- Cabeçalho da tabela -->
+                <thead class="table-light">
                     <tr>
-                        <td>@item.NomeArquivo</td>
-                        <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
-                        <td>@item.StatusDaProva</td>
-                        <td class="align-items-baseline">
-                            <!-- Botões de ação, se houver -->
-                        </td>
+                        <th scope="col">Nome Arquivo</th>
+                        <th scope="col">Cópias</th>
+                        <th scope="col">Data do Envio</th>
+                        <th scope="col">Tipo de Prova</th>
+                        <th scope="col">Tipo da Avaliação</th>
+                        <th scope="col">Status</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <!-- Corpo da tabela -->
+                <tbody>
+                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso))
+                    {
+                        <tr>
+                            <td>@item.NomeArquivo</td>
+                            <td>@item.NumeroCopias</td>
+                            <td>@item.DataEnvio</td>
+                            <td>@item.TipoDeProva</td>
+                            <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.StatusDaProva</td>
+                            <td class="align-items-baseline">
+                                <!-- Botões de ação, se houver -->
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 
     <div class="tab-pane fade" id="impressos" role="tabpanel" aria-labelledby="impressos-tab">
-        <table id="table-impressos" class="table table-hover">
-            <!-- Cabeçalho da tabela -->
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">Nome Arquivo</th>
-                    <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
-                    <th scope="col">Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <!-- Corpo da tabela -->
-            <tbody>
-                @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
-                {
+        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Impresso))
+        {
+            <table id="table-impressos" class="table table-hover">
+                <!-- Cabeçalho da tabela -->
+                <thead class="table-light">
                     <tr>
-                        <td>@item.NomeArquivo</td>
-                        <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
-                        <td>@item.StatusDaProva</td>
-                        <td class="align-items-baseline">
-                            <!-- Botões de ação, se houver -->
-                        </td>
+                        <th scope="col">Nome Arquivo</th>
+                        <th scope="col">Cópias</th>
+                        <th scope="col">Data do Envio</th>
+                        <th scope="col">Tipo de Prova</th>
+                        <th scope="col">Tipo da Avaliação</th>
+                        <th scope="col">Status</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <!-- Corpo da tabela -->
+                <tbody>
+                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
+                    {
+                        <tr>
+                            <td>@item.NomeArquivo</td>
+                            <td>@item.NumeroCopias</td>
+                            <td>@item.DataEnvio</td>
+                            <td>@item.TipoDeProva</td>
+                            <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.StatusDaProva</td>
+                            <td class="align-items-baseline">
+                                <!-- Botões de ação, se houver -->
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </div>
 
@@ -160,13 +165,15 @@
                 }
             });
 
-            // Manipule o evento de clique nas abas para alternar entre as tabelas
-            $('#myTabs a').on('click', function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-                var targetTableId = $(this).attr("data-target-table");
-                // Recarregue o DataTable na tabela ativa
-                $('#' + targetTableId).DataTable().ajax.reload();
+            // Adicione manipulação de eventos para alternar entre as abas
+            $('#myTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                // Recarregue o DataTable na aba ativa
+                var target = $(e.target).attr("href");
+                if (target === "#impressos") {
+                    $('#table-impressos').DataTable().ajax.reload();
+                } else {
+                    $('#table-provas').DataTable().ajax.reload();
+                }
             });
         });
     </script>
