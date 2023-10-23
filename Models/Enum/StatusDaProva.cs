@@ -4,6 +4,7 @@
     {
         Enviado = 0,
         Impresso = 1,
-        Deletado = 2
+        Deletado = 2,
+        Recebida = 3,
     }
 }

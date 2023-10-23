@@ -1,4 +1,4 @@
-﻿@using ProvaPortal.Models.Enum
+﻿@*@using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
 <h1 class="text-center display-4">Lista de Provas</h1>
@@ -150,11 +150,11 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <div id="conteudomodal"></div>
+                <div id="conteudomodal2"></div>
             </div>
         </div>
     </div>
@@ -165,9 +165,9 @@
         $(document).ready(function () {
             $(".btnDeletarAdmin").click(function () {
                 var id = $(this).data("value");
-                $("#conteudomodal").load("/Provas/DeletarProvaAdministrador/" + id,
+                $("#conteudomodal2").load("/Provas/DeletarProvaAdministrador/" + id,
                     function () {
-                        $('#exampleModal').modal("show");
+                        $('#exampleModal2').modal("show");
                     }
                 );
             });
@@ -331,3 +331,4 @@
         });
     </script>
 }
+*@

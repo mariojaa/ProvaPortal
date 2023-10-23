@@ -10,7 +10,7 @@ else
     <h3 class="display-7 text-center">Deseja excluir a prova? <b>@Model.NomeArquivo</b>?</h3>
 }
 
-<form method="post" asp-controller="Provas" asp-action="DeletarProva" asp-route-id="@Model.Id">
+<form method="post" asp-controller="Provas" asp-action="DeletarProvaAdministrador" asp-route-id="@Model.Id">
     <button type="submit" class="btn btn-danger btn-block">Confirmar</button>
-    <button class="btn btn-primary btn-block" asp-controller="Provas" asp-action="Index">Cancelar</button>
+    <a asp-controller="Provas" asp-action="VisualizarTodasProvas" class="btn btn-primary">Cancelar</a>
 </form>

@@ -36,11 +36,15 @@ body {
 .btnDeletar::before {
     content: url('/Content/recycle-bin.png')
 }
-
 .Adc-Contato::before {
     content: url('/Content/add-user.png');
 }
-
+.btnImprimir::before {
+    content: url('/Content/Imprimir.png')
+}
+.btnDeletarAdmin::before {
+    content: url('/Content/recycle-bin.png')
+}
 #ComboPerfil::before {
     width: 1110px;
     height: 40px;

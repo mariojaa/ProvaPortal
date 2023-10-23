@@ -1,4 +1,4 @@
-﻿@using ProvaPortal.Models.Enum
+﻿@*@using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
 <h1 class="text-center display-4">Lista de Provas</h1>
@@ -95,7 +95,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                @* <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a> *@
+                                @* <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
                             </td>
                         </tr>
                     }
@@ -103,8 +103,8 @@
             </table>
         }
     </div>
-</div>
-@section Scripts{
+</div>*@
+@*@section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
             // Inicialize o DataTable nas duas tabelas
@@ -176,4 +176,4 @@
             });
         });
     </script>
-}
+}*@

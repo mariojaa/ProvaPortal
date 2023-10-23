@@ -160,6 +160,58 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
+        public IActionResult DeletarProvaAdministrador(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _provaRepository.BuscarProvaPorId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return PartialView(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(PaginaSomenteAdmin))]
+        public IActionResult DeletarProvaAdministrador(int id)
+        {
+            try
+            {
+                var prova = _provaRepository.BuscarProvaPorId(id);
+
+                if (prova == null)
+                {
+                    TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+                }
+
+                if (prova.StatusDaProva == StatusDaProva.Deletado)
+                {
+                    _provaRepository.DeleteProva(id);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                if (prova.StatusDaProva == StatusDaProva.Enviado)
+                {
+                    prova.StatusDaProva = StatusDaProva.Deletado;
+                    _provaRepository.AtualizarProva(prova);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                if (prova.StatusDaProva == StatusDaProva.Impresso)
+                {
+                    prova.StatusDaProva = StatusDaProva.Deletado;
+                    _provaRepository.AtualizarProva(prova);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                return RedirectToAction("VisualizarTodasProvas");
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+                return View("Erro", "Provas");
+            }
+        }
         [HttpGet]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarTodasProvas()
