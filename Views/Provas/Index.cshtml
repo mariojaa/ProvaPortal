@@ -141,7 +141,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <!-- Você pode adicionar um botão ou link aqui para restaurar a prova se necessário -->
+                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
                             </td>
                         </tr>
                     }
@@ -317,5 +317,6 @@
                 $('#' + targetTableId).DataTable().ajax.reload();
             });
         });
+
     </script>
 }

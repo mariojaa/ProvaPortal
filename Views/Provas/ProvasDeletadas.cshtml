@@ -48,7 +48,7 @@
                 </thead>
                 <!-- Corpo da tabela -->
                 <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso))
+                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Deletado))
                     {
                         <tr>
                             <td>@item.NomeArquivo</td>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="tab-pane fade" id="impressos" role="tabpanel" aria-labelledby="impressos-tab">
-        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Impresso))
+        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Deletado))
         {
             <table id="table-impressos" class="table table-hover">
                 <!-- Cabeçalho da tabela -->
@@ -85,7 +85,7 @@
                 </thead>
                 <!-- Corpo da tabela -->
                 <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
+                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Deletado))
                     {
                         <tr>
                             <td>@item.NomeArquivo</td>
@@ -95,7 +95,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                @* <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a> *@
+                                 <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a> 
                             </td>
                         </tr>
                     }

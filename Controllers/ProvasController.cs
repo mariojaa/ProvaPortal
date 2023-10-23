@@ -108,7 +108,6 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
-
         public IActionResult DeletarProva(int? id)
         {
             if (id == null)
@@ -122,23 +121,6 @@ namespace ProvaPortal.Controllers
             }
             return PartialView(obj);
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult DeletarProva(int id)
-        //{
-        //    try
-        //    {
-        //        TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-        //        _provaRepository.DeleteProva(id);
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-        //        return View("Erro", "Provas");
-        //    }
-        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeletarProva(int id)
@@ -149,20 +131,34 @@ namespace ProvaPortal.Controllers
 
                 if (prova == null)
                 {
-                    return Json(new { success = false, error = "Prova não encontrada." });
+                    TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
                 }
 
-                prova.StatusDaProva = StatusDaProva.Deletado; // Marca a prova como "Deletada" no banco de dados
-                _provaRepository.AtualizarProva(prova);
-
-                return Json(new { success = true, message = "Prova marcada como deletada." });
+                if (prova.StatusDaProva == StatusDaProva.Deletado)
+                {
+                    _provaRepository.DeleteProva(id);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                if (prova.StatusDaProva == StatusDaProva.Enviado)
+                {
+                    prova.StatusDaProva = StatusDaProva.Deletado;
+                    _provaRepository.AtualizarProva(prova);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                if (prova.StatusDaProva == StatusDaProva.Impresso)
+                {
+                    prova.StatusDaProva = StatusDaProva.Deletado;
+                    _provaRepository.AtualizarProva(prova);
+                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                }
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, error = "Ocorreu um erro ao marcar a prova como deletada." });
+                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+                return View("Erro", "Provas");
             }
         }
-
         [HttpGet]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarTodasProvas()
