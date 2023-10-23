@@ -1,7 +1,7 @@
 ﻿@using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
-<h1 class="text-center display-4">Lista de Provas</h1>
+<h1 class="text-center display-4">Lista de Provas Administrador</h1>
 
 @if (TempData["MensagemSucesso"] != null)
 {
@@ -322,12 +322,14 @@
                     url: "/Provas/AtualizarStatusImpresso/" + id,
                     type: "POST",
                     success: function (data) {
-                        window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia
+                        window.location.reload(); // Atualiza a página atual
                     },
                     error: function (error) {
+                        // Trate os erros conforme necessário
                     }
                 });
             });
         });
+
     </script>
 }
