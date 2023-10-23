@@ -164,6 +164,33 @@
                 }
             });
 
+            $('#table-deletadas').DataTable({
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "pageLength": 10,
+                "info": false,
+                "lengthChange": false,
+                "dom": 'lrtip',
+                "oLanguage": {
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sSearch": "Pesquisa",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
             // Adicione manipulação de eventos para alternar entre as abas
             $('#myTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 // Recarregue o DataTable na aba ativa

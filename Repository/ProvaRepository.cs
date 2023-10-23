@@ -55,7 +55,7 @@ public class ProvaRepository : IProvaRepository
     public List<ProvaModel> ObterTodasProvasAdministradorComProfessores()
     {
         return _context.Provas
-            .Include(prova => prova.Professor) // Inclui os dados do professor associado à prova
+            .Include(prova => prova.Professor) //dados do professor associado à prova
             .ToList();
     }
 

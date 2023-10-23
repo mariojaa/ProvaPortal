@@ -111,12 +111,9 @@
                     url: "/Provas/AtualizarStatusImpresso/" + id,
                     type: "POST",
                     success: function (data) {
-                        // Lida com a resposta do servidor, se necessário
-                        // Agora, após atualizar o status, você pode abrir a prova para impressão
-                        window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
+                        window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia
                     },
                     error: function (error) {
-                        // Lida com erros, se necessário
                     }
                 });
             });

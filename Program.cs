@@ -28,6 +28,7 @@ namespace ProvaPortal
             builder.Services.AddScoped<ISessao, Sessao>();
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();
+            //builder.Services.AddSingleton<ILogRepository, LogRepository>();
             builder.Services.AddScoped<PaginaSomenteAdmin>();
             builder.Services.AddSession(o =>
             {
@@ -45,6 +46,7 @@ namespace ProvaPortal
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();

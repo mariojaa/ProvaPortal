@@ -123,20 +123,43 @@ namespace ProvaPortal.Controllers
             return PartialView(obj);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult DeletarProva(int id)
+        //{
+        //    try
+        //    {
+        //        TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+        //        _provaRepository.DeleteProva(id);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+        //        return View("Erro", "Provas");
+        //    }
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeletarProva(int id)
         {
             try
             {
-                TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-                _provaRepository.DeleteProva(id);
-                return RedirectToAction("Index");
+                var prova = _provaRepository.BuscarProvaPorId(id);
+
+                if (prova == null)
+                {
+                    return Json(new { success = false, error = "Prova não encontrada." });
+                }
+
+                prova.StatusDaProva = StatusDaProva.Deletado; // Marca a prova como "Deletada" no banco de dados
+                _provaRepository.AtualizarProva(prova);
+
+                return Json(new { success = true, message = "Prova marcada como deletada." });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "Provas");
+                return Json(new { success = false, error = "Ocorreu um erro ao marcar a prova como deletada." });
             }
         }
 
@@ -152,7 +175,7 @@ namespace ProvaPortal.Controllers
                     return RedirectToAction("Login", "Index");
                 }
 
-                // Aqui você deve incluir os dados do professor relacionado às provas
+                //dados do professor relacionado às provas
                 List<ProvaModel> todasAsProvas = _provaRepository.ObterTodasProvasAdministradorComProfessores();
 
                 return View(todasAsProvas);
@@ -194,16 +217,15 @@ namespace ProvaPortal.Controllers
                     return Json(new { success = false, error = "Prova não encontrada." });
                 }
 
-                prova.StatusDaProva = StatusDaProva.Impresso; // Define o status para "Impresso"
-                                                              // Atualize a prova no banco de dados
+                prova.StatusDaProva = StatusDaProva.Impresso; // Define status para "Impresso"
+                                                              // Atualiza prova no banco de dados
                 _provaRepository.AtualizarProva(prova);
 
-                // Agora, após atualizar o status, você pode retornar uma URL para a ação que exibe a prova
+                // visualiza prova
                 return Json(new { success = true, urlParaProva = Url.Action("VisualizarProva", "Provas", new { id = id }) });
             }
             catch (Exception ex)
             {
-                // Lida com erros, se necessário
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
