@@ -1,7 +1,15 @@
-﻿@model ProvaModel
+﻿@using ProvaPortal.Models.Enum;
+@model ProvaModel
 
-<h3 class="display-7 text-center">Deseja realmente excluir a prova? <b>@Model.NomeArquivo</b>?</h3>
-<br />
+@if (Model.StatusDaProva == StatusDaProva.Deletado)
+{
+    <h3 class="display-7 text-center">A prova será excluída definitivamente. Deseja excluir <b>@Model.NomeArquivo</b>?</h3>
+}
+else
+{
+    <h3 class="display-7 text-center">Deseja excluir a prova? <b>@Model.NomeArquivo</b>?</h3>
+}
+
 <form method="post" asp-controller="Provas" asp-action="DeletarProva" asp-route-id="@Model.Id">
     <button type="submit" class="btn btn-danger btn-block">Confirmar</button>
     <button class="btn btn-primary btn-block" asp-controller="Provas" asp-action="Index">Cancelar</button>

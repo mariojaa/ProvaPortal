@@ -51,8 +51,9 @@ namespace ProvaPortal.Controllers
                 {
                     return RedirectToAction("EnviarProva");
                 }
-
-                string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; // Renomeia o arquivo
+                Guid guid = Guid.NewGuid();
+                string nomeArquivo = guid.ToString();
+                //string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; // Renomeia o arquivo
                 string nomeProvaOriginal = $"{arquivo.FileName}";
                 string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
 
