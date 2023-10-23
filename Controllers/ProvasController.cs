@@ -183,7 +183,7 @@ namespace ProvaPortal.Controllers
             return File(arquivoPDF, "application/pdf");
         }
         [HttpPost]
-        public IActionResult AtualizarStatusImpresso(int id, string usuarioLogadoAdministrador)
+        public IActionResult AtualizarStatusImpresso(int id)
         {
             try
             {
@@ -191,21 +191,22 @@ namespace ProvaPortal.Controllers
 
                 if (prova == null)
                 {
-                    return NotFound();
+                    return Json(new { success = false, error = "Prova não encontrada." });
                 }
 
                 prova.StatusDaProva = StatusDaProva.Impresso; // Define o status para "Impresso"
-                prova.Professor = _professorRepository.BuscarPorLogin(usuarioLogadoAdministrador);
-                _provaRepository.AtualizarProva(prova); // Atualiza a prova no banco de dados
+                                                              // Atualize a prova no banco de dados
+                _provaRepository.AtualizarProva(prova);
 
                 // Agora, após atualizar o status, você pode retornar uma URL para a ação que exibe a prova
-                return Json(new { urlParaProva = Url.Action("VisualizarProva", "Provas", new { id = id }) });
+                return Json(new { success = true, urlParaProva = Url.Action("VisualizarProva", "Provas", new { id = id }) });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Lida com erros, se necessário
-                return Json(new { error = "Ocorreu um erro ao atualizar o status da prova." });
+                return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
+
     }
 }

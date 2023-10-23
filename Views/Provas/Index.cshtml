@@ -132,6 +132,29 @@
 
         });
         $(document).ready(function () {
+            $(".btnAtualizarStatus").click(function () {
+                var id = $(this).data("value");
+                $.ajax({
+                    url: "/Provas/AtualizarStatusImpresso/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.success) {
+                            // Atualização bem-sucedida
+                            // Agora você pode realizar a ação de impressão
+                            window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
+                        } else {
+                            // Lida com erros, se necessário
+                            console.log(data.error);
+                        }
+                    },
+                    error: function (error) {
+                        // Lida com erros, se necessário
+                        console.log(error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
             // Inicialize o DataTable nas duas tabelas
             $('#table-provas').DataTable({
                 "ordering": true,
