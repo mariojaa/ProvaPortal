@@ -4,6 +4,7 @@ using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
+using ProvaPortal.SessaoUsuario;
 
 namespace ProvaPortal.Controllers
 {
@@ -12,19 +13,19 @@ namespace ProvaPortal.Controllers
     {
         private readonly IProvaRepository _provaRepository;
         private readonly ISessao _sessao;
+        private readonly IEmail _email;
         private readonly IProfessorRepository _professorRepository;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly ProvaPortalContext _context;
 
-        public ProvasController(IProvaRepository provaRepository, ISessao sessao,
-            IProfessorRepository professorRepository, IWebHostEnvironment hostingEnvironment,
-            ProvaPortalContext context)
+        public ProvasController(
+            IProvaRepository provaRepository,
+            ISessao sessao,
+            IEmail email,
+            IProfessorRepository professorRepository)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
+            _email = email;
             _professorRepository = professorRepository;
-            _hostingEnvironment = hostingEnvironment;
-            _context = context;
         }
 
         [HttpGet]
@@ -35,8 +36,9 @@ namespace ProvaPortal.Controllers
         }
 
         [HttpPost]
+        //[LogActionFilter]
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao, 
-            TipoDeProva tipoDeProva)
+            TipoDeProva tipoDeProva, ProfessorModel enviarEmailDeProva)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -81,9 +83,32 @@ namespace ProvaPortal.Controllers
                     TipoDaAvaliacao = tipoDaAvaliacao,
                     TipoDeProva = tipoDeProva
                 };
+                if (!ModelState.IsValid)
+                {
+                    var enviarEmailProfessorLogado = _sessao.BuscarSessaoDoUsuarioParaEnviarEmail(professorLogado.Email);
+                    if (enviarEmailProfessorLogado != null)
+                    {
 
-                _provaRepository.AdicionarProva(prova);
-                return RedirectToAction("EnviarProva");
+                        string mensagem = $"Prova enviada com sucesso!";
+                        bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
+
+                        if (emailEnviado)
+                        {
+                            TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
+                            _provaRepository.AdicionarProva(prova);
+                        }
+                        else
+                        {
+                            TempData["MensagemErro"] = "Ops, Não conseguimos enviar o email. Verifique o email informado.";
+                        }
+
+                        return RedirectToAction("Index", "Provas");
+                    }
+                    
+                    return RedirectToAction("Index");
+                }
+                return RedirectToAction("Index", "Provas");
+                
             }
 
             return RedirectToAction("EnviarProva");
@@ -124,6 +149,7 @@ namespace ProvaPortal.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[LogActionFilter]
         public IActionResult DeletarProva(int id)
         {
             try
@@ -176,6 +202,7 @@ namespace ProvaPortal.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
+        //[LogActionFilter]
         public IActionResult DeletarProvaAdministrador(int id)
         {
             try
@@ -255,6 +282,7 @@ namespace ProvaPortal.Controllers
             return File(arquivoPDF, "application/pdf");
         }
         [HttpPost]
+        //[LogActionFilter]
         public IActionResult AtualizarStatusImpresso(int id)
         {
             try
@@ -277,7 +305,6 @@ namespace ProvaPortal.Controllers
             {
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
-        }
-
+        }      
     }
 }

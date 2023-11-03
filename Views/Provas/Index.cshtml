@@ -3,15 +3,17 @@
 
 <h1 class="text-center display-4">Lista de Provas</h1>
 
+
 @if (TempData["MensagemSucesso"] != null)
 {
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success mensagem-temporaria" role="alert">
         @TempData["MensagemSucesso"]
     </div>
 }
+
 @if (TempData["MensagemErro"] != null)
 {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger mensagem-temporaria" role="alert">
         @TempData["MensagemErro"]
     </div>
 }
@@ -306,7 +308,7 @@
                     }
                 }
             });
-
+            $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporaria de 2 segundso
             // Manipule o evento de clique nas abas para alternar entre as tabelas
             $('#myTabs a').on('click', function (e) {
                 e.preventDefault();

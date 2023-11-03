@@ -4,6 +4,7 @@ using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
+using ProvaPortal.SessaoUsuario;
 
 namespace ProvaPortal
 {
@@ -28,8 +29,9 @@ namespace ProvaPortal
             builder.Services.AddScoped<ISessao, Sessao>();
             builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
             builder.Services.AddScoped<ProfessorRepository>();
-            //builder.Services.AddSingleton<ILogRepository, LogRepository>();
             builder.Services.AddScoped<PaginaSomenteAdmin>();
+            builder.Services.AddScoped<IEmail, Email>();
+
             builder.Services.AddSession(o =>
             {
                 o.Cookie.HttpOnly = true;

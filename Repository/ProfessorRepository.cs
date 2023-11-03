@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Repository.Interface;
-using System.Collections.Generic;
-using System.Linq;
 using ProvaPortal.Data;
 using ProvaPortal.Models;
 
@@ -63,5 +61,9 @@ public class ProfessorRepository : IProfessorRepository
         _context.Professores.Update(professorPorId);
         _context.SaveChanges();
         return professorPorId;
+    }
+    public ProfessorModel BuscarPorEmailELogin(string email)
+    {
+        return _context.Professores.FirstOrDefault(x => x.Email.ToUpper() == email.ToUpper());
     }
 }

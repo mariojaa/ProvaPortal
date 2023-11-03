@@ -1,8 +1,18 @@
 ﻿@using ProvaPortal.Models.Enum;
 @model ProvaModel
 
-@{
-    ViewData["Title"] = "Enviar Prova";
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success mensagem-temporaria" role="alert">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger mensagem-temporaria" role="alert">
+        @TempData["MensagemErro"]
+    </div>
 }
 
 <h2>Enviar Prova</h2>
@@ -56,5 +66,6 @@
             habilitarCampos();
         });
     });
+    $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporaria de 2 segundso
 
 </script>

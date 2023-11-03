@@ -13,7 +13,6 @@ namespace ProvaPortal.Controllers
             _professorRepository = professorRepository;
             _sessao = sessao;
         }
-
         public IActionResult Index()
         {
             // quando logado redirecionar para lista contatos
@@ -24,7 +23,7 @@ namespace ProvaPortal.Controllers
 
             return View();
         }
-
+        //[LogActionFilter]
         public IActionResult Sair()
         {
             _sessao.RemoverSessaoUsuario();
@@ -38,6 +37,7 @@ namespace ProvaPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[LogActionFilter]
         public IActionResult Entrar(LoginModel loginmodel)
         {
             try

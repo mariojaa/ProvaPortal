@@ -10,5 +10,6 @@ namespace ProvaPortal.Repository.Interface
         void UpdateProfessor(ProfessorModel professor);
         void DeleteProfessor(int id);
         ProfessorModel BuscarPorLogin(string login);
+        ProfessorModel BuscarPorEmailELogin(string email);
     }
 }

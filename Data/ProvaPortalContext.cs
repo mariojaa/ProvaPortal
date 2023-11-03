@@ -15,6 +15,7 @@ namespace ProvaPortal.Data
         public DbSet<CursoModel> Cursos { get; set; }
         public DbSet<PeriodoModel> Periodos { get; set; }
         public DbSet<DisciplinaModel> Disciplinas { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

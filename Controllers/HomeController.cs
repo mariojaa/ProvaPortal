@@ -7,6 +7,7 @@ using System.Diagnostics;
 namespace ProvaPortal.Controllers
 {
     [PaginaUsuarioLogado]
+    //[LogAction]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

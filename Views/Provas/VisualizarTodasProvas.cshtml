@@ -3,15 +3,22 @@
 
 <h1 class="text-center display-4">Lista de Provas Administrador</h1>
 
+@{
+    ViewData["Title"] = "Lista de Provas";
+}
+
+<h2>Lista de Produtos</h2>
+
 @if (TempData["MensagemSucesso"] != null)
 {
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success mensagem-temporaria" role="alert">
         @TempData["MensagemSucesso"]
     </div>
 }
+
 @if (TempData["MensagemErro"] != null)
 {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger mensagem-temporaria" role="alert">
         @TempData["MensagemErro"]
     </div>
 }
@@ -172,7 +179,7 @@
                 );
             });
         });
-
+        $(".mensagem-temporaria").delay(2000).fadeOut("slow"); //alerta 2 segundos (2000)
         $(document).ready(function () {
             $(".btnAtualizarStatus").click(function () {
                 var id = $(this).data("value");

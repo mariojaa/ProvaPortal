@@ -46,5 +46,11 @@ namespace ProvaPortal.Repository
             }
             return null;
         }
+        public string BuscarSessaoDoUsuarioParaEnviarEmail(string email)
+        {
+            ProfessorModel professorModel = BuscarSessaoUsuario();
+            professorModel.Email = email;
+            return email;
+        }
     }
 }
