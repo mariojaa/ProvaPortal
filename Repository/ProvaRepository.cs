@@ -31,6 +31,10 @@ public class ProvaRepository : IProvaRepository
     {
         return _context.Provas.FirstOrDefault(x => x.Id == id);
     }
+    //public ProvaModel BuscarProvaPorIdEEmail(int id)
+    //{
+    //    return _context.Provas.FirstOrDefault(x => x.Id == id);
+    //}
 
     public void DeleteProfessor(int id)
     {

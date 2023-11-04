@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Mvc;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
 using ProvaPortal.SessaoUsuario;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
 
 namespace ProvaPortal.Controllers
 {
@@ -14,18 +18,15 @@ namespace ProvaPortal.Controllers
         private readonly IProvaRepository _provaRepository;
         private readonly ISessao _sessao;
         private readonly IEmail _email;
-        private readonly IProfessorRepository _professorRepository;
 
         public ProvasController(
             IProvaRepository provaRepository,
             ISessao sessao,
-            IEmail email,
-            IProfessorRepository professorRepository)
+            IEmail email)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
             _email = email;
-            _professorRepository = professorRepository;
         }
 
         [HttpGet]
@@ -37,8 +38,8 @@ namespace ProvaPortal.Controllers
 
         [HttpPost]
         //[LogActionFilter]
-        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao, 
-            TipoDeProva tipoDeProva, ProfessorModel enviarEmailDeProva)
+        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
+            TipoDeProva tipoDeProva)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -83,13 +84,13 @@ namespace ProvaPortal.Controllers
                     TipoDaAvaliacao = tipoDaAvaliacao,
                     TipoDeProva = tipoDeProva
                 };
-                if (!ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var enviarEmailProfessorLogado = _sessao.BuscarSessaoDoUsuarioParaEnviarEmail(professorLogado.Email);
                     if (enviarEmailProfessorLogado != null)
                     {
 
-                        string mensagem = $"Prova enviada com sucesso!";
+                        string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
                         bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
 
                         if (emailEnviado)
@@ -104,11 +105,11 @@ namespace ProvaPortal.Controllers
 
                         return RedirectToAction("Index", "Provas");
                     }
-                    
+
                     return RedirectToAction("Index");
                 }
                 return RedirectToAction("Index", "Provas");
-                
+
             }
 
             return RedirectToAction("EnviarProva");
@@ -145,6 +146,7 @@ namespace ProvaPortal.Controllers
             {
                 return NotFound();
             }
+
             return PartialView(obj);
         }
         [HttpPost]
@@ -163,12 +165,41 @@ namespace ProvaPortal.Controllers
 
                 if (prova.StatusDaProva == StatusDaProva.Deletado)
                 {
-                    _provaRepository.DeleteProva(id);
-                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+                    if (ModelState.IsValid)
+                    {
+                        var professorLogado = _sessao.BuscarSessaoUsuario();
+                        if (professorLogado == null)
+                        {
+                            return RedirectToAction("Login", "Index");
+                        }
+                        var enviarEmailProfessorLogado = _sessao.BuscarSessaoDoUsuarioParaEnviarEmail(professorLogado.Email);
+                        if (enviarEmailProfessorLogado != null)
+                        {
+                            var link = "http://portal.ugb.edu.br/User/ForgotPassword?Length=4";
+                            string mensagem = $"Docente {professorLogado.UsuarioLogin}, você acaba de deletar a prova {prova.NomeArquivo} de nosso sistema! Caso não foi você redefina sua senha através do link {link}";
+                            bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "você acabou de deletar uma prova!", mensagem);
+
+                            if (emailEnviado)
+                            {
+                                TempData["MensagemSucesso"] = "você acabou de deletar uma prova! Foi enviado um e-mail";
+                                _provaRepository.DeleteProva(id);
+                            }
+                            else
+                            {
+                                TempData["MensagemErro"] = "Ops, Não conseguimos enviar o email. Verifique o email informado.";
+                            }
+
+                            return RedirectToAction("Index", "Provas");
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+                    return RedirectToAction("Index");
                 }
                 if (prova.StatusDaProva == StatusDaProva.Enviado)
                 {
                     prova.StatusDaProva = StatusDaProva.Deletado;
+
                     _provaRepository.AtualizarProva(prova);
                     TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
                 }
@@ -262,7 +293,7 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
-
+        [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarProva(int id)
         {
             var prova = _provaRepository.BuscarProvaPorId(id);
@@ -279,32 +310,91 @@ namespace ProvaPortal.Controllers
                 return NotFound();
             }
 
-            return File(arquivoPDF, "application/pdf");
+            // Salve o PDF em um arquivo temporário.
+            string tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".pdf");
+            System.IO.File.WriteAllBytes(tempFilePath, arquivoPDF);
+
+            try
+            {
+                // Use o aplicativo Microsoft Edge para abrir o PDF.
+                Process.Start("microsoft-edge:" + tempFilePath);
+            }
+            catch (Exception ex)
+            {
+                // Lide com exceções, se necessário.
+                // Por exemplo, você pode registrar o erro ou fornecer uma resposta apropriada ao usuário.
+            }
+
+            return new EmptyResult();
         }
+        //public IActionResult VisualizarProva(int id)
+        //{
+        //    var prova = _provaRepository.BuscarProvaPorId(id);
+
+        //    if (prova == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    byte[] arquivoPDF = prova.Conteudo;
+
+        //    if (arquivoPDF == null || arquivoPDF.Length == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return File(arquivoPDF, "application/pdf");
+        //}
+
         [HttpPost]
-        //[LogActionFilter]
+        [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult AtualizarStatusImpresso(int id)
         {
             try
             {
                 var prova = _provaRepository.BuscarProvaPorId(id);
-
-                if (prova == null)
+                var emailProfessorProva = _provaRepository.ObterTodasProvasAdministradorComProfessores();
+                var buscarEmailProfessorProvaImpressa = prova.Professor.Email;
+                var administradorLogado = _sessao.BuscarSessaoUsuario();
+                if (prova != null)
                 {
-                    return Json(new { success = false, error = "Prova não encontrada." });
+                    string emailProfessor = prova.Professor.Email;
+
+                    prova.StatusDaProva = StatusDaProva.Impresso;
+
+                    if (ModelState.IsValid)
+                    {
+
+                        if (buscarEmailProfessorProvaImpressa != null)
+                        {
+                            string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias} cópias, pelo Administrador: {administradorLogado.UsuarioLogin}.";
+                            bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Impressa!", mensagem);
+
+                            if (emailEnviado)
+                            {
+                                TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias}!";
+                                _provaRepository.AtualizarProva(prova);
+                            }
+                            else
+                            {
+                                TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
+                            }
+
+                            return RedirectToAction("Index", "Provas");
+                        }
+                    }
+                }
+                else
+                {
+                    TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
                 }
 
-                prova.StatusDaProva = StatusDaProva.Impresso; // Define status para "Impresso"
-                                                              // Atualiza prova no banco de dados
-                _provaRepository.AtualizarProva(prova);
-
-                // visualiza prova
-                return Json(new { success = true, urlParaProva = Url.Action("VisualizarProva", "Provas", new { id = id }) });
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
-        }      
+        }
     }
 }
