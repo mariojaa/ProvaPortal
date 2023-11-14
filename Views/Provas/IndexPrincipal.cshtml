@@ -1,13 +1,8 @@
 ﻿@using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
-<h1 class="text-center display-4">Lista de Provas Administrador</h1>
+<h1 class="text-center display-4">Lista de Provas</h1>
 
-@{
-    ViewData["Title"] = "Lista de Provas";
-}
-
-<h2>Lista de Produtos</h2>
 
 @if (TempData["MensagemSucesso"] != null)
 {
@@ -26,6 +21,8 @@
 <div class="container mt-3">
     <input class="form-control" id="buscador" type="search" placeholder="Buscar..." aria-controls="table-provas">
 </div>
+
+<a title="Enviar Prova" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="EnviarProva"></a>
 
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -69,8 +66,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>
-                                <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnImprimir" data-value="@item.Id" title="Imprimir"></a>
+                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
                             </td>
                         </tr>
                     }
@@ -108,7 +104,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>
+                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
                             </td>
                         </tr>
                     }
@@ -146,7 +142,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
+                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
                             </td>
                         </tr>
                     }
@@ -170,21 +166,21 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".btnDeletarAdmin").click(function () {
+            $(".btnDeletar").click(function () {
                 var id = $(this).data("value");
-                $("#conteudomodal").load("/Provas/DeletarProvaAdministrador/" + id,
+                $("#conteudomodal").load("/Provas/DeletarProva/" + id,
                     function () {
                         $('#exampleModal').modal("show");
                     }
                 );
             });
         });
-        $(".mensagem-temporaria").delay(2000).fadeOut("slow"); //alerta 2 segundos (2000)
+
         $(document).ready(function () {
             $(".btnAtualizarStatus").click(function () {
                 var id = $(this).data("value");
                 $.ajax({
-                    url: "/Provas/ImprimirProva/" + id,
+                    url: "/Provas/AtualizarStatusImpresso/" + id,
                     type: "POST",
                     success: function (data) {
                         if (data.success) {
@@ -207,7 +203,7 @@
             $(".btnAtualizarStatus").click(function () {
                 var id = $(this).data("value");
                 $.ajax({
-                    url: "/Provas/DeletarProvaAdministrador/" + id,
+                    url: "/Provas/DeletarProva/" + id,
                     type: "POST",
                     success: function (data) {
                         if (data.success) {
@@ -227,9 +223,10 @@
             });
         });
 
+        // Dentro do seu arquivo JavaScript
         $(document).ready(function () {
             // Inicialize o DataTable nas três tabelas
-            $('#table-provas').DataTable({
+            var tableProvas = $('#table-provas').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -257,7 +254,7 @@
                 }
             });
 
-            $('#table-impressos').DataTable({
+            var tableImpressos = $('#table-impressos').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -285,7 +282,7 @@
                 }
             });
 
-            $('#table-deletadas').DataTable({
+            var tableDeletadas = $('#table-deletadas').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -313,6 +310,7 @@
                 }
             });
 
+            $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporaria de 2 segundso
             // Manipule o evento de clique nas abas para alternar entre as tabelas
             $('#myTabs a').on('click', function (e) {
                 e.preventDefault();
@@ -320,21 +318,6 @@
                 var targetTableId = $(this).attr("data-target-table");
                 // Recarregue o DataTable na tabela ativa
                 $('#' + targetTableId).DataTable().ajax.reload();
-            });
-        });
-        $(document).ready(function () {
-            $(".btnImprimir").click(function () {
-                var id = $(this).data("value");
-                $.ajax({
-                    url: "/Provas/AtualizarStatusImpresso/" + id,
-                    type: "POST",
-                    success: function (data) {
-                        window.location.reload(); // Atualiza a página atual
-                    },
-                    error: function (error) {
-                        // Trate os erros conforme necessário
-                    }
-                });
             });
         });
 

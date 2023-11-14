@@ -93,7 +93,7 @@ namespace ProvaPortal.Controllers
                         string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
                         bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
 
-                        if (emailEnviado)
+                        if (emailEnviado != null)
                         {
                             TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
                             _provaRepository.AdicionarProva(prova);
@@ -310,41 +310,8 @@ namespace ProvaPortal.Controllers
                 return NotFound();
             }
 
-            // Salve o PDF em um arquivo temporário.
-            string tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".pdf");
-            System.IO.File.WriteAllBytes(tempFilePath, arquivoPDF);
-
-            try
-            {
-                // Use o aplicativo Microsoft Edge para abrir o PDF.
-                Process.Start("microsoft-edge:" + tempFilePath);
-            }
-            catch (Exception ex)
-            {
-                // Lide com exceções, se necessário.
-                // Por exemplo, você pode registrar o erro ou fornecer uma resposta apropriada ao usuário.
-            }
-
-            return new EmptyResult();
+            return File(arquivoPDF, "application/pdf");
         }
-        //public IActionResult VisualizarProva(int id)
-        //{
-        //    var prova = _provaRepository.BuscarProvaPorId(id);
-
-        //    if (prova == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    byte[] arquivoPDF = prova.Conteudo;
-
-        //    if (arquivoPDF == null || arquivoPDF.Length == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return File(arquivoPDF, "application/pdf");
-        //}
 
         [HttpPost]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]

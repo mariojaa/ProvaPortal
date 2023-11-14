@@ -3,12 +3,14 @@
     Layout = "_layoutDeslogado";
     ViewData["Title"] = "Login";
 }
+
 @if (TempData["MensagemSucesso"] != null)
 {
     <div class="alert alert-success" role="alert">
         @TempData["MensagemSucesso"]
     </div>
 }
+
 @if (TempData["MensagemErro"] != null)
 {
     <div class="alert alert-danger" role="alert">
@@ -16,8 +18,13 @@
     </div>
 }
 
-
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+
+<div id="loadingOverlay" class="overlay">
+    <div class="loader"></div>
+    <div class="loading-text">Carregando...</div>
+</div>
+
 <div id="login" class="container">
     <div class="row-fluid">
         <div class="span12">
@@ -46,32 +53,28 @@
         </div><!--/.span12-->
     </div><!--/.row-fluid-->
 </div><!--/.container-->
-@section Scripts{
-    <script type="text/javascript">
 
+<script src="caminho-para-seu-arquivo.css"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var loadingOverlay = document.getElementById("loadingOverlay");
+        var UserLoginForm = document.getElementById("UserLoginForm");
 
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (() => {
-            'use strict'
+        function mostrarLoading() {
+            loadingOverlay.style.display = "block";
+        }
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
+        function ocultarLoading() {
+            loadingOverlay.style.display = "none";
+        }
 
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('keyup', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
+        UserLoginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            mostrarLoading();
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-
-
-
-    </script>
-}
-
+            setTimeout(function () {
+                UserLoginForm.submit();
+            }, 1000);
+        });
+    });
+</script>

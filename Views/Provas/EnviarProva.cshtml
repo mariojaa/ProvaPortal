@@ -19,6 +19,11 @@
 
 <p>Último Acesso: @DateTime.Now</p>
 
+<div id="loadingOverlay" class="overlay">
+    <div class="loader"></div>
+    <div class="loading-text">Enviando Prova...</div>
+</div>
+
 <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
     <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" required />
     <input type="number" id="numeroCopias" name="numeroCopias" placeholder="Quantidade de Cópias" required />
@@ -33,39 +38,61 @@
 {
     <p>Arquivo Enviado: @Model.NomeArquivo</p>
     <p>Data de Envio: @Model.DataEnvio</p>
-
 }
+
 <a title="Lista de Provas" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="Index"></a>
 
+<script src="caminho-para-seu-arquivo.css"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var inputArquivo = document.getElementById("inputArquivo");
         var numeroCopias = document.getElementById("numeroCopias");
         var btnEnviar = document.getElementById("btnEnviar");
         var btnReset = document.getElementById("btnReset");
+        var loadingOverlay = document.getElementById("loadingOverlay");
+        var enviarArquivoForm = document.getElementById("enviarArquivoForm");
+            // Função para desabilitar os campos e botão
+            function desabilitarCampos() {
+                inputArquivo.disabled = true;
+                numeroCopias.disabled = true;
+                btnEnviar.disabled = true;
+            }
 
-        // Função para desabilitar os campos e botão
-        function desabilitarCampos() {
-            inputArquivo.disabled = true;
-            numeroCopias.disabled = true;
-            btnEnviar.disabled = true;
-        }
+            // Função para habilitar os campos e botão
+            function habilitarCampos() {
+                inputArquivo.disabled = false;
+                numeroCopias.disabled = false;
+                btnEnviar.disabled = false;
+            }
 
-        // Função para habilitar os campos e botão
-        function habilitarCampos() {
-            inputArquivo.disabled = false;
-            numeroCopias.disabled = false;
-            btnEnviar.disabled = false;
-        }
+            // Inicialmente, desabilitar os campos e o botão
+            desabilitarCampos();
 
-        // Inicialmente, desabilitar os campos e o botão
-        desabilitarCampos();
-
-        // Quando o botão "reset" for clicado, habilitar os campos e o botão
-        btnReset.addEventListener("click", function () {
-            habilitarCampos();
-        });
+            // Quando o botão "reset" for clicado, habilitar os campos e o botão
+            btnReset.addEventListener("click", function () {
+                habilitarCampos();
+            });
     });
-    $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporaria de 2 segundso
+    function mostrarLoading() {
+        loadingOverlay.style.display = "block";
+    }
+
+    function ocultarLoading() {
+        loadingOverlay.style.display = "none";
+    }
+
+    btnReset.addEventListener("click", function () {
+        ocultarLoading();
+    });
+
+    enviarArquivoForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        mostrarLoading();
+
+        setTimeout(function () {
+            enviarArquivoForm.submit();
+        }, 100);
+    });
+    $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporária de 2 segundos
 
 </script>

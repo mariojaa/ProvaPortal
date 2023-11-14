@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Provas\MostrarDados.cshtml" />
+    <Content Remove="Views\Provas\ProvasDeletadas.cshtml" />
+    <Content Remove="Views\Provas\ProvasDeletadasAdministrador.cshtml" />
+    <Content Remove="Views\Provas\ProvasImpressos.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ArquivosProva\Teste.pdf46f83378-ac34-4f76-9925-c2d7795ea6ba_16.pdf" />
   </ItemGroup>
 
