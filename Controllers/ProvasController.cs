@@ -179,7 +179,7 @@ namespace ProvaPortal.Controllers
                             string mensagem = $"Docente {professorLogado.UsuarioLogin}, você acaba de deletar a prova {prova.NomeArquivo} de nosso sistema! Caso não foi você redefina sua senha através do link {link}";
                             bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "você acabou de deletar uma prova!", mensagem);
 
-                            if (emailEnviado)
+                            if (emailEnviado != null)
                             {
                                 TempData["MensagemSucesso"] = "você acabou de deletar uma prova! Foi enviado um e-mail";
                                 _provaRepository.DeleteProva(id);

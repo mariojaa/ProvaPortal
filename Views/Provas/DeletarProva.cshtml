@@ -1,16 +1,46 @@
 ﻿@using ProvaPortal.Models.Enum;
 @model ProvaModel
 
-@if (Model.StatusDaProva == StatusDaProva.Deletado)
-{
-    <h3 class="display-7 text-center">A prova será excluída definitivamente. Deseja excluir <b>@Model.NomeArquivo</b>?</h3>
-}
-else
-{
-    <h3 class="display-7 text-center">Deseja excluir a prova? <b>@Model.NomeArquivo</b>?</h3>
-}
+<h3 class="display-7 text-center">
+    @if (Model.StatusDaProva == StatusDaProva.Deletado)
+    {
+        <span>A prova será excluída definitivamente. Deseja excluir <b>@Model.NomeArquivo</b>?</span>
+    }
+    else
+    {
+        <span>Deseja excluir a prova? <b>@Model.NomeArquivo</b>?</span>
+    }
+</h3>
 
-<form method="post" asp-controller="Provas" asp-action="DeletarProva" asp-route-id="@Model.Id">
-    <button type="submit" class="btn btn-danger btn-block">Confirmar</button>
-    <button class="btn btn-primary btn-block" asp-controller="Provas" asp-action="Index">Cancelar</button>
+<form id="enviarArquivoForm" method="post" asp-controller="Provas" asp-action="DeletarProva" asp-route-id="@Model.Id">
+    <button id="btnEnviar" type="submit" class="btn btn-danger btn-block">Confirmar</button>
+    <a id="btnCancelar" class="btn btn-primary btn-block" asp-controller="Provas" asp-action="Index">Cancelar</a>
 </form>
+<div id="loadingOverlay" class="overlay">
+    <div class="loader"></div>
+    <div class="loading-text">Deletando Prova...</div>
+</div>
+<script>
+    function mostrarLoading() {
+        loadingOverlay.style.display = "block";
+    }
+
+    function ocultarLoading() {
+        loadingOverlay.style.display = "none";
+    }
+
+    // Adicionando evento ao formulário para mostrar o overlay de carregamento ao enviar
+    enviarArquivoForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        mostrarLoading();
+
+        setTimeout(function () {
+            enviarArquivoForm.submit();
+        }, 100);
+    });
+
+    // Ocultar o overlay de carregamento ao resetar o formulário
+    btnReset.addEventListener("click", function () {
+        ocultarLoading();
+    });
+</script>

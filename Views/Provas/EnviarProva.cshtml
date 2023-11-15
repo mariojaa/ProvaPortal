@@ -15,32 +15,51 @@
     </div>
 }
 
-<h2>Enviar Prova</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Enviar Prova</h2>
 
-<p>Último Acesso: @DateTime.Now</p>
+    <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="inputArquivo">Escolha um arquivo (PDF):</label>
+            <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="numeroCopias">Quantidade de Cópias:</label>
+            <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
+            <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="TipoDeProva">Tipo de Prova:</label>
+            <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="obsProva">Observação:</label>
+            <input type="text" id="obsProva" name="obsProva" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
+            <button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>
+        </div>
+    </form>
+
+    @if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
+    {
+        <div class="alert alert-info mt-4" role="alert">
+            <p>Arquivo Enviado: @Model.NomeArquivo</p>
+            <p>Data de Envio: @Model.DataEnvio</p>
+        </div>
+    }
+
+    <a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>
+</div>
 
 <div id="loadingOverlay" class="overlay">
     <div class="loader"></div>
     <div class="loading-text">Enviando Prova...</div>
 </div>
-
-<form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
-    <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" required />
-    <input type="number" id="numeroCopias" name="numeroCopias" placeholder="Quantidade de Cópias" required />
-    <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" class="form-control mb-3"></select>
-    <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" class="form-control mb-3"></select>
-    <input type="text" id="obsProva" name="obsProva" placeholder="Observação" required />
-    <input type="submit" value="Enviar Arquivo" id="btnEnviar" />
-    <input type="reset" value="Resetar Formulário" id="btnReset" />
-</form>
-
-@if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
-{
-    <p>Arquivo Enviado: @Model.NomeArquivo</p>
-    <p>Data de Envio: @Model.DataEnvio</p>
-}
-
-<a title="Lista de Provas" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="Index"></a>
 
 <script src="caminho-para-seu-arquivo.css"></script>
 <script>
@@ -51,48 +70,53 @@
         var btnReset = document.getElementById("btnReset");
         var loadingOverlay = document.getElementById("loadingOverlay");
         var enviarArquivoForm = document.getElementById("enviarArquivoForm");
-            // Função para desabilitar os campos e botão
-            function desabilitarCampos() {
-                inputArquivo.disabled = true;
-                numeroCopias.disabled = true;
-                btnEnviar.disabled = true;
-            }
 
-            // Função para habilitar os campos e botão
-            function habilitarCampos() {
-                inputArquivo.disabled = false;
-                numeroCopias.disabled = false;
-                btnEnviar.disabled = false;
-            }
+        // Função para desabilitar os campos e botão
+        function desabilitarCampos() {
+            inputArquivo.disabled = true;
+            numeroCopias.disabled = true;
+            btnEnviar.disabled = true;
+        }
 
-            // Inicialmente, desabilitar os campos e o botão
-            desabilitarCampos();
+        // Função para habilitar os campos e botão
+        function habilitarCampos() {
+            inputArquivo.disabled = false;
+            numeroCopias.disabled = false;
+            btnEnviar.disabled = false;
+        }
 
-            // Quando o botão "reset" for clicado, habilitar os campos e o botão
-            btnReset.addEventListener("click", function () {
-                habilitarCampos();
-            });
+        // Inicialmente, desabilitar os campos e o botão
+        desabilitarCampos();
+
+        // Quando o botão "reset" for clicado, habilitar os campos e o botão
+        btnReset.addEventListener("click", function () {
+            habilitarCampos();
+        });
+
+        function mostrarLoading() {
+            loadingOverlay.style.display = "block";
+        }
+
+        function ocultarLoading() {
+            loadingOverlay.style.display = "none";
+        }
+
+        // Adicionando evento ao formulário para mostrar o overlay de carregamento ao enviar
+        enviarArquivoForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            mostrarLoading();
+
+            setTimeout(function () {
+                enviarArquivoForm.submit();
+            }, 100);
+        });
+
+        // Ocultar o overlay de carregamento ao resetar o formulário
+        btnReset.addEventListener("click", function () {
+            ocultarLoading();
+        });
+
+        // Ocultar mensagem temporária após 2 segundos
+        $(".mensagem-temporaria").delay(2000).fadeOut("slow");
     });
-    function mostrarLoading() {
-        loadingOverlay.style.display = "block";
-    }
-
-    function ocultarLoading() {
-        loadingOverlay.style.display = "none";
-    }
-
-    btnReset.addEventListener("click", function () {
-        ocultarLoading();
-    });
-
-    enviarArquivoForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        mostrarLoading();
-
-        setTimeout(function () {
-            enviarArquivoForm.submit();
-        }, 100);
-    });
-    $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporária de 2 segundos
-
 </script>

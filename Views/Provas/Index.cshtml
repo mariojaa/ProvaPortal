@@ -33,121 +33,102 @@
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="provas" role="tabpanel" aria-labelledby="provas-tab">
-        <!-- Conteúdo da aba Provas Enviadas -->
-        @if (Model != null && Model.Count > 0)
-        {
-            <table id="table-provas" class="table table-hover">
-                <!-- Cabeçalho da tabela -->
-                <thead class="table-light">
+        <table id="table-provas" class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Cópias</th>
+                    <th scope="col">Data do Envio</th>
+                    <th scope="col">Tipo de Prova</th>
+                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Deletado))
+                {
                     <tr>
-                        <th scope="col">Nome Arquivo</th>
-                        <th scope="col">Cópias</th>
-                        <th scope="col">Data do Envio</th>
-                        <th scope="col">Tipo de Prova</th>
-                        <th scope="col">Tipo da Avaliação</th>
-                        <th scope="col">Status</th>
-                        <th></th>
+                        <td>@item.NomeArquivo</td>
+                        <td>@item.NumeroCopias</td>
+                        <td>@item.DataEnvio</td>
+                        <td>@item.TipoDeProva</td>
+                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.StatusDaProva</td>
+                        <td class="align-items-baseline">
+                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
+                        </td>
                     </tr>
-                </thead>
-                <!-- Corpo da tabela -->
-                <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Deletado))
-                    {
-                        <tr>
-                            <td>@item.NomeArquivo</td>
-                            <td>@item.NumeroCopias</td>
-                            <td>@item.DataEnvio</td>
-                            <td>@item.TipoDeProva</td>
-                            <td>@item.TipoDaAvaliacao</td>
-                            <td>@item.StatusDaProva</td>
-                            <td class="align-items-baseline">
-                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+                }
+            </tbody>
+        </table>
     </div>
 
     <div class="tab-pane fade" id="impressos" role="tabpanel" aria-labelledby="impressos-tab">
-        <!-- Conteúdo da aba Impressos -->
-        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Impresso))
-        {
-            <table id="table-impressos" class="table table-hover">
-                <!-- Cabeçalho da tabela -->
-                <thead class="table-light">
+        <table id="table-impressos" class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Cópias</th>
+                    <th scope="col">Data do Envio</th>
+                    <th scope="col">Tipo de Prova</th>
+                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
+                {
                     <tr>
-                        <th scope="col">Nome Arquivo</th>
-                        <th scope="col">Cópias</th>
-                        <th scope="col">Data do Envio</th>
-                        <th scope="col">Tipo de Prova</th>
-                        <th scope="col">Tipo da Avaliação</th>
-                        <th scope="col">Status</th>
-                        <th></th>
+                        <td>@item.NomeArquivo</td>
+                        <td>@item.NumeroCopias</td>
+                        <td>@item.DataEnvio</td>
+                        <td>@item.TipoDeProva</td>
+                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.StatusDaProva</td>
+                        <td class="align-items-baseline">
+                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
+                        </td>
                     </tr>
-                </thead>
-                <!-- Corpo da tabela -->
-                <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
-                    {
-                        <tr>
-                            <td>@item.NomeArquivo</td>
-                            <td>@item.NumeroCopias</td>
-                            <td>@item.DataEnvio</td>
-                            <td>@item.TipoDeProva</td>
-                            <td>@item.TipoDaAvaliacao</td>
-                            <td>@item.StatusDaProva</td>
-                            <td class="align-items-baseline">
-                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+                }
+            </tbody>
+        </table>
     </div>
 
     <div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
-        <!-- Conteúdo da aba Provas Deletadas -->
-        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Deletado))
-        {
-            <table id="table-deletadas" class="table table-hover">
-                <!-- Cabeçalho da tabela -->
-                <thead class="table-light">
+        <table id="table-deletadas" class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Cópias</th>
+                    <th scope="col">Data do Envio</th>
+                    <th scope="col">Tipo de Prova</th>
+                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Deletado))
+                {
                     <tr>
-                        <th scope="col">Nome Arquivo</th>
-                        <th scope="col">Cópias</th>
-                        <th scope="col">Data do Envio</th>
-                        <th scope="col">Tipo de Prova</th>
-                        <th scope="col">Tipo da Avaliação</th>
-                        <th scope="col">Status</th>
-                        <th></th>
+                        <td>@item.NomeArquivo</td>
+                        <td>@item.NumeroCopias</td>
+                        <td>@item.DataEnvio</td>
+                        <td>@item.TipoDeProva</td>
+                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.StatusDaProva</td>
+                        <td class="align-items-baseline">
+                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
+                        </td>
                     </tr>
-                </thead>
-                <!-- Corpo da tabela -->
-                <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Deletado))
-                    {
-                        <tr>
-                            <td>@item.NomeArquivo</td>
-                            <td>@item.NumeroCopias</td>
-                            <td>@item.DataEnvio</td>
-                            <td>@item.TipoDeProva</td>
-                            <td>@item.TipoDaAvaliacao</td>
-                            <td>@item.StatusDaProva</td>
-                            <td class="align-items-baseline">
-                                <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -157,60 +138,69 @@
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script type="text/javascript">
-            $(document).ready(function () {
-                $(".btnDeletar").click(function () {
-                    var id = $(this).data("value");
-                    $("#conteudomodal").load("/Provas/DeletarProva/" + id,
-                        function () {
-                            $('#exampleModal').modal("show");
-                        }
-                    );
-                });
+        $(document).ready(function () {
+            $(".btnDeletar").click(function () {
+                var id = $(this).data("value");
 
-                $(".btnAtualizarStatus").click(function () {
-                    var id = $(this).data("value");
-                    $.ajax({
-                        url: "/Provas/AtualizarStatusImpresso/" + id,
-                        type: "POST",
-                        success: function (data) {
-                            if (data.success) {
-                                // Atualização bem-sucedida
-                                // Agora você pode realizar a ação de impressão
-                                window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
-                            } else {
-                                // Lida com erros, se necessário
-                                console.log(data.error);
-                            }
-                        },
-                        error: function (error) {
-                            // Lida com erros, se necessário
-                            console.log(error);
-                        }
-                    });
-                });
+                // Mostrar o overlay de carregamento
+                mostrarLoading();
 
-                $(".btnDeletar").click(function () {
-                    var id = $(this).data("value");
-                    $.ajax({
-                        url: "/Provas/DeletarProva/" + id,
-                        type: "POST",
-                        success: function (data) {
-                            if (data.success) {
-                                // Deleção bem-sucedida
-                                // Você pode adicionar a lógica necessária aqui
-                            } else {
-                                // Lida com erros, se necessário
-                                console.log(data.error);
-                            }
-                        },
-                        error: function (error) {
-                            // Lida com erros, se necessário
-                            console.log(error);
+                $("#conteudomodal").load("/Provas/DeletarProva/" + id,
+                    function () {
+                        // Esconder o overlay de carregamento quando a modal é exibida
+                        ocultarLoading();
+                        $('#exampleModal').modal("show");
+                    }
+                );
+            });
+
+            $(".btnAtualizarStatus").click(function () {
+                var id = $(this).data("value");
+                $.ajax({
+                    url: "/Provas/AtualizarStatusImpresso/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.success) {
+                            window.open(data.urlParaProva);
+                        } else {
+                            console.log(data.error);
                         }
-                    });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
                 });
+            });
+
+            $(".btnDeletar").click(function () {
+                var id = $(this).data("value");
+
+                // Mostrar o overlay de carregamento
+                mostrarLoading();
+
+                $.ajax({
+                    url: "/Provas/DeletarProva/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.success) {
+                            // Adicione lógica necessária aqui
+                        } else {
+                            console.log(data.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        // Esconder o overlay de carregamento quando a solicitação estiver completa
+                        ocultarLoading();
+                    }
+                });
+            });
+
             // Inicialize o DataTable nas três tabelas
             var tableProvas = $('#table-provas').DataTable({
                 "ordering": true,
@@ -295,16 +285,48 @@
                     }
                 }
             });
-                $(".mensagem-temporaria").delay(2000).fadeOut("slow"); // mensagem temporaria de 2 segundos
 
-                // Manipule o evento de clique nas abas para alternar entre as tabelas
-                $('#myTabs a').on('click', function (e) {
-                    e.preventDefault();
-                    $(this).tab('show');
-                    var targetTableId = $(this).attr("data-target-table");
-                    // Recarregue o DataTable na tabela ativa
-                    $('#' + targetTableId).DataTable().ajax.reload();
-                });
+            // Função para obter a cor com base no status
+            function getStatusColor(status) {
+                if (status === "Enviado") {
+                    return "blue";
+                } else if (status === "Impresso") {
+                    return "green";
+                } else if (status === "Deletado") {
+                    return "red";
+                } else {
+                    return "";
+                }
+            }
+
+            // Atualiza a cor do texto na tabela com base no status
+            $("tbody td:nth-child(6)").each(function () {
+                var status = $(this).text().trim();
+                var color = getStatusColor(status);
+                if (color !== "") {
+                    $(this).css("color", color);
+                }
+            });
+
+            // Manipule o evento de clique nas abas para alternar entre as tabelas
+            $('#myTabs a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                var targetTableId = $(this).attr("data-target-table");
+                $('#' + targetTableId).DataTable().ajax.reload();
+            });
+
+            $(".mensagem-temporaria").delay(2000).fadeOut("slow");
         });
+
+        // Função para mostrar o overlay de carregamento
+        function mostrarLoading() {
+            $("#loadingOverlay").show();
+        }
+
+        // Função para ocultar o overlay de carregamento
+        function ocultarLoading() {
+            $("#loadingOverlay").hide();
+        }
     </script>
 }
