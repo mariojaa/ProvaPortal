@@ -34,9 +34,9 @@
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Impressos</a>
     </li>
-    <li class="nav-item" role="presentation">
+    @*<li class="nav-item" role="presentation">
         <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Deletadas</a>
-    </li>
+    </li>*@
 </ul>
 
 <div class="tab-content" id="myTabContent">
@@ -58,7 +58,7 @@
                     </tr>
                 </thead>
                 <!-- Corpo da tabela -->
-                <tbody>
+                @*<tbody>
                     @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Deletado))
                     {
                         <tr>
@@ -74,7 +74,7 @@
                             </td>
                         </tr>
                     }
-                </tbody>
+                </tbody>*@
             </table>
         }
     </div>
@@ -108,7 +108,7 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>
+                                @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
                             </td>
                         </tr>
                     }
@@ -117,7 +117,7 @@
         }
     </div>
 
-    <div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
+   @* <div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
         <!-- Conteúdo da aba Provas Deletadas -->
         @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Deletado))
         {
@@ -153,7 +153,7 @@
                 </tbody>
             </table>
         }
-    </div>
+    </div>*@
 </div>
 
 <!-- Modal -->

@@ -50,7 +50,7 @@ namespace ProvaPortal.Controllers
                         if (usuarios.SenhaValida(loginmodel.Senha))
                         {
                             _sessao.CriarSessaoUsuario(usuarios);
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Provas");
                         }
 
                         TempData["MensagemErro"] = "Ops, Senha incorreta. Verifique e tente novamente.";
@@ -67,44 +67,5 @@ namespace ProvaPortal.Controllers
                 return RedirectToAction("Erro", "Login");
             }
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult EnviarLinkRedefinirSenha(RedefinirSenhaModel redefinirSenhaModel)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            UsuarioModel usuarios = _usuarioRepositorio.BuscarPorEmailELogin(redefinirSenhaModel.Email, redefinirSenhaModel.LoginId);
-        //            if (usuarios != null)
-        //            {
-        //                string novaSenha = usuarios.GerarNovaSenha();
-
-        //                string mensagem = $"Sua nova senha é: {novaSenha}";
-        //                bool emailEnviado = _email.EnviarEmail(usuarios.Email, "Senha do Burro!", mensagem);
-
-        //                if (emailEnviado)
-        //                {
-        //                    _usuarioRepositorio.Update(usuarios);
-        //                    TempData["MensagemSucesso"] = "Enviamos para seu email cadastrado, uma nova senha para acesso.";
-        //                }
-        //                else
-        //                {
-        //                    TempData["MensagemErro"] = "Ops, Não conseguimos enviar o email. Verifique o email informado.";
-        //                }
-
-        //                return RedirectToAction("Index", "Login");
-        //            }
-        //            TempData["MensagemErro"] = "Ops, Não conseguimos redefinir sua senha. Verifique os dados informados.";
-        //        }
-        //        return RedirectToAction("RedefinirSenha", "Login");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["MensagemErro"] = "Não foi possível redefinir sua tenha. Tente Novamente.";
-        //        return RedirectToAction("Index", "Login");
-        //    }
-        //}
     }
 }

@@ -29,11 +29,11 @@
         </div>
         <div class="form-group">
             <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
-            <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" class="form-control"></select>
+            <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
         </div>
         <div class="form-group">
             <label for="TipoDeProva">Tipo de Prova:</label>
-            <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" class="form-control"></select>
+            <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
         </div>
         <div class="form-group">
             <label for="obsProva">Observação:</label>
@@ -68,6 +68,9 @@
         var numeroCopias = document.getElementById("numeroCopias");
         var btnEnviar = document.getElementById("btnEnviar");
         var btnReset = document.getElementById("btnReset");
+        var obsProva = document.getElementById("obsProva");
+        var tipoDeProva = document.getElementById("tipoDeProva");
+        var tipoDaAvaliacao = document.getElementById("tipoDaAvaliacao")
         var loadingOverlay = document.getElementById("loadingOverlay");
         var enviarArquivoForm = document.getElementById("enviarArquivoForm");
 
@@ -76,6 +79,9 @@
             inputArquivo.disabled = true;
             numeroCopias.disabled = true;
             btnEnviar.disabled = true;
+            obsProva.disabled = true;
+            tipoDeProva.disabled = true;
+            tipoDaAvaliacao.disabled = true;
         }
 
         // Função para habilitar os campos e botão
@@ -83,6 +89,9 @@
             inputArquivo.disabled = false;
             numeroCopias.disabled = false;
             btnEnviar.disabled = false;
+            obsProva.disabled = false;
+            tipoDeProva.disabled = false;
+            tipoDaAvaliacao.disabled = false;
         }
 
         // Inicialmente, desabilitar os campos e o botão
