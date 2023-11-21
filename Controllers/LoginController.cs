@@ -1,6 +1,7 @@
 ﻿using ProvaPortal.Models;
 using Microsoft.AspNetCore.Mvc;
 using ProvaPortal.Repository.Interface;
+using ProvaPortal.Models.Enum;
 
 namespace ProvaPortal.Controllers
 {
@@ -18,7 +19,7 @@ namespace ProvaPortal.Controllers
             // quando logado redirecionar para lista contatos
             if (_sessao.BuscarSessaoUsuario() != null)
             {
-                return RedirectToAction("ListarProfessores", "Professor");
+                return RedirectToAction("Index", "Provas");
             }
 
             return View();
@@ -30,10 +31,10 @@ namespace ProvaPortal.Controllers
             return RedirectToAction("Index", "Login");
         }
 
-        public IActionResult RedefinirSenha()
-        {
-            return View();
-        }
+        //public IActionResult RedefinirSenha()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,11 +51,13 @@ namespace ProvaPortal.Controllers
                         if (usuarios.SenhaValida(loginmodel.Senha))
                         {
                             _sessao.CriarSessaoUsuario(usuarios);
+                            if(usuarios.Perfil == Perfil.Administrador)
+                            {
+                                return RedirectToAction("VisualizarTodasProvas", "Provas");
+                            }
                             return RedirectToAction("Index", "Provas");
                         }
-
                         TempData["MensagemErro"] = "Ops, Senha incorreta. Verifique e tente novamente.";
-
                     }
                     TempData["MensagemErro"] = "Ops, Usuario ou Senha incorreto. Verifique e tente novamente.";
                 }

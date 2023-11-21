@@ -23,9 +23,9 @@
     </div>
 }
 
-<div class="container mt-3">
+@*<div class="container mt-3">
     <input class="form-control" id="buscador" type="search" placeholder="Buscar..." aria-controls="table-provas">
-</div>
+</div>*@
 
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -34,7 +34,7 @@
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Impressos</a>
     </li>
-    @*<li class="nav-item" role="presentation">
+@*    <li class="nav-item" role="presentation">
         <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Deletadas</a>
     </li>*@
 </ul>
@@ -58,7 +58,7 @@
                     </tr>
                 </thead>
                 <!-- Corpo da tabela -->
-                @*<tbody>
+                <tbody>
                     @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Deletado))
                     {
                         <tr>
@@ -69,12 +69,12 @@
                             <td>@item.TipoDaAvaliacao</td>
                             <td>@item.StatusDaProva</td>
                             <td class="align-items-baseline">
-                                <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>
+                                @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
                                 <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnImprimir" data-value="@item.Id" title="Imprimir"></a>
                             </td>
                         </tr>
                     }
-                </tbody>*@
+                </tbody>
             </table>
         }
     </div>
@@ -117,7 +117,7 @@
         }
     </div>
 
-   @* <div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
+    @*<div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
         <!-- Conteúdo da aba Provas Deletadas -->
         @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Deletado))
         {
@@ -133,9 +133,9 @@
                         <th scope="col">Status</th>
                         <th></th>
                     </tr>
-                </thead>
+                </thead>*@
                 <!-- Corpo da tabela -->
-                <tbody>
+                @*<tbody>
                     @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Deletado))
                     {
                         <tr>
@@ -150,9 +150,9 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        }
+                </tbody>*@
+            @*</table>*@
+        @*}
     </div>*@
 </div>
 
@@ -169,16 +169,16 @@
 
 @section Scripts{
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".btnDeletarAdmin").click(function () {
-                var id = $(this).data("value");
-                $("#conteudomodal").load("/Provas/DeletarProvaAdministrador/" + id,
-                    function () {
-                        $('#exampleModal').modal("show");
-                    }
-                );
-            });
-        });
+        //$(document).ready(function () {
+        //    $(".btnDeletarAdmin").click(function () {
+        //        var id = $(this).data("value");
+        //        $("#conteudomodal").load("/Provas/DeletarProvaAdministrador/" + id,
+        //            function () {
+        //                $('#exampleModal').modal("show");
+        //            }
+        //        );
+        //    });
+        //});
         $(".mensagem-temporaria").delay(2000).fadeOut("slow"); //alerta 2 segundos (2000)
         $(document).ready(function () {
             $(".btnAtualizarStatus").click(function () {
@@ -229,7 +229,7 @@
 
         $(document).ready(function () {
             // Inicialize o DataTable nas três tabelas
-            $('#table-provas').DataTable({
+            var tableProvas = $('#table-provas').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -257,35 +257,7 @@
                 }
             });
 
-            $('#table-impressos').DataTable({
-                "ordering": true,
-                "paging": true,
-                "searching": true,
-                "pageLength": 10,
-                "info": false,
-                "lengthChange": false,
-                "dom": 'lrtip',
-                "oLanguage": {
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sSearch": "Pesquisa",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "oPaginate": {
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior",
-                        "sFirst": "Primeiro",
-                        "sLast": "Último"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                }
-            });
-
-            $('#table-deletadas').DataTable({
+            var tableImpressos = $('#table-impressos').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -322,7 +294,6 @@
                 $('#' + targetTableId).DataTable().ajax.reload();
             });
         });
-        $(document).ready(function () {
             $(".btnImprimir").click(function () {
                 var id = $(this).data("value");
                 $.ajax({
@@ -336,7 +307,5 @@
                     }
                 });
             });
-        });
-
     </script>
 }
