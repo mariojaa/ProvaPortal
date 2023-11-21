@@ -93,7 +93,7 @@ namespace ProvaPortal.Controllers
                         string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
                         bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
 
-                        if (emailEnviado != null)
+                        if (emailEnviado)
                         {
                             TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
                             _provaRepository.AdicionarProva(prova);
@@ -179,7 +179,7 @@ namespace ProvaPortal.Controllers
                             string mensagem = $"Docente {professorLogado.UsuarioLogin}, você acaba de deletar a prova {prova.NomeArquivo} de nosso sistema! Caso não foi você redefina sua senha através do link {link}";
                             bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "você acabou de deletar uma prova!", mensagem);
 
-                            if (emailEnviado != null)
+                            if (emailEnviado)
                             {
                                 TempData["MensagemSucesso"] = "você acabou de deletar uma prova! Foi enviado um e-mail";
                                 _provaRepository.DeleteProva(id);
@@ -217,59 +217,59 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
-        public IActionResult DeletarProvaAdministrador(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var obj = _provaRepository.BuscarProvaPorId(id.Value);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return PartialView(obj);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [ServiceFilter(typeof(PaginaSomenteAdmin))]
-        //[LogActionFilter]
-        public IActionResult DeletarProvaAdministrador(int id)
-        {
-            try
-            {
-                var prova = _provaRepository.BuscarProvaPorId(id);
+        //public IActionResult DeletarProvaAdministrador(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var obj = _provaRepository.BuscarProvaPorId(id.Value);
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return PartialView(obj);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[ServiceFilter(typeof(PaginaSomenteAdmin))]
+        ////[LogActionFilter]
+        //public IActionResult DeletarProvaAdministrador(int id)
+        //{
+        //    try
+        //    {
+        //        var prova = _provaRepository.BuscarProvaPorId(id);
 
-                if (prova == null)
-                {
-                    TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                }
+        //        if (prova == null)
+        //        {
+        //            TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+        //        }
 
-                if (prova.StatusDaProva == StatusDaProva.Deletado)
-                {
-                    _provaRepository.DeleteProva(id);
-                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-                }
-                if (prova.StatusDaProva == StatusDaProva.Enviado)
-                {
-                    prova.StatusDaProva = StatusDaProva.Deletado;
-                    _provaRepository.AtualizarProva(prova);
-                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-                }
-                if (prova.StatusDaProva == StatusDaProva.Impresso)
-                {
-                    prova.StatusDaProva = StatusDaProva.Deletado;
-                    _provaRepository.AtualizarProva(prova);
-                    TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-                }
-                return RedirectToAction("VisualizarTodasProvas");
-            }
-            catch (Exception ex)
-            {
-                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "Provas");
-            }
-        }
+        //        if (prova.StatusDaProva == StatusDaProva.Deletado)
+        //        {
+        //            _provaRepository.DeleteProva(id);
+        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+        //        }
+        //        if (prova.StatusDaProva == StatusDaProva.Enviado)
+        //        {
+        //            prova.StatusDaProva = StatusDaProva.Deletado;
+        //            _provaRepository.AtualizarProva(prova);
+        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+        //        }
+        //        if (prova.StatusDaProva == StatusDaProva.Impresso)
+        //        {
+        //            prova.StatusDaProva = StatusDaProva.Deletado;
+        //            _provaRepository.AtualizarProva(prova);
+        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
+        //        }
+        //        return RedirectToAction("VisualizarTodasProvas");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+        //        return View("Erro", "Provas");
+        //    }
+        //}
         [HttpGet]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarTodasProvas()

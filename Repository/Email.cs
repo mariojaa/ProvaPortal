@@ -28,7 +28,7 @@ namespace ProvaPortal.SessaoUsuario
                 mail.Subject = assunto;
                 mail.Body = mensagem;
                 mail.IsBodyHtml = true;
-                mail.Priority = MailPriority.High;
+                mail.Priority = MailPriority.Normal;
 
                 using SmtpClient smtp = new SmtpClient(host, porta);
                 smtp.Credentials = new NetworkCredential(username, senha);
