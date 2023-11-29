@@ -7,7 +7,6 @@ using ProvaPortal.Models.ViewModel;
 using ProvaPortal.Filters;
 
 [PaginaSomenteAdmin]
-//[ServiceFilter(typeof(LogActionFilter))]
 
 public class ProfessorController : Controller
 {
