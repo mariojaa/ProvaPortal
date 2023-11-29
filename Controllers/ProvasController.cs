@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
@@ -18,15 +19,18 @@ namespace ProvaPortal.Controllers
         private readonly IProvaRepository _provaRepository;
         private readonly ISessao _sessao;
         private readonly IEmail _email;
+        private readonly ProvaPortalContext _context;
 
         public ProvasController(
             IProvaRepository provaRepository,
             ISessao sessao,
-            IEmail email)
+            IEmail email,
+            ProvaPortalContext context)
         {
             _provaRepository = provaRepository;
             _sessao = sessao;
             _email = email;
+            _context = context;
         }
 
         [HttpGet]
@@ -363,5 +367,26 @@ namespace ProvaPortal.Controllers
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
-    }
+        [HttpPost]
+        public IActionResult ReverterStatusProva(int id)
+        {
+            try
+            {
+                var prova = _context.Provas.Find(id);
+                if (prova != null)
+                {
+                    prova.StatusDaProva = StatusDaProva.Enviado;
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                return RedirectToAction("Index");
+            }
+        }
+    }  
 }

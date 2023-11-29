@@ -88,6 +88,7 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva</td>
                         <td class="align-items-baseline">
+                            <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
                             <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
                         </td>
                     </tr>
@@ -120,7 +121,9 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva</td>
                         <td class="align-items-baseline">
+                            <a href="#" class="btnReverse" data-value="@item.Id" title="Reverse" data-tab="Desfazer"></a>
                             <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
+
                         </td>
                     </tr>
                 }
@@ -318,6 +321,66 @@
 
             $(".mensagem-temporaria").delay(2000).fadeOut("slow");
         });
+
+
+        //----------------------------------------------------------
+
+
+        // Desfazer Delete (voltar a enviados)
+
+        $(".btnReverse").click(function () {
+            var id = $(this).data("value");
+
+            // Mostrar o overlay de carregamento
+            mostrarLoading();
+
+            $.ajax({
+                url: "/Provas/ReverterStatusProva/" + id,
+                type: "POST",
+                success: function () {
+                    // Redirecionar para a mesma página após a reversão do status
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+                    // Esconder o overlay de carregamento quando a solicitação estiver completa
+                    ocultarLoading();
+                }
+            });
+        });
+
+
+        $(".btnReimprimir").click(function () {
+            var id = $(this).data("value");
+
+            // Mostrar o overlay de carregamento
+            mostrarLoading();
+
+            $.ajax({
+                url: "/Provas/ReimprimirProva/" + id,
+                type: "POST",
+                success: function (data) {
+                    if (data.success) {
+                        // Atualiza a tabela de Provas Enviadas
+                        $('#provas-tab').tab('show');
+                        $('#table-provas').DataTable().ajax.reload();
+                    } else {
+                        console.log(data.error);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+                    // Esconder o overlay de carregamento quando a solicitação estiver completa
+                    ocultarLoading();
+                }
+            });
+        });
+
+        //----------------------------------------------------------
 
         // Função para mostrar o overlay de carregamento
         function mostrarLoading() {

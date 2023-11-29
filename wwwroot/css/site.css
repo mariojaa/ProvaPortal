@@ -32,7 +32,9 @@ body {
 .btnEditar::before {
     content: url('/Content/edit-user.png')
 }
-
+.btnReverse::before{
+    content: url('/Content/reverse .png')
+}
 .btnDeletar::before {
     content: url('/Content/recycle-bin.png')
 }
@@ -42,9 +44,13 @@ body {
 .btnImprimir::before {
     content: url('/Content/Imprimir.png')
 }
+.btnReimprimir::before {
+    content: url('/Content/Reimprimir.png')
+}
 .btnDeletarAdmin::before {
     content: url('/Content/recycle-bin.png')
 }
+
 #ComboPerfil::before {
     width: 1110px;
     height: 40px;
