@@ -33,7 +33,7 @@ body {
     content: url('/Content/edit-user.png')
 }
 .btnReverse::before{
-    content: url('/Content/reverse .png')
+    content: url('/Content/reverse.png')
 }
 .btnDeletar::before {
     content: url('/Content/recycle-bin.png')

@@ -121,8 +121,8 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva</td>
                         <td class="align-items-baseline">
-                            <a href="#" class="btnReverse" data-value="@item.Id" title="Reverse" data-tab="Desfazer"></a>
-                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
+                            <a href="#" class="btnReverse" data-value="@item.Id" title="Restaurar" data-tab="Restaurar"></a>
+                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir Permanente" data-tab="deletadas"></a>
 
                         </td>
                     </tr>
@@ -351,7 +351,6 @@
             });
         });
 
-
         $(".btnReimprimir").click(function () {
             var id = $(this).data("value");
 
@@ -359,16 +358,11 @@
             mostrarLoading();
 
             $.ajax({
-                url: "/Provas/ReimprimirProva/" + id,
+                url: "/Provas/ReverterStatusProvaImpressa/" + id,
                 type: "POST",
-                success: function (data) {
-                    if (data.success) {
-                        // Atualiza a tabela de Provas Enviadas
-                        $('#provas-tab').tab('show');
-                        $('#table-provas').DataTable().ajax.reload();
-                    } else {
-                        console.log(data.error);
-                    }
+                success: function () {
+                    // Redirecionar para a mesma página após a reversão do status
+                    window.location.reload();
                 },
                 error: function (error) {
                     console.log(error);
@@ -379,6 +373,33 @@
                 }
             });
         });
+        //$(".btnReimprimir").click(function () {
+        //    var id = $(this).data("value");
+
+        //    // Mostrar o overlay de carregamento
+        //    mostrarLoading();
+
+        //    $.ajax({
+        //        url: "/Provas/ReverterStatusProvaImpressa/" + id,
+        //        type: "POST",
+        //        success: function (data) {
+        //            if (data.success) {
+        //                // Atualiza a tabela de Provas Enviadas
+        //                $('#provas-tab').tab('show');
+        //                $('#table-provas').DataTable().ajax.reload();
+        //            } else {
+        //                console.log(data.error);
+        //            }
+        //        },
+        //        error: function (error) {
+        //            console.log(error);
+        //        },
+        //        complete: function () {
+        //            // Esconder o overlay de carregamento quando a solicitação estiver completa
+        //            ocultarLoading();
+        //        }
+        //    });
+        //});
 
         //----------------------------------------------------------
 

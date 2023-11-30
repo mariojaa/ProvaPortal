@@ -95,9 +95,9 @@ namespace ProvaPortal.Controllers
                     {
 
                         string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
-                        var emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
+                        bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
 
-                        if (emailEnviado != null)
+                        if (emailEnviado)
                         {
                             TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
                             _provaRepository.AdicionarProva(prova);
@@ -369,6 +369,27 @@ namespace ProvaPortal.Controllers
         }
         [HttpPost]
         public IActionResult ReverterStatusProva(int id)
+        {
+            try
+            {
+                var prova = _context.Provas.Find(id);
+                if (prova != null)
+                {
+                    prova.StatusDaProva = StatusDaProva.Enviado;
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        public IActionResult ReverterStatusProvaImpressa(int id)
         {
             try
             {
