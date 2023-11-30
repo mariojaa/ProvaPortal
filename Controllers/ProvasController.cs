@@ -95,9 +95,9 @@ namespace ProvaPortal.Controllers
                     {
 
                         string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
-                        bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
+                        var emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
 
-                        if (emailEnviado)
+                        if (emailEnviado != null)
                         {
                             TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
                             _provaRepository.AdicionarProva(prova);
