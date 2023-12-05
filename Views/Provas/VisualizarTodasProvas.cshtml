@@ -1,4 +1,5 @@
-﻿@using ProvaPortal.Models.Enum
+﻿@using ProvaPortal.Extensions;
+@using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
 <h1 class="text-center display-4">Lista de Provas</h1>
@@ -17,15 +18,16 @@
     </div>
 }
 
+
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="provas-tab" data-toggle="tab" href="#provas" role="tab" aria-controls="provas" aria-selected="true">Provas Recebidas</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Impressos</a>
+        <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Aguardando Impressão</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Notificadas</a>
+        <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Impressas</a>
     </li>
 </ul>
 
@@ -49,7 +51,7 @@
                 </thead>
                 <!-- Corpo da tabela -->
                 <tbody>
-                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Notificada))
+                    @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Enviado)))
                     {
                         <tr>
                             <td>@item.NomeArquivo</td>
@@ -57,7 +59,7 @@
                             <td>@item.DataEnvio</td>
                             <td>@item.TipoDeProva</td>
                             <td>@item.TipoDaAvaliacao</td>
-                            <td>@item.StatusDaProva</td>
+                            <td>@item.StatusDaProva.GetDisplayName()</td>
                             <td class="align-items-baseline">
                                 @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
                                 <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnImprimir" data-value="@item.Id" title="Imprimir"></a>
@@ -79,12 +81,12 @@
                     <th scope="col">Tipo de Prova</th>
                     <th scope="col">Tipo da Avaliação</th>
                     <th scope="col">Status</th>
-                    <th></th>
+                    <th><button id="btnImprimir" class="btn btn-primary" disabled>Imprimir</button></th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
+                @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.AguardandoImpressao)))
                 {
                     <tr>
                         <td>@item.NomeArquivo</td>
@@ -92,9 +94,10 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
-                        <td>@item.StatusDaProva</td>
+                        <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
-                            <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnNotificada" data-value="@item.Id" title="Notificar"></a>
+                            <input type='checkbox' data-id='@item.Id' />
+                            @*<a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnNotificada" data-value="@item.Id" title="Notificar"></a>*@
                         </td>
                     </tr>
                 }
@@ -116,7 +119,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Notificada))
+                @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Impressa)))
                 {
                     <tr>
                         <td>@item.NomeArquivo</td>
@@ -124,9 +127,9 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
-                        <td>@item.StatusDaProva</td>
+                        <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
-                            <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnNotificada" data-value="@item.Id" title="Notificar"></a>
+                            
                         </td>
                     </tr>
                 }
@@ -149,8 +152,46 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            $("tbody input[type='checkbox']").change(function () {
+                var checkedCheckboxes = $("tbody input[type='checkbox']:checked");
+                $("#btnImprimir").prop("disabled", checkedCheckboxes.length === 0);
+            });
+            $(".btnImprimir").click(function () {
+                if (!$(this).prop("disabled")) {
+                    var id = $(this).data("value");
+                }
+            });
+
             // Inicialize o DataTable nas três tabelas
             var tableProvas = $('#table-provas').DataTable({
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "pageLength": 10,
+                "info": false,
+                "lengthChange": false,
+                "dom": 'lrtip',
+                "oLanguage": {
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sSearch": "Pesquisa",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+
+            var tableaguardandoimpressao = $('#table-aguardandoimpressao').DataTable({
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -236,12 +277,12 @@
 
             // Função para obter a cor com base no status
             function getStatusColor(status) {
-                if (status === "Enviado") {
+                if (status === "Enviada") {
                     return "blue";
-                } else if (status === "Impresso") {
+                } else if (status === "Aguardando Impressão") {
+                    return "orange";
+                } else if (status === "Prova Impressa") {
                     return "green";
-                } else if (status === "Notificada") {
-                    return "red";
                 } else {
                     return "";
                 }
@@ -301,7 +342,7 @@
                 mostrarLoading();
 
                 $.ajax({
-                    url: "/Provas/AtualizarStatusImpresso/" + id,
+                    url: "/Provas/AtualizarStatusAguardandoImpressao/" + id,
                     type: "POST",
                     success: function () {
                         // Redirecionar para a mesma página após a reversão do status

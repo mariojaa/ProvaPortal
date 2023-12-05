@@ -1,7 +1,8 @@
-﻿@using ProvaPortal.Models.Enum;
+﻿@using ProvaPortal.Extensions;
+@using ProvaPortal.Models.Enum;
 @model ProvaModel
 
-@if (Model.StatusDaProva == StatusDaProva.Deletado)
+@if (Model.StatusDaProva.Equals(StatusDaProva.Deletado))
 {
     <h3 class="display-7 text-center">A prova será excluída definitivamente. Deseja excluir <b>@Model.NomeArquivo</b>?</h3>
 }

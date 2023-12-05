@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data;
+using ProvaPortal.Extensions;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
@@ -129,6 +130,7 @@ namespace ProvaPortal.Controllers
                     return RedirectToAction("Login", "Index");
                 }
 
+                //List<ProvaModel> provas = _provaRepository.ObterTodasProvas(Convert.ToInt32(professorLogado.Id));
                 List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
 
                 return View(provas);
@@ -167,7 +169,7 @@ namespace ProvaPortal.Controllers
                     TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
                 }
 
-                if (prova.StatusDaProva == StatusDaProva.Deletado)
+                if (prova.StatusDaProva.Equals(StatusDaProva.Deletado))
                 {
                     if (ModelState.IsValid)
                     {
@@ -200,14 +202,14 @@ namespace ProvaPortal.Controllers
                     }
                     return RedirectToAction("Index");
                 }
-                if (prova.StatusDaProva == StatusDaProva.Enviado)
+                if (prova.StatusDaProva.Equals(StatusDaProva.Enviado))
                 {
                     prova.StatusDaProva = StatusDaProva.Deletado;
 
                     _provaRepository.AtualizarProva(prova);
                     TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
                 }
-                if (prova.StatusDaProva == StatusDaProva.Impresso)
+                if (prova.StatusDaProva.Equals(StatusDaProva.AguardandoImpressao))
                 {
                     prova.StatusDaProva = StatusDaProva.Deletado;
                     _provaRepository.AtualizarProva(prova);
@@ -319,22 +321,48 @@ namespace ProvaPortal.Controllers
         }
         [HttpPost]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
-        public IActionResult AtualizarStatusImpresso(int id)
+        public IActionResult AtualizarStatusAguardandoImpressao(int id)
         {
             try
             {
                 var prova = _provaRepository.BuscarProvaPorId(id);
+                var emailProfessorProva = _provaRepository.ObterTodasProvasAdministradorComProfessores();
+                var buscarEmailProfessorProvaImpressa = prova.Professor.Email;
                 var administradorLogado = _sessao.BuscarSessaoUsuario();
-
                 if (prova != null)
                 {
-                    prova.StatusDaProva = StatusDaProva.Impresso;
-                    _provaRepository.AtualizarProva(prova);
+                    string emailProfessor = prova.Professor.Email;
 
-                    TempData["MensagemSucesso"] = "Prova Impressa com Sucesso!";
-                    return RedirectToAction("Index", "Provas");
+                    prova.StatusDaProva = StatusDaProva.AguardandoImpressao;
+
+                    if (ModelState.IsValid)
+                    {
+
+                        if (buscarEmailProfessorProvaImpressa != null)
+                        {
+                            string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada pelo Administrador: {administradorLogado.UsuarioLogin}. Em breve receberá um email de impressão de prova.";
+                            bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Acessada pela Mecanografia", mensagem);
+
+                            if (emailEnviado)
+                            {
+                                TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada!";
+                                _provaRepository.AtualizarProva(prova);
+                            }
+                            else
+                            {
+                                TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
+                            }
+
+                            return RedirectToAction("Index", "Provas");
+                        }
+                    }
                 }
-                return RedirectToAction("Index", "Provas");
+                else
+                {
+                    TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
+                }
+
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -342,30 +370,7 @@ namespace ProvaPortal.Controllers
             }
         }
 
-        //[HttpPost]
-        //[ServiceFilter(typeof(PaginaSomenteAdmin))]
-        //public IActionResult AtualizarStatusImpresso(int id)
-        //{
-        //    try
-        //    {
-        //        var prova = _provaRepository.BuscarProvaPorId(id);
-        //        var administradorLogado = _sessao.BuscarSessaoUsuario();
-        //        if (prova != null)
-        //        {
-        //            prova.StatusDaProva = StatusDaProva.Impresso;
-        //            TempData["MensagemSucesso"] = "Prova Impressa com Sucesso!";
-        //            return RedirectToAction("Index", "Provas");
-        //        }
-
-        //        return RedirectToAction("Index", "Provas");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
-        //    }
-        //}
-        // ----------- atualizar status notificados - impressos ---------------------
-
+       
         [HttpPost]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult AtualizarStatusNotificada(int id)
@@ -380,7 +385,7 @@ namespace ProvaPortal.Controllers
                 {
                     string emailProfessor = prova.Professor.Email;
 
-                    prova.StatusDaProva = StatusDaProva.Impresso;
+                    prova.StatusDaProva = StatusDaProva.Impressa;
 
                     if (ModelState.IsValid)
                     {
@@ -451,13 +456,13 @@ namespace ProvaPortal.Controllers
                     _context.SaveChanges();
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Provas");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Provas");
             }
         }
         [HttpPost]
@@ -468,5 +473,24 @@ namespace ProvaPortal.Controllers
 
             return Json(new { success = true });
         }
-    }  
+        public IActionResult MoverParaDeletadas(int id)
+        {
+            try
+            {
+
+                var prova = _provaRepository.BuscarProvaPorId(id);
+                prova.StatusDaProva = StatusDaProva.Deletado;
+                _provaRepository.AtualizarProva(prova);
+
+                TempData["MensagemSucesso"] = "Prova movida para Deletadas com sucesso.";
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = "Ocorreu um erro ao mover a prova para Deletadas.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+    }
 }
