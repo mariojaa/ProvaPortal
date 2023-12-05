@@ -1,0 +1,52 @@
+﻿@using ProvaPortal.Models.Enum;
+@model ProvaModel
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success mensagem-temporaria" role="alert">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger mensagem-temporaria" role="alert">
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<div class="container mt-4">
+
+    <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="numeroCopias">Quantidade de Cópias:</label>
+            <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
+            <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="TipoDeProva">Tipo de Prova:</label>
+            <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="obsProva">Observação:</label>
+            <input type="text" id="obsProva" name="obsProva" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
+            <button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>
+        </div>
+    </form>
+
+    @if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
+    {
+        <div class="alert alert-info mt-4" role="alert">
+            <p>Arquivo Enviado: @Model.NomeArquivo</p>
+            <p>Data de Envio: @Model.DataEnvio</p>
+        </div>
+    }
+
+    <a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>
+</div>

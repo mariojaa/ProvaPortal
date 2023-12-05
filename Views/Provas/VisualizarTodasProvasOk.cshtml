@@ -1,0 +1,311 @@
+﻿@using ProvaPortal.Models.Enum
+@model List<ProvaModel>
+
+<h1 class="text-center display-4">Lista de Provas Administrador</h1>
+
+@{
+    ViewData["Title"] = "Lista de Provas";
+}
+
+<h2>Lista de Produtos</h2>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success mensagem-temporaria" role="alert">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger mensagem-temporaria" role="alert">
+        @TempData["MensagemErro"]
+    </div>
+}
+
+@*<div class="container mt-3">
+    <input class="form-control" id="buscador" type="search" placeholder="Buscar..." aria-controls="table-provas">
+</div>*@
+
+<ul class="nav nav-tabs" id="myTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="provas-tab" data-toggle="tab" href="#provas" role="tab" aria-controls="provas" aria-selected="true">Provas Enviadas</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Impressos</a>
+    </li>
+    @*    <li class="nav-item" role="presentation">
+    <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Deletadas</a>
+    </li>*@
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="provas" role="tabpanel" aria-labelledby="provas-tab">
+        <!-- Conteúdo da aba Provas Enviadas -->
+        @if (Model != null && Model.Count > 0)
+        {
+            <table id="table-provas" class="table table-hover">
+                <!-- Cabeçalho da tabela -->
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Nome Arquivo</th>
+                        <th scope="col">Cópias</th>
+                        <th scope="col">Data do Envio</th>
+                        <th scope="col">Tipo de Prova</th>
+                        <th scope="col">Tipo da Avaliação</th>
+                        <th scope="col">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!-- Corpo da tabela -->
+                <tbody>
+                    @foreach (var item in Model.Where(item => item.StatusDaProva != StatusDaProva.Impresso && item.StatusDaProva != StatusDaProva.Deletado))
+                    {
+                        <tr>
+                            <td>@item.NomeArquivo</td>
+                            <td>@item.NumeroCopias</td>
+                            <td>@item.DataEnvio</td>
+                            <td>@item.TipoDeProva</td>
+                            <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.StatusDaProva</td>
+                            <td class="align-items-baseline">
+                                @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
+                                <a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnImprimir" data-value="@item.Id" title="Imprimir"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <div class="tab-pane fade" id="impressos" role="tabpanel" aria-labelledby="impressos-tab">
+        <!-- Conteúdo da aba Impressos -->
+        @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Impresso))
+        {
+            <table id="table-impressos" class="table table-hover">
+                <!-- Cabeçalho da tabela -->
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Nome Arquivo</th>
+                        <th scope="col">Cópias</th>
+                        <th scope="col">Data do Envio</th>
+                        <th scope="col">Tipo de Prova</th>
+                        <th scope="col">Tipo da Avaliação</th>
+                        <th scope="col">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!-- Corpo da tabela -->
+                <tbody>
+                    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Impresso))
+                    {
+                        <tr>
+                            <td>@item.NomeArquivo</td>
+                            <td>@item.NumeroCopias</td>
+                            <td>@item.DataEnvio</td>
+                            <td>@item.TipoDeProva</td>
+                            <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.StatusDaProva</td>
+                            <td class="align-items-baseline">
+                                @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    @*<div class="tab-pane fade" id="deletadas" role="tabpanel" aria-labelledby="deletadas-tab">
+    <!-- Conteúdo da aba Provas Deletadas -->
+    @if (Model != null && Model.Any(item => item.StatusDaProva == StatusDaProva.Deletado))
+    {
+    <table id="table-deletadas" class="table table-hover">
+    <!-- Cabeçalho da tabela -->
+    <thead class="table-light">
+    <tr>
+    <th scope="col">Nome Arquivo</th>
+    <th scope="col">Cópias</th>
+    <th scope="col">Data do Envio</th>
+    <th scope="col">Tipo de Prova</th>
+    <th scope="col">Tipo da Avaliação</th>
+    <th scope="col">Status</th>
+    <th></th>
+    </tr>
+    </thead>*@
+    <!-- Corpo da tabela -->
+    @*<tbody>
+    @foreach (var item in Model.Where(item => item.StatusDaProva == StatusDaProva.Deletado))
+    {
+    <tr>
+    <td>@item.NomeArquivo</td>
+    <td>@item.NumeroCopias</td>
+    <td>@item.DataEnvio</td>
+    <td>@item.TipoDeProva</td>
+    <td>@item.TipoDaAvaliacao</td>
+    <td>@item.StatusDaProva</td>
+    <td class="align-items-baseline">
+    <a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir" data-tab="deletadas"></a>
+    </td>
+    </tr>
+    }
+    </tbody>*@
+    @*</table>*@
+    @*}
+    </div>*@
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="conteudomodal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $(".btnDeletarAdmin").click(function () {
+        //        var id = $(this).data("value");
+        //        $("#conteudomodal").load("/Provas/DeletarProvaAdministrador/" + id,
+        //            function () {
+        //                $('#exampleModal').modal("show");
+        //            }
+        //        );
+        //    });
+        //});
+        $(".mensagem-temporaria").delay(2000).fadeOut("slow"); //alerta 2 segundos (2000)
+        $(document).ready(function () {
+            $(".btnAtualizarStatus").click(function () {
+                var id = $(this).data("value");
+                $.ajax({
+                    url: "/Provas/ImprimirProva/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.success) {
+                            // Atualização bem-sucedida
+                            // Agora você pode realizar a ação de impressão
+                            window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
+                        } else {
+                            // Lida com erros, se necessário
+                            console.log(data.error);
+                        }
+                    },
+                    error: function (error) {
+                        // Lida com erros, se necessário
+                        console.log(error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $(".btnAtualizarStatus").click(function () {
+                var id = $(this).data("value");
+                $.ajax({
+                    url: "/Provas/DeletarProvaAdministrador/" + id,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.success) {
+                            // Atualização bem-sucedida
+                            // Agora você pode realizar a ação de impressão
+                            window.open(data.urlParaProva); // Abre a prova para impressão em uma nova guia/janela
+                        } else {
+                            // Lida com erros, se necessário
+                            console.log(data.error);
+                        }
+                    },
+                    error: function (error) {
+                        // Lida com erros, se necessário
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            // Inicialize o DataTable nas três tabelas
+            var tableProvas = $('#table-provas').DataTable({
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "pageLength": 10,
+                "info": false,
+                "lengthChange": false,
+                "dom": 'lrtip',
+                "oLanguage": {
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sSearch": "Pesquisa",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+
+            var tableImpressos = $('#table-impressos').DataTable({
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "pageLength": 10,
+                "info": false,
+                "lengthChange": false,
+                "dom": 'lrtip',
+                "oLanguage": {
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sSearch": "Pesquisa",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+
+            // Manipule o evento de clique nas abas para alternar entre as tabelas
+            $('#myTabs a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                var targetTableId = $(this).attr("data-target-table");
+                // Recarregue o DataTable na tabela ativa
+                $('#' + targetTableId).DataTable().ajax.reload();
+            });
+        });
+        $(".btnImprimir").click(function () {
+            var id = $(this).data("value");
+            $.ajax({
+                url: "/Provas/AtualizarStatusImpresso/" + id,
+                type: "POST",
+                success: function (data) {
+                    window.location.reload(); // Atualiza a página atual
+                },
+                error: function (error) {
+                    // Trate os erros conforme necessário
+                }
+            });
+        });
+    </script>
+}

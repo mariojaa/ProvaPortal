@@ -8,10 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Provas\ReverterStatusProvaImpressa.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Provas\MostrarDados.cshtml" />
     <Content Remove="Views\Provas\ProvasDeletadas.cshtml" />
     <Content Remove="Views\Provas\ProvasDeletadasAdministrador.cshtml" />
     <Content Remove="Views\Provas\ProvasImpressos.cshtml" />
+    <Content Remove="Views\Provas\ReverterStatusProvaImpressa.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

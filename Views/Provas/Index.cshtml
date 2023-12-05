@@ -56,7 +56,8 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva</td>
                         <td class="align-items-baseline">
-                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir"></a>
+                            <a href="#" class="btnDeletar deletarProva" data-value="@item.Id" data-nome="@item.NomeArquivo" title="Excluir" onclick="openConfirmDialog('@item.NomeArquivo')"></a>
+
                         </td>
                     </tr>
                 }
@@ -122,7 +123,7 @@
                         <td>@item.StatusDaProva</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnReverse" data-value="@item.Id" title="Restaurar" data-tab="Restaurar"></a>
-                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir Permanente" data-tab="deletadas"></a>
+                            <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir Permanente" data-tab="deletadas" onclick="openConfirmDialog()"></a>
 
                         </td>
                     </tr>
@@ -133,7 +134,7 @@
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div id="conteudomodal"></div>
@@ -142,9 +143,14 @@
     </div>
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 @section Scripts{
     <script type="text/javascript">
+
         $(document).ready(function () {
+            
             $(".btnDeletar").click(function () {
                 var id = $(this).data("value");
 
@@ -153,29 +159,12 @@
 
                 $("#conteudomodal").load("/Provas/DeletarProva/" + id,
                     function () {
+                        
                         // Esconder o overlay de carregamento quando a modal é exibida
                         ocultarLoading();
                         $('#exampleModal').modal("show");
                     }
                 );
-            });
-
-            $(".btnAtualizarStatus").click(function () {
-                var id = $(this).data("value");
-                $.ajax({
-                    url: "/Provas/AtualizarStatusImpresso/" + id,
-                    type: "POST",
-                    success: function (data) {
-                        if (data.success) {
-                            window.open(data.urlParaProva);
-                        } else {
-                            console.log(data.error);
-                        }
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
             });
 
             $(".btnDeletar").click(function () {
@@ -311,7 +300,7 @@
                 }
             });
 
-            // Manipule o evento de clique nas abas para alternar entre as tabelas
+            //evento de clique nas abas para alternar entre as tabelas
             $('#myTabs a').on('click', function (e) {
                 e.preventDefault();
                 $(this).tab('show');
@@ -320,88 +309,65 @@
             });
 
             $(".mensagem-temporaria").delay(2000).fadeOut("slow");
-        });
 
 
-        //----------------------------------------------------------
+
+            //----------------------------------------------------------
+
+            
+            // Desfazer Delete (voltar a enviados)
 
 
-        // Desfazer Delete (voltar a enviados)
+            $(".btnReverse").click(function () {
+                var id = $(this).data("value");
 
-        $(".btnReverse").click(function () {
-            var id = $(this).data("value");
+                // Mostrar o overlay de carregamento
+                mostrarLoading();
 
-            // Mostrar o overlay de carregamento
-            mostrarLoading();
+                $.ajax({
+                    url: "/Provas/ReverterStatusProva/" + id,
+                    type: "POST",
+                    success: function () {
+                        // Redirecionar para a mesma página após a reversão do status
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        // Esconder o overlay de carregamento quando a solicitação estiver completa
+                        ocultarLoading();
+                    }
+                });
+            });
 
-            $.ajax({
-                url: "/Provas/ReverterStatusProva/" + id,
-                type: "POST",
-                success: function () {
-                    // Redirecionar para a mesma página após a reversão do status
-                    window.location.reload();
-                },
-                error: function (error) {
-                    console.log(error);
-                },
-                complete: function () {
-                    // Esconder o overlay de carregamento quando a solicitação estiver completa
-                    ocultarLoading();
-                }
+            //------------------------------------------------------------------------------------------
+            $(".btnReimprimir").click(function () {
+                var id = $(this).data("value");
+
+                // Mostrar o overlay de carregamento
+                mostrarLoading();
+
+                $.ajax({
+                    url: "/Provas/ReverterStatusProvaImpressa/" + id,
+                    type: "POST",
+                    success: function () {
+                        // Redirecionar para a mesma página após a reversão do status
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        // Esconder o overlay de carregamento quando a solicitação estiver completa
+                        ocultarLoading();
+                    }
+                });
+
             });
         });
 
-        $(".btnReimprimir").click(function () {
-            var id = $(this).data("value");
 
-            // Mostrar o overlay de carregamento
-            mostrarLoading();
-
-            $.ajax({
-                url: "/Provas/ReverterStatusProvaImpressa/" + id,
-                type: "POST",
-                success: function () {
-                    // Redirecionar para a mesma página após a reversão do status
-                    window.location.reload();
-                },
-                error: function (error) {
-                    console.log(error);
-                },
-                complete: function () {
-                    // Esconder o overlay de carregamento quando a solicitação estiver completa
-                    ocultarLoading();
-                }
-            });
-        });
-        //$(".btnReimprimir").click(function () {
-        //    var id = $(this).data("value");
-
-        //    // Mostrar o overlay de carregamento
-        //    mostrarLoading();
-
-        //    $.ajax({
-        //        url: "/Provas/ReverterStatusProvaImpressa/" + id,
-        //        type: "POST",
-        //        success: function (data) {
-        //            if (data.success) {
-        //                // Atualiza a tabela de Provas Enviadas
-        //                $('#provas-tab').tab('show');
-        //                $('#table-provas').DataTable().ajax.reload();
-        //            } else {
-        //                console.log(data.error);
-        //            }
-        //        },
-        //        error: function (error) {
-        //            console.log(error);
-        //        },
-        //        complete: function () {
-        //            // Esconder o overlay de carregamento quando a solicitação estiver completa
-        //            ocultarLoading();
-        //        }
-        //    });
-        //});
-
-        //----------------------------------------------------------
 
         // Função para mostrar o overlay de carregamento
         function mostrarLoading() {

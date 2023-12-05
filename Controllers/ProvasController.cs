@@ -297,6 +297,7 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
+
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarProva(int id)
         {
@@ -316,10 +317,58 @@ namespace ProvaPortal.Controllers
 
             return File(arquivoPDF, "application/pdf");
         }
-
         [HttpPost]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult AtualizarStatusImpresso(int id)
+        {
+            try
+            {
+                var prova = _provaRepository.BuscarProvaPorId(id);
+                var administradorLogado = _sessao.BuscarSessaoUsuario();
+
+                if (prova != null)
+                {
+                    prova.StatusDaProva = StatusDaProva.Impresso;
+                    _provaRepository.AtualizarProva(prova);
+
+                    TempData["MensagemSucesso"] = "Prova Impressa com Sucesso!";
+                    return RedirectToAction("Index", "Provas");
+                }
+                return RedirectToAction("Index", "Provas");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
+            }
+        }
+
+        //[HttpPost]
+        //[ServiceFilter(typeof(PaginaSomenteAdmin))]
+        //public IActionResult AtualizarStatusImpresso(int id)
+        //{
+        //    try
+        //    {
+        //        var prova = _provaRepository.BuscarProvaPorId(id);
+        //        var administradorLogado = _sessao.BuscarSessaoUsuario();
+        //        if (prova != null)
+        //        {
+        //            prova.StatusDaProva = StatusDaProva.Impresso;
+        //            TempData["MensagemSucesso"] = "Prova Impressa com Sucesso!";
+        //            return RedirectToAction("Index", "Provas");
+        //        }
+
+        //        return RedirectToAction("Index", "Provas");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
+        //    }
+        //}
+        // ----------- atualizar status notificados - impressos ---------------------
+
+        [HttpPost]
+        [ServiceFilter(typeof(PaginaSomenteAdmin))]
+        public IActionResult AtualizarStatusNotificada(int id)
         {
             try
             {
@@ -367,6 +416,8 @@ namespace ProvaPortal.Controllers
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
+
+        // ----------- fim metodo --------------------------------------------------
         [HttpPost]
         public IActionResult ReverterStatusProva(int id)
         {
@@ -408,6 +459,14 @@ namespace ProvaPortal.Controllers
 
                 return RedirectToAction("Index");
             }
+        }
+        [HttpPost]
+        public ActionResult PiscarProvaRestaurada(int id) //não funcional
+        {
+
+            ViewBag.RestaurarProvaId = id;
+
+            return Json(new { success = true });
         }
     }  
 }

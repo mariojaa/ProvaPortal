@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 /*___________________________________________________________________*/
@@ -32,23 +32,33 @@ body {
 .btnEditar::before {
     content: url('/Content/edit-user.png')
 }
-.btnReverse::before{
+
+.btnReverse::before {
     content: url('/Content/reverse.png')
 }
+
 .btnDeletar::before {
     content: url('/Content/recycle-bin.png')
 }
+
 .Adc-Contato::before {
     content: url('/Content/add-user.png');
 }
+
 .btnImprimir::before {
     content: url('/Content/Imprimir.png')
 }
+
 .btnReimprimir::before {
     content: url('/Content/Reimprimir.png')
 }
+
 .btnDeletarAdmin::before {
     content: url('/Content/recycle-bin.png')
+}
+
+.btnNotificada::before{
+    content: url('/Content/notificacao.png')
 }
 
 #ComboPerfil::before {
@@ -113,3 +123,14 @@ body {
 .status-verde {
     color: green;
 }
+/*----------------Piscar Tabela Restaurados-------------------------*/
+.restored-row {
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+    50% {
+        background-color: #FFFF00;
+    }
+}
+/*----------------Nova Modal--------------------*/
