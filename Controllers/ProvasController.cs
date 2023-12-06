@@ -370,50 +370,52 @@ namespace ProvaPortal.Controllers
             }
         }
 
-       
+
         [HttpPost]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
-        public IActionResult AtualizarStatusNotificada(int id)
+        public IActionResult AtualizarStatusNotificada(List<int> ids)
         {
             try
             {
-                var prova = _provaRepository.BuscarProvaPorId(id);
-                var emailProfessorProva = _provaRepository.ObterTodasProvasAdministradorComProfessores();
-                var buscarEmailProfessorProvaImpressa = prova.Professor.Email;
-                var administradorLogado = _sessao.BuscarSessaoUsuario();
-                if (prova != null)
+                foreach (var provaId in ids)
                 {
-                    string emailProfessor = prova.Professor.Email;
+                    var prova = _provaRepository.BuscarProvaPorId(provaId);
+                    var emailProfessorProva = _provaRepository.ObterTodasProvasAdministradorComProfessores();
+                    var buscarEmailProfessorProvaImpressa = prova.Professor.Email;
+                    var administradorLogado = _sessao.BuscarSessaoUsuario();
 
-                    prova.StatusDaProva = StatusDaProva.Impressa;
-
-                    if (ModelState.IsValid)
+                    if (prova != null)
                     {
+                        string emailProfessor = prova.Professor.Email;
+                        prova.StatusDaProva = StatusDaProva.Impressa;
 
-                        if (buscarEmailProfessorProvaImpressa != null)
+                        if (ModelState.IsValid)
                         {
-                            string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias} cópias, pelo Administrador: {administradorLogado.UsuarioLogin}.";
-                            bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Impressa!", mensagem);
-
-                            if (emailEnviado)
+                            if (buscarEmailProfessorProvaImpressa != null)
                             {
-                                TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias}!";
-                                _provaRepository.AtualizarProva(prova);
-                            }
-                            else
-                            {
-                                TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
-                            }
+                                string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias} cópias, pelo Administrador: {administradorLogado.UsuarioLogin}.";
+                                bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Impressa!", mensagem);
 
-                            return RedirectToAction("Index", "Provas");
+                                if (emailEnviado)
+                                {
+                                    TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, acaba de ser impressa com {prova.NumeroCopias}!";
+                                    _provaRepository.AtualizarProva(prova);
+                                }
+                                else
+                                {
+                                    TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
+                                    // Se você deseja continuar processando as outras provas mesmo em caso de erro no envio de e-mail, remova o return aqui.
+                                }
+                            }
                         }
                     }
-                }
-                else
-                {
-                    TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
+                    else
+                    {
+                        TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
+                    }
                 }
 
+                // Esta instrução return deve estar fora do loop, para garantir que o loop processe todas as provas antes de redirecionar.
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -421,6 +423,8 @@ namespace ProvaPortal.Controllers
                 return Json(new { success = false, error = "Ocorreu um erro ao atualizar o status da prova." });
             }
         }
+
+
 
         // ----------- fim metodo --------------------------------------------------
         [HttpPost]

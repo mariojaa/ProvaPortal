@@ -18,7 +18,7 @@
     </div>
 }
 
-
+<button id="btnImprimir" class="btn btn-primary" disabled>Imprimir</button>
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="provas-tab" data-toggle="tab" href="#provas" role="tab" aria-controls="provas" aria-selected="true">Provas Recebidas</a>
@@ -81,7 +81,7 @@
                     <th scope="col">Tipo de Prova</th>
                     <th scope="col">Tipo da Avaliação</th>
                     <th scope="col">Status</th>
-                    <th><button id="btnImprimir" class="btn btn-primary" disabled>Imprimir</button></th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -151,14 +151,38 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-
             $("tbody input[type='checkbox']").change(function () {
                 var checkedCheckboxes = $("tbody input[type='checkbox']:checked");
                 $("#btnImprimir").prop("disabled", checkedCheckboxes.length === 0);
             });
-            $(".btnImprimir").click(function () {
-                if (!$(this).prop("disabled")) {
-                    var id = $(this).data("value");
+
+            $("#btnImprimir").click(function () {
+                var selectedIds = [];
+
+                $("tbody input[type='checkbox']:checked").each(function () {
+                    selectedIds.push($(this).data("id"));
+                });
+
+                if (selectedIds.length > 0) {
+                    // Mostrar o overlay de carregamento
+                    mostrarLoading();
+
+                    $.ajax({
+                        url: "/Provas/AtualizarStatusNotificada",
+                        type: "POST",
+                        data: { ids: selectedIds },
+                        success: function () {
+                            // Redirecionar para a mesma página após a reversão do status
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                        complete: function () {
+                            // Esconder o overlay de carregamento quando a solicitação estiver completa
+                            ocultarLoading();
+                        }
+                    });
                 }
             });
 
