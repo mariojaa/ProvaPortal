@@ -42,7 +42,6 @@ namespace ProvaPortal.Controllers
         }
 
         [HttpPost]
-        //[LogActionFilter]
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
             TipoDeProva tipoDeProva)
         {
@@ -129,10 +128,7 @@ namespace ProvaPortal.Controllers
                 {
                     return RedirectToAction("Login", "Index");
                 }
-
-                //List<ProvaModel> provas = _provaRepository.ObterTodasProvas(Convert.ToInt32(professorLogado.Id));
                 List<ProvaModel> provas = _provaRepository.ObterTodasProvas(professorLogado.Id);
-
                 return View(provas);
             }
             catch (Exception)
@@ -157,7 +153,6 @@ namespace ProvaPortal.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[LogActionFilter]
         public IActionResult DeletarProva(int id)
         {
             try
@@ -223,59 +218,6 @@ namespace ProvaPortal.Controllers
                 return View("Erro", "Provas");
             }
         }
-        //public IActionResult DeletarProvaAdministrador(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var obj = _provaRepository.BuscarProvaPorId(id.Value);
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return PartialView(obj);
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[ServiceFilter(typeof(PaginaSomenteAdmin))]
-        ////[LogActionFilter]
-        //public IActionResult DeletarProvaAdministrador(int id)
-        //{
-        //    try
-        //    {
-        //        var prova = _provaRepository.BuscarProvaPorId(id);
-
-        //        if (prova == null)
-        //        {
-        //            TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-        //        }
-
-        //        if (prova.StatusDaProva == StatusDaProva.Deletado)
-        //        {
-        //            _provaRepository.DeleteProva(id);
-        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-        //        }
-        //        if (prova.StatusDaProva == StatusDaProva.Enviado)
-        //        {
-        //            prova.StatusDaProva = StatusDaProva.Deletado;
-        //            _provaRepository.AtualizarProva(prova);
-        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-        //        }
-        //        if (prova.StatusDaProva == StatusDaProva.Impresso)
-        //        {
-        //            prova.StatusDaProva = StatusDaProva.Deletado;
-        //            _provaRepository.AtualizarProva(prova);
-        //            TempData["MensagemSucesso"] = "Prova excluída com sucesso!";
-        //        }
-        //        return RedirectToAction("VisualizarTodasProvas");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-        //        return View("Erro", "Provas");
-        //    }
-        //}
         [HttpGet]
         [ServiceFilter(typeof(PaginaSomenteAdmin))]
         public IActionResult VisualizarTodasProvas()
@@ -404,7 +346,6 @@ namespace ProvaPortal.Controllers
                                 else
                                 {
                                     TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
-                                    // Se você deseja continuar processando as outras provas mesmo em caso de erro no envio de e-mail, remova o return aqui.
                                 }
                             }
                         }
@@ -414,8 +355,6 @@ namespace ProvaPortal.Controllers
                         TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
                     }
                 }
-
-                // Esta instrução return deve estar fora do loop, para garantir que o loop processe todas as provas antes de redirecionar.
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -424,9 +363,6 @@ namespace ProvaPortal.Controllers
             }
         }
 
-
-
-        // ----------- fim metodo --------------------------------------------------
         [HttpPost]
         public IActionResult ReverterStatusProva(int id)
         {
