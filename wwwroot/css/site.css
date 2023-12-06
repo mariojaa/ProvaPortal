@@ -76,6 +76,20 @@ body {
 #usericon::before {
     content: "\1F464";
 }
+
+
+
+#error_capslock {
+    border: 1px solid #FFFF66;
+    background-color: #FFFFCC;
+    display: inline-block;
+    margin-left: 0px;
+    padding: 3px;
+    display: none;
+}
+
+
+
 /*----------------------------CARREGAMENTO - LOADING-------------------------------*/
 .overlay {
     display: none;

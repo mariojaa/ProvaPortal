@@ -39,8 +39,9 @@
                     <div class="control-group">
                         <div class="input-prepend">
                             <span class="add-on"><i class="icon-lock"></i></span>
-                            <input id="UserPassword" asp-for="Senha" type="password" class="form-control" value="" placeholder="Senha" autofocus required>
+                            <input id="UserPassword" asp-for="Senha" type="password" class="form-control caps-lock-warning" value="" placeholder="Senha" autofocus required>
                         </div>
+                        <div id="capsLockWarning" class="text-danger"></div>
                     </div>
                     <div class="text-center fs-6">
                         <a asp-action="RedefinirSenha" asp-controller="Login">Esqueceu a senha?</a> ou <a asp-action="CriarNovoUsuarioDeslogado" asp-controller="CriarNovoUsuario">Crie uma Conta!</a>
@@ -54,11 +55,12 @@
     </div><!--/.row-fluid-->
 </div><!--/.container-->
 
-<script src="caminho-para-seu-arquivo.css"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var loadingOverlay = document.getElementById("loadingOverlay");
         var UserLoginForm = document.getElementById("UserLoginForm");
+        var passwordInput = document.getElementById("UserPassword");
+        var capsLockWarning = document.getElementById("capsLockWarning");
 
         function mostrarLoading() {
             loadingOverlay.style.display = "block";
@@ -75,6 +77,18 @@
             setTimeout(function () {
                 UserLoginForm.submit();
             }, 1000);
+        });
+
+        passwordInput.addEventListener("keydown", function (e) {
+            var capsLockEnabled = e.getModifierState && e.getModifierState("CapsLock");
+
+            if (capsLockEnabled) {
+                passwordInput.classList.add("caps-lock-enabled");
+                capsLockWarning.innerHTML = "Caps Lock está ativado!";
+            } else {
+                passwordInput.classList.remove("caps-lock-enabled");
+                capsLockWarning.innerHTML = "";
+            }
         });
     });
 </script>

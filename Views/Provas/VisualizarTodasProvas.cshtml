@@ -129,7 +129,7 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
-                            
+                            <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
                         </td>
                     </tr>
                 }
@@ -184,6 +184,29 @@
                         }
                     });
                 }
+            });
+            $(".btnReimprimir").click(function () {
+                var id = $(this).data("value");
+
+                // Mostrar o overlay de carregamento
+                mostrarLoading();
+
+                $.ajax({
+                    url: "/Provas/ReverterStatusProvaImpressa/" + id,
+                    type: "POST",
+                    success: function () {
+                        // Redirecionar para a mesma página após a reversão do status
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        // Esconder o overlay de carregamento quando a solicitação estiver completa
+                        ocultarLoading();
+                    }
+                });
+
             });
 
             // Inicialize o DataTable nas três tabelas

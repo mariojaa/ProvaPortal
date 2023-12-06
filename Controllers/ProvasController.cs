@@ -1,4 +1,5 @@
-﻿using iTextSharp.text.pdf;
+﻿using DinkToPdf;
+using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data;
@@ -10,7 +11,9 @@ using ProvaPortal.Repository.Interface;
 using ProvaPortal.SessaoUsuario;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;
+using PaperKind = DinkToPdf.PaperKind;
 
 namespace ProvaPortal.Controllers
 {
@@ -431,6 +434,52 @@ namespace ProvaPortal.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //---------Teste Impressão -----------------------
+        //[HttpPost]
+        //[ServiceFilter(typeof(PaginaSomenteAdmin))]
+        //public IActionResult ImprimirProva([FromBody] ImprimirProvaRequest request)
+        //{
+        //    try
+        //    {
+        //        var prova = _provaRepository.BuscarProvaPorId(request.ProvaId);
+        //        if (prova != null)
+        //        {
+
+        //            var converter = new BasicConverter(new PdfTools());
+
+        //            var doc = new HtmlToPdfDocument()
+        //            {
+        //                GlobalSettings = {
+        //            ColorMode = DinkToPdf.ColorMode.Color,
+        //            Orientation = Orientation.Portrait,
+        //            PaperSize = PaperKind.A4,
+        //        },
+        //                Objects = {
+        //            new ObjectSettings
+        //            {
+        //                HtmlContent = "<h1>Conteúdo da prova aqui</h1>",
+        //            }
+        //        }
+        //            };
+
+        //            var pdfBytes = converter.Convert(doc);
+
+        //            // Lógica para enviar o PDF para a impressora padrão do usuário.
+        //            // (Dependente do sistema operacional e configurações específicas.)
+
+        //            return Json(new { success = true });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, error = "Prova não encontrada." });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, error = "Ocorreu um erro ao imprimir a prova." });
+        //    }
+        //}
 
     }
 }
