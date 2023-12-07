@@ -123,8 +123,9 @@ namespace ProvaPortal.Controllers
         //}
         //--------------novo metodo enviar prova com limite de pdf upload 20 megas----------------------
 
+
         [HttpPost]
-        [RequestSizeLimit(20 * 1024 * 1024)] // 20MB limit
+        [RequestSizeLimit(20 * 1024 * 1024)] // 20MB limite
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
     TipoDeProva tipoDeProva)
         {

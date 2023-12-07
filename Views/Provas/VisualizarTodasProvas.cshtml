@@ -42,11 +42,12 @@
                 <!-- Cabeçalho da tabela -->
                 <thead class="table-light">
                     <tr>
+                        <th scope="col">Professor</th>
                         <th scope="col">Nome Arquivo</th>
                         <th scope="col">Cópias</th>
                         <th scope="col">Data do Envio</th>
-                        <th scope="col">Tipo de Prova</th>
-                        <th scope="col">Tipo da Avaliação</th>
+                        <th scope="col">Prova</th>
+                        <th scope="col">Avaliação</th>
                         <th scope="col">Status</th>
                         <th></th>
                     </tr>
@@ -56,6 +57,7 @@
                     @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Enviado)))
                     {
                         <tr>
+                            <td>@item.Professor.UsuarioLogin</td>
                             <td>@item.NomeArquivo</td>
                             <td>@item.NumeroCopias</td>
                             <td>@item.DataEnvio</td>
@@ -77,11 +79,12 @@
         <table id="table-impressos" class="table table-hover">
             <thead class="table-light">
                 <tr>
+                    <th scope="col">Professor</th>
                     <th scope="col">Nome Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Prova</th>
+                    <th scope="col">Avaliação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -91,6 +94,7 @@
                 @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.AguardandoImpressao)))
                 {
                     <tr>
+                        <td>@item.Professor.UsuarioLogin</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio</td>
@@ -113,6 +117,7 @@
         <table id="table-deletadas" class="table table-hover">
             <thead class="table-light">
                 <tr>
+                    <th scope="col">Professor</th>
                     <th scope="col">Nome Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Data do Envio</th>
@@ -126,6 +131,7 @@
                 @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Impressa)))
                 {
                     <tr>
+                        <td>@item.Professor.UsuarioLogin</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio</td>
