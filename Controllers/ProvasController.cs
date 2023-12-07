@@ -362,38 +362,40 @@ namespace ProvaPortal.Controllers
                 var emailProfessorProva = _provaRepository.ObterTodasProvasAdministradorComProfessores();
                 var buscarEmailProfessorProvaImpressa = prova.Professor.Email;
                 var administradorLogado = _sessao.BuscarSessaoUsuario();
-                if (prova != null)
-                {
-                    string emailProfessor = prova.Professor.Email;
+                prova.StatusDaProva = StatusDaProva.AguardandoImpressao;
+                _provaRepository.AtualizarProva(prova);
+                //if (prova != null)
+                //{
+                //    string emailProfessor = prova.Professor.Email;
 
-                    prova.StatusDaProva = StatusDaProva.AguardandoImpressao;
+                //    prova.StatusDaProva = StatusDaProva.AguardandoImpressao;
 
-                    if (ModelState.IsValid)
-                    {
+                //    if (ModelState.IsValid)
+                //    {
 
-                        if (buscarEmailProfessorProvaImpressa != null)
-                        {
-                            string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada pelo Administrador: {administradorLogado.UsuarioLogin}. Em breve receberá um email de impressão de prova.";
-                            bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Acessada pela Mecanografia", mensagem);
+                //        if (buscarEmailProfessorProvaImpressa != null)
+                //        {
+                //            string mensagem = $"Docente {prova.Professor.UsuarioLogin}, sua prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada pelo Administrador: {administradorLogado.UsuarioLogin}. Em breve receberá um email de impressão de prova.";
+                //            bool emailEnviado = _email.EnviarEmail(buscarEmailProfessorProvaImpressa, "Prova Acessada pela Mecanografia", mensagem);
 
-                            if (emailEnviado)
-                            {
-                                TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada!";
-                                _provaRepository.AtualizarProva(prova);
-                            }
-                            else
-                            {
-                                TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
-                            }
+                //            if (emailEnviado)
+                //            {
+                //                TempData["MensagemSucesso"] = $"Prova {prova.NomeArquivo}, com {prova.NumeroCopias} cópias, acaba de ser acessada!";
+                //                _provaRepository.AtualizarProva(prova);
+                //            }
+                //            else
+                //            {
+                //                TempData["MensagemErro"] = "Ops, não conseguimos enviar o email. Verifique o email informado.";
+                //            }
 
-                            return RedirectToAction("Index", "Provas");
-                        }
-                    }
-                }
-                else
-                {
-                    TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
-                }
+                //            return RedirectToAction("Index", "Provas");
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    TempData["MensagemErro"] = "Professor não encontrado para esta prova ou o email do professor está vazio.";
+                //}
 
                 return RedirectToAction("Index");
             }
