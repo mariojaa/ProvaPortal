@@ -2,8 +2,10 @@
 @using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
-<h1 class="text-center display-4">Lista de Provas</h1>
-
+@*<h1 class="text-center display-6">Lista de Provas</h1>*@
+<br />
+<br />
+<br />
 @if (TempData["MensagemSucesso"] != null)
 {
     <div class="alert alert-success mensagem-temporaria" role="alert">
@@ -18,13 +20,13 @@
     </div>
 }
 
-<button id="btnImprimir" class="btn btn-primary" disabled>Imprimir</button>
+<button id="btnNotificar" class="btn btn-outline-primary" disabled>Notificar Selecionados</button>
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="provas-tab" data-toggle="tab" href="#provas" role="tab" aria-controls="provas" aria-selected="true">Provas Recebidas</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Aguardando Impressão</a>
+        <a class="nav-link" id="impressos-tab" data-toggle="tab" href="#impressos" role="tab" aria-controls="impressos" aria-selected="false">Notificar ou Reimprimir</a>
     </li>
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="deletadas-tab" data-toggle="tab" href="#deletadas" role="tab" aria-controls="deletadas" aria-selected="false">Impressas</a>
@@ -96,7 +98,9 @@
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
-                            <input type='checkbox' data-id='@item.Id' />
+                            <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
+                            &nbsp&nbsp
+                            <input type='checkbox' data-id='@item.Id'/>
                             @*<a href="@Url.Action("VisualizarProva", "Provas", new { id = item.Id })" target="_blank" class="btnNotificada" data-value="@item.Id" title="Notificar"></a>*@
                         </td>
                     </tr>
@@ -153,10 +157,10 @@
         $(document).ready(function () {
             $("tbody input[type='checkbox']").change(function () {
                 var checkedCheckboxes = $("tbody input[type='checkbox']:checked");
-                $("#btnImprimir").prop("disabled", checkedCheckboxes.length === 0);
+                $("#btnNotificar").prop("disabled", checkedCheckboxes.length === 0);
             });
 
-            $("#btnImprimir").click(function () {
+            $("#btnNotificar").click(function () {
                 var selectedIds = [];
 
                 $("tbody input[type='checkbox']:checked").each(function () {

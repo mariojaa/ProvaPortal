@@ -2,7 +2,7 @@
 @using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
-<h1 class="text-center display-4">Lista de Provas</h1>
+<h1 class="text-center display-6">Lista de Provas</h1>
 
 @if (TempData["MensagemSucesso"] != null)
 {
@@ -18,7 +18,7 @@
     </div>
 }
 
-<a title="Enviar Prova" type="button" class="btn Adc-Contato" asp-controller="Provas" asp-action="EnviarProva"></a>
+<a title="Enviar Prova" type="button" class="btnEnviarProva" asp-controller="Provas" asp-action="EnviarProva"></a>
 
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -286,7 +286,7 @@
                     return "blue";
                 } else if (status === "Prova Impressa") {
                     return "green";
-                } else if (status === "Deletada") {
+                } else if (status === "Deletado") {
                     return "red";
                 } else {
                     return "";

@@ -21,48 +21,38 @@ body {
 
 /*-----IMAGENS DOS BOTOES-------*/
 
-.Adc-Usuario::before {
-    content: url('/Content/add-user.png');
-}
-
-.btnDetalhes::before {
-    content: url('/Content/Info-user.png')
-}
-
-.btnEditar::before {
-    content: url('/Content/edit-user.png')
-}
 
 .btnReverse::before {
-    content: url('/Content/reverse.png')
+    content: url('/Content/reverter.png')
 }
 
 .btnDeletar::before {
-    content: url('/Content/recycle-bin.png')
+    content: url('/Content/lixeira.png')
 }
 .btnMoverParaDeletadas::before {
-    content: url('/Content/recycle-bin.png')
+    content: url('/Content/lixeira.png')
 }
 
-.Adc-Contato::before {
-    content: url('/Content/add-user.png');
+/*.btnNotificar::before {
+    content: url('/Content/notificar.png')
+}*/
+
+.btnEnviarProva::before{
+    content: url('/Content/EnviarProva.png')
+}
+
+.botaonotificar::before{
+    content: url('/Content/notificar.png')
 }
 
 .btnImprimir::before {
-    content: url('/Content/Imprimir.png')
+    content: url('/Content/impressao.png')
 }
 
 .btnReimprimir::before {
-    content: url('/Content/Reimprimir.png')
+    content: url('/Content/impressao.png')
 }
 
-.btnDeletarAdmin::before {
-    content: url('/Content/recycle-bin.png')
-}
-
-.btnNotificada::before{
-    content: url('/Content/notificacao.png')
-}
 
 #ComboPerfil::before {
     width: 1110px;
@@ -76,19 +66,6 @@ body {
 #usericon::before {
     content: "\1F464";
 }
-
-
-
-#error_capslock {
-    border: 1px solid #FFFF66;
-    background-color: #FFFFCC;
-    display: inline-block;
-    margin-left: 0px;
-    padding: 3px;
-    display: none;
-}
-
-
 
 /*----------------------------CARREGAMENTO - LOADING-------------------------------*/
 .overlay {

@@ -1,131 +1,184 @@
 ﻿@using ProvaPortal.Models.Enum;
 @model ProvaModel
 
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success mensagem-temporaria" role="alert">
-        @TempData["MensagemSucesso"]
-    </div>
-}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enviar Prova</title>
+    <link rel="stylesheet" href="caminho-para-seu-arquivo.css" />
+    <style>
+        .aviso-tamanho {
+            color: red;
+            font-weight: bold;
+            margin-top: 5px;
+            display: none; /* Inicialmente oculto */
+        }
+    </style>
+</head>
+<body>
 
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger mensagem-temporaria" role="alert">
-        @TempData["MensagemErro"]
-    </div>
-}
-
-<div class="container mt-4">
-    <h2 class="mb-4">Enviar Prova</h2>
-
-    <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="inputArquivo">Escolha um arquivo (PDF):</label>
-            <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="numeroCopias">Quantidade de Cópias:</label>
-            <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
-            <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <label for="TipoDeProva">Tipo de Prova:</label>
-            <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <label for="obsProva">Observação:</label>
-            <input type="text" id="obsProva" name="obsProva" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
-            <button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>
-        </div>
-    </form>
-
-    @if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
+    @if (TempData["MensagemSucesso"] != null)
     {
-        <div class="alert alert-info mt-4" role="alert">
-            <p>Arquivo Enviado: @Model.NomeArquivo</p>
-            <p>Data de Envio: @Model.DataEnvio</p>
+        <div class="alert alert-success mensagem-temporaria" role="alert">
+            @TempData["MensagemSucesso"]
         </div>
     }
 
-    <a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>
-</div>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger mensagem-temporaria" role="alert">
+            @TempData["MensagemErro"]
+        </div>
+    }
 
-<div id="loadingOverlay" class="overlay">
-    <div class="loader"></div>
-    <div class="loading-text">Enviando Prova...</div>
-</div>
+    <div class="container mt-4">
+        <h2 class="mb-4">Enviar Prova</h2>
 
-<script src="caminho-para-seu-arquivo.css"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var inputArquivo = document.getElementById("inputArquivo");
-        var numeroCopias = document.getElementById("numeroCopias");
-        var btnEnviar = document.getElementById("btnEnviar");
-        var btnReset = document.getElementById("btnReset");
-        var obsProva = document.getElementById("obsProva");
-        var tipoDeProva = document.getElementById("tipoDeProva");
-        var tipoDaAvaliacao = document.getElementById("tipoDaAvaliacao")
-        var loadingOverlay = document.getElementById("loadingOverlay");
-        var enviarArquivoForm = document.getElementById("enviarArquivoForm");
+        <form id="enviarArquivoForm" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputArquivo">Escolha um arquivo (PDF):</label>
+                <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" class="form-control" />
+                <span class="aviso-tamanho" id="avisoTamanho">O arquivo não pode ser maior que 20MB</span>
 
-        // Função para desabilitar os campos e botão
-        function desabilitarCampos() {
-            inputArquivo.disabled = true;
-            numeroCopias.disabled = true;
-            btnEnviar.disabled = true;
-            obsProva.disabled = true;
-            tipoDeProva.disabled = true;
-            tipoDaAvaliacao.disabled = true;
+            </div>
+            <div class="form-group">
+                <label for="numeroCopias">Quantidade de Cópias:</label>
+                <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
+                <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label for="TipoDeProva">Tipo de Prova:</label>
+                <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label for="obsProva">Observação:</label>
+                <input type="text" id="obsProva" name="obsProva" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
+                <button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>
+            </div>
+        </form>
+
+        @if (Model != null && !string.IsNullOrEmpty(Model.NomeArquivo))
+        {
+            <div class="alert alert-info mt-4" role="alert">
+                <p>Arquivo Enviado: @Model.NomeArquivo</p>
+                <p>Data de Envio: @Model.DataEnvio</p>
+            </div>
         }
 
-        // Função para habilitar os campos e botão
-        function habilitarCampos() {
-            inputArquivo.disabled = false;
-            numeroCopias.disabled = false;
-            btnEnviar.disabled = false;
-            obsProva.disabled = false;
-            tipoDeProva.disabled = false;
-            tipoDaAvaliacao.disabled = false;
-        }
+        <a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>
+    </div>
 
-        // Inicialmente, desabilitar os campos e o botão
-        desabilitarCampos();
+    <div id="loadingOverlay" class="overlay">
+        <div class="loader"></div>
+        <div class="loading-text">Enviando Prova...</div>
+    </div>
 
-        // Quando o botão "reset" for clicado, habilitar os campos e o botão
-        btnReset.addEventListener("click", function () {
-            habilitarCampos();
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputArquivo = document.getElementById("inputArquivo");
+            var avisoTamanho = document.getElementById("avisoTamanho");
+            var numeroCopias = document.getElementById("numeroCopias");
+            var btnEnviar = document.getElementById("btnEnviar");
+            var btnReset = document.getElementById("btnReset");
+            var obsProva = document.getElementById("obsProva");
+            var tipoDeProva = document.getElementById("tipoDeProva");
+            var tipoDaAvaliacao = document.getElementById("tipoDaAvaliacao");
+            var loadingOverlay = document.getElementById("loadingOverlay");
+            var enviarArquivoForm = document.getElementById("enviarArquivoForm");
+
+            // Função para desabilitar os campos e botão
+            function desabilitarCampos() {
+                avisoTamanho.style.display = "block";
+                numeroCopias.disabled = true;
+                btnEnviar.disabled = true;
+                obsProva.disabled = true;
+                tipoDeProva.disabled = true;
+                tipoDaAvaliacao.disabled = true;
+            }
+
+            // Função para habilitar os campos e botão
+            function habilitarCampos() {
+                avisoTamanho.style.display = "none";
+                numeroCopias.disabled = false;
+                btnEnviar.disabled = false;
+                obsProva.disabled = false;
+                tipoDeProva.disabled = false;
+                tipoDaAvaliacao.disabled = false;
+            }
+
+            // Inicialmente, desabilitar os campos e o botão
+            desabilitarCampos();
+
+            // Quando o botão "reset" for clicado, habilitar os campos e o botão
+            btnReset.addEventListener("click", function () {
+                habilitarCampos();
+            });
+
+            var avisoTamanho = document.getElementById("avisoTamanho");
+            avisoTamanho.style.display = "none";  // Adicione esta linha para ocultar o aviso no início
+
+            inputArquivo.addEventListener("change", function () {
+                var avisoTamanho = document.getElementById("avisoTamanho");
+                avisoTamanho.style.display = "none";  // Adicione esta linha para ocultar o aviso no início
+
+                var arquivo = inputArquivo.files[0];
+
+                // Tamanho máximo permitido em bytes (20MB)
+                var tamanhoMaximo = 20 * 1024 * 1024;
+
+                // Verifica se o arquivo está presente
+                if (arquivo) {
+                    // Verifica se o arquivo é maior que 20MB
+                    if (arquivo.size > tamanhoMaximo) {
+                        // Mostra a mensagem de aviso
+                        desabilitarCampos();
+                        return;
+                    }
+                }
+
+                // Esconde o aviso se não houver arquivo ou o arquivo estiver dentro do limite
+                avisoTamanho.style.display = "none";
+
+                // Habilita todos os campos
+                habilitarCampos();
+            });
+
+
+
+
+            // Adicionando evento ao formulário para mostrar o overlay de carregamento ao enviar
+            enviarArquivoForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                mostrarLoading();
+
+                setTimeout(function () {
+                    enviarArquivoForm.submit();
+                }, 100);
+            });
+
+            // Ocultar o overlay de carregamento ao resetar o formulário
+            btnReset.addEventListener("click", function () {
+                ocultarLoading();
+            });
+
+            // Ocultar mensagem temporária após 2 segundos
+            $(".mensagem-temporaria").delay(2000).fadeOut("slow");
+
+            function mostrarLoading() {
+                loadingOverlay.style.display = "block";
+            }
+
+            function ocultarLoading() {
+                loadingOverlay.style.display = "none";
+            }
         });
+    </script>
 
-        function mostrarLoading() {
-            loadingOverlay.style.display = "block";
-        }
-
-        function ocultarLoading() {
-            loadingOverlay.style.display = "none";
-        }
-
-        // Adicionando evento ao formulário para mostrar o overlay de carregamento ao enviar
-        enviarArquivoForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            mostrarLoading();
-
-            setTimeout(function () {
-                enviarArquivoForm.submit();
-            }, 100);
-        });
-
-        // Ocultar o overlay de carregamento ao resetar o formulário
-        btnReset.addEventListener("click", function () {
-            ocultarLoading();
-        });
-
-        // Ocultar mensagem temporária após 2 segundos
-        $(".mensagem-temporaria").delay(2000).fadeOut("slow");
-    });
-</script>
+</body>
+</html>
