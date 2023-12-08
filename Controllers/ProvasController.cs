@@ -7,6 +7,7 @@ using ProvaPortal.Extensions;
 using ProvaPortal.Filters;
 using ProvaPortal.Models;
 using ProvaPortal.Models.Enum;
+using ProvaPortal.Models.ViewModel;
 using ProvaPortal.Repository.Interface;
 using ProvaPortal.SessaoUsuario;
 using System.Diagnostics;
@@ -127,7 +128,7 @@ namespace ProvaPortal.Controllers
         [HttpPost]
         [RequestSizeLimit(20 * 1024 * 1024)] // 20MB limite
         public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
-    TipoDeProva tipoDeProva)
+    TipoDeProva tipoDeProva, Disciplina disciplina, Periodo periodo)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -176,7 +177,13 @@ namespace ProvaPortal.Controllers
                     ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva,
                     Conteudo = conteudoArquivo,
                     TipoDaAvaliacao = tipoDaAvaliacao,
-                    TipoDeProva = tipoDeProva
+                    TipoDeProva = tipoDeProva,
+                };
+                var dadosProfessor = new CreateProfessorViewModel
+                {
+                    Periodo = periodo,
+                    Curso = curso,
+                    Disciplina = disciplina,
                 };
 
                 if (ModelState.IsValid)

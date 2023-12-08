@@ -57,12 +57,42 @@ namespace ProvaPortal.Controllers
             return View(viewModel);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Create(CreateProfessorViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var professor = new ProfessorModel
+        //        {
+        //            Matricula = model.Matricula,
+        //            NomeCompleto = model.NomeCompleto,
+        //            Email = model.Email,
+        //            Perfil = model.Perfil,
+        //            SenhaProfessor = model.SenhaProfessor,
+        //            UsuarioLogin = model.UsuarioLogin
+        //        };
+
+        //        _professorRepository.AddProfessor(professor);
+
+        //        return RedirectToAction("ListarProfessores");
+        //    }
+        //    return View(model);
+        //}
+        public IActionResult ListarProfessores()
+        {
+            var professores = _professorRepository.GetAllProfessores();
+            return View(professores);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateProfessorViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var nomeAbreviado = Abreviate(model.NomeCompleto);
+
                 var professor = new ProfessorModel
                 {
                     Matricula = model.Matricula,
@@ -70,7 +100,8 @@ namespace ProvaPortal.Controllers
                     Email = model.Email,
                     Perfil = model.Perfil,
                     SenhaProfessor = model.SenhaProfessor,
-                    UsuarioLogin = model.UsuarioLogin
+                    UsuarioLogin = model.UsuarioLogin,
+                    //NomeProfessor = nomeAbreviado // Adicionando o nome abreviado à nova coluna
                 };
 
                 _professorRepository.AddProfessor(professor);
@@ -79,45 +110,22 @@ namespace ProvaPortal.Controllers
             }
             return View(model);
         }
-        public IActionResult ListarProfessores()
+
+        // Método para abreviar o nome
+        public static string Abreviate(string nome)
         {
-            var professores = _professorRepository.GetAllProfessores();
-            return View(professores);
+            var meio = " ";
+            var nomes = nome.Split(' ');
+            for (var i = 1; i < nomes.Length - 1; i++)
+            {
+                if (!nomes[i].Equals("de", StringComparison.OrdinalIgnoreCase) &&
+                    !nomes[i].Equals("da", StringComparison.OrdinalIgnoreCase) &&
+                    !nomes[i].Equals("do", StringComparison.OrdinalIgnoreCase) &&
+                    !nomes[i].Equals("das", StringComparison.OrdinalIgnoreCase) &&
+                    !nomes[i].Equals("dos", StringComparison.OrdinalIgnoreCase))
+                    meio += nomes[i][0] + ". ";
+            }
+            return nomes[0] + meio + nomes[nomes.Length - 1];
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult EnviarEmailConfirmacaoDeEnvioDeProva(ProfessorModel redefinirSenhaModel)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            ProfessorModel professores = _professorRepository(redefinirSenhaModel.Email, redefinirSenhaModel.UsuarioLogin);
-        //            if (professores != null)
-        //            {
-        //                string mensagem = $"Prova enviada com sucesso!";
-        //                bool emailEnviado = _email.EnviarEmail(professores.Email, "Senha do Burro!", mensagem);
-
-        //                if (emailEnviado)
-        //                {
-        //                    TempData["MensagemSucesso"] = "Enviamos para seu email cadastrado, uma nova senha para acesso.";
-        //                }
-        //                else
-        //                {
-        //                    TempData["MensagemErro"] = "Ops, Não conseguimos enviar o email. Verifique o email informado.";
-        //                }
-
-        //                return RedirectToAction("Index", "Login");
-        //            }
-        //            TempData["MensagemErro"] = "Ops, Não conseguimos redefinir sua senha. Verifique os dados informados.";
-        //        }
-        //        return RedirectToAction("RedefinirSenha", "Login");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["MensagemErro"] = "Não foi possível redefinir sua tenha. Tente Novamente.";
-        //        return RedirectToAction("Index", "Login");
-        //    }
-        //}
     }
 }

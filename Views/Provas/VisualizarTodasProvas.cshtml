@@ -346,7 +346,8 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(6)").each(function () {
+            $("tbody td:nth-child(7)").each(function () { // 7 localização da coluna Status
+                //(se a adc ou remover coluna, deve alterar o nr de acordo com a coluna)
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);
                 if (color !== "") {

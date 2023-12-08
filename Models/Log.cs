@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Mensagem { get; set; }
         public DateTime DataHora { get; set; }
-        public string UsuarioId { get; set; } // Adicione esta propriedade
+        public string UsuarioId { get; set; }
 
     }
 }
