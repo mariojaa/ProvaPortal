@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231213222128_Inicio")]
+    [Migration("20231213233053_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace ProvaPortal.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime>("DataEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataImpressao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NomeArquivo")

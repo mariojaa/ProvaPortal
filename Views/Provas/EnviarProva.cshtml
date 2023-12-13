@@ -10,7 +10,7 @@
         .aviso-tamanho {
             color: red;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 3px;
             display: none; /* Inicialmente oculto */
         }
     </style>
@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
-                <button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>
+                @*<button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>*@
             </div>
         </form>
 
@@ -82,8 +82,7 @@
                 <p>Data de Envio: @Model.DataEnvio</p>
             </div>
         }
-
-        <a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>
+        @*<a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>*@
     </div>
 
     <div id="loadingOverlay" class="overlay">
@@ -103,6 +102,9 @@
             var tipoDaAvaliacao = document.getElementById("tipoDaAvaliacao");
             var loadingOverlay = document.getElementById("loadingOverlay");
             var enviarArquivoForm = document.getElementById("enviarArquivoForm");
+            var cursoProfessor = document.getElementById("cursoProfessor")
+            var disciplinaProfessor = document.getElementById("disciplinaProfessor")
+            var periodoProfessor = document.getElementById("periodoProfessor")
 
             // Função para desabilitar os campos e botão
             function desabilitarCampos() {
@@ -112,6 +114,9 @@
                 obsProva.disabled = true;
                 tipoDeProva.disabled = true;
                 tipoDaAvaliacao.disabled = true;
+                cursoProfessor.disabled = true;
+                disciplinaProfessor.disabled = true;
+                periodoProfessor.disabled = true;
             }
 
             // Função para habilitar os campos e botão
@@ -122,15 +127,18 @@
                 obsProva.disabled = false;
                 tipoDeProva.disabled = false;
                 tipoDaAvaliacao.disabled = false;
+                cursoProfessor.disabled = false;
+                disciplinaProfessor.disabled = false;
+                periodoProfessor.disabled = false;
             }
 
             // Inicialmente, desabilitar os campos e o botão
             desabilitarCampos();
 
             // Quando o botão "reset" for clicado, habilitar os campos e o botão
-            btnReset.addEventListener("click", function () {
-                habilitarCampos();
-            });
+            //btnReset.addEventListener("click", function () {
+            //    habilitarCampos();
+            //});
 
             var avisoTamanho = document.getElementById("avisoTamanho");
             avisoTamanho.style.display = "none";  // Adicione esta linha para ocultar o aviso no início

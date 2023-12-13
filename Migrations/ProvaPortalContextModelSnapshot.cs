@@ -37,6 +37,9 @@ namespace ProvaPortal.Migrations
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DataImpressao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NomeArquivo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

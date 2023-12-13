@@ -45,85 +45,7 @@ namespace ProvaPortal.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
-        //    TipoDeProva tipoDeProva)
-        //{
-        //    if (arquivo != null && arquivo.Length > 0)
-        //    {
-        //        var professorLogado = _sessao.BuscarSessaoUsuario();
-        //        if (professorLogado == null)
-        //        {
-        //            return RedirectToAction("Login", "Index");
-        //        }
-
-        //        string dadosSessaoProfessor = _sessao.BuscarDadosDaSessaoParaNomearArquivo(numeroCopias);
-        //        if (string.IsNullOrEmpty(dadosSessaoProfessor))
-        //        {
-        //            return RedirectToAction("EnviarProva");
-        //        }
-        //        Guid guid = Guid.NewGuid();
-        //        string nomeArquivo = guid.ToString();
-        //        //string nomeArquivo = $"{dadosSessaoProfessor}_{curso}_{arquivo.FileName}_{numeroCopias}_Copias_.pdf"; // Renomeia o arquivo
-        //        string nomeProvaOriginal = $"{arquivo.FileName}";
-        //        string caminhoArquivo = Path.Combine("ArquivosProva", nomeArquivo);
-
-        //        using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
-        //        {
-        //            arquivo.CopyTo(fileStream);
-        //        }
-
-        //        // Lê o conteúdo do arquivo em um array de bytes
-        //        byte[] conteudoArquivo;
-        //        using (var fileStream = new FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read))
-        //        {
-        //            conteudoArquivo = new byte[fileStream.Length];
-        //            fileStream.Read(conteudoArquivo, 0, (int)fileStream.Length);
-        //        }
-
-        //        var prova = new ProvaModel
-        //        {
-        //            NumeroCopias = numeroCopias,
-        //            NomeArquivo = nomeProvaOriginal,
-        //            DataEnvio = DateTime.Now,
-        //            ProfessorId = professorLogado.Id,
-        //            ObservacaoDaProva = string.IsNullOrEmpty(obsProva) ? "" : obsProva,
-        //            Conteudo = conteudoArquivo,
-        //            TipoDaAvaliacao = tipoDaAvaliacao,
-        //            TipoDeProva = tipoDeProva
-        //        };
-        //        if (ModelState.IsValid)
-        //        {
-        //            var enviarEmailProfessorLogado = _sessao.BuscarSessaoDoUsuarioParaEnviarEmail(professorLogado.Email);
-        //            if (enviarEmailProfessorLogado != null)
-        //            {
-
-        //                string mensagem = $"Docente {professorLogado.UsuarioLogin}, sua prova {nomeProvaOriginal}, com {numeroCopias} cópias, foi enviada com sucesso!";
-        //                bool emailEnviado = _email.EnviarEmail(enviarEmailProfessorLogado, "Prova enviada com sucesso!", mensagem);
-
-        //                if (emailEnviado)
-        //                {
-        //                    TempData["MensagemSucesso"] = "Prova enviada com sucesso, você receverá um email em estantes!";
-        //                    _provaRepository.AdicionarProva(prova);
-        //                }
-        //                else
-        //                {
-        //                    TempData["MensagemErro"] = "Ops, Não conseguimos enviar o email. Verifique o email informado.";
-        //                }
-
-        //                return RedirectToAction("Index", "Provas");
-        //            }
-
-        //            return RedirectToAction("Index");
-        //        }
-        //        return RedirectToAction("Index", "Provas");
-
-        //    }
-
-        //    return RedirectToAction("EnviarProva");
-        //}
         //--------------novo metodo enviar prova com limite de pdf upload 20 megas----------------------
-
 
         [HttpPost]
         [RequestSizeLimit(20 * 1024 * 1024)] // 20MB limite
@@ -427,6 +349,7 @@ namespace ProvaPortal.Controllers
                     {
                         string emailProfessor = prova.Professor.Email;
                         prova.StatusDaProva = StatusDaProva.Impressa;
+                        prova.DataImpressao = DateTime.Now;
 
                         if (ModelState.IsValid)
                         {
