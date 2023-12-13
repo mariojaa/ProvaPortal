@@ -178,14 +178,10 @@ namespace ProvaPortal.Controllers
                     Conteudo = conteudoArquivo,
                     TipoDaAvaliacao = tipoDaAvaliacao,
                     TipoDeProva = tipoDeProva,
+                    cursoProfessor = curso,
+                    disciplinaProfessor = disciplina,
+                    periodoProfessor = periodo
                 };
-                var dadosProfessor = new CreateProfessorViewModel
-                {
-                    Periodo = periodo,
-                    Curso = curso,
-                    Disciplina = disciplina,
-                };
-
                 if (ModelState.IsValid)
                 {
                     var enviarEmailProfessorLogado = _sessao.BuscarSessaoDoUsuarioParaEnviarEmail(professorLogado.Email);

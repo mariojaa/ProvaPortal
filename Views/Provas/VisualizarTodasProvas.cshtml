@@ -43,6 +43,7 @@
                 <thead class="table-light">
                     <tr>
                         <th scope="col">Professor</th>
+                        <th scope="col">Curso</th>
                         <th scope="col">Nome Arquivo</th>
                         <th scope="col">Cópias</th>
                         <th scope="col">Data do Envio</th>
@@ -58,6 +59,7 @@
                     {
                         <tr>
                             <td>@item.Professor.UsuarioLogin</td>
+                            <td>@item.cursoProfessor</td>
                             <td>@item.NomeArquivo</td>
                             <td>@item.NumeroCopias</td>
                             <td>@item.DataEnvio</td>
@@ -80,6 +82,7 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Professor</th>
+                    <th scope="col">Curso</th>
                     <th scope="col">Nome Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Data do Envio</th>
@@ -95,6 +98,7 @@
                 {
                     <tr>
                         <td>@item.Professor.UsuarioLogin</td>
+                        <td>@item.cursoProfessor</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio</td>
@@ -118,6 +122,7 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Professor</th>
+                    <th scope="col">Curso</th>
                     <th scope="col">Nome Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Data do Envio</th>
@@ -132,6 +137,7 @@
                 {
                     <tr>
                         <td>@item.Professor.UsuarioLogin</td>
+                        <td>@item.cursoProfessor</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio</td>
@@ -346,7 +352,7 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(7)").each(function () { // 7 localização da coluna Status
+            $("tbody td:nth-child(8)").each(function () { // 7 localização da coluna Status
                 //(se a adc ou remover coluna, deve alterar o nr de acordo com a coluna)
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);

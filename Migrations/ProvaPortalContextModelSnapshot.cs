@@ -60,6 +60,15 @@ namespace ProvaPortal.Migrations
                     b.Property<int>("TipoDeProva")
                         .HasColumnType("int");
 
+                    b.Property<int>("cursoProfessor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("disciplinaProfessor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("periodoProfessor")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProfessorId");

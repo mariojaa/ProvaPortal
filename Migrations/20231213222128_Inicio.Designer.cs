@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231024173102_Inicio")]
+    [Migration("20231213222128_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,15 @@ namespace ProvaPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TipoDeProva")
+                        .HasColumnType("int");
+
+                    b.Property<int>("cursoProfessor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("disciplinaProfessor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("periodoProfessor")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
