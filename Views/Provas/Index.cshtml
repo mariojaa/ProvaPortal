@@ -83,7 +83,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Impressa)))
+
+                @foreach (var item in Model.Where(item =>
+                {
+                   var isImpressa = item.StatusDaProva.Equals(StatusDaProva.Impressa);
+                   var isAguardandoImpressao = item.StatusDaProva.Equals(StatusDaProva.AguardandoImpressao);
+                   return isImpressa || isAguardandoImpressao;
+                }))
                 {
                     <tr>
                         <td>@item.cursoProfessor</td>
@@ -292,6 +298,8 @@
                     return "blue";
                 } else if (status === "Prova Impressa") {
                     return "green";
+                } else if (status === "Aguardando Impressão") {
+                    return "orange";
                 } else if (status === "Deletado") {
                     return "red";
                 } else {
