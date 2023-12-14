@@ -55,7 +55,7 @@
                         <td>@item.cursoProfessor</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
+                        <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.ObservacaoDaProva</td>
@@ -98,7 +98,7 @@
                         <td>@item.cursoProfessor</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
-                        <td>@item.DataImpressao</td>
+                        <td>@(item.DataImpressao == DateTime.MinValue ? "Não Impressa" : item.DataImpressao.ToString("dd/MM/yy HH:mm"))</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.ObservacaoDaProva</td>
@@ -120,7 +120,7 @@
                     <th scope="col">Curso</th>
                     <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
+                    <th scope="col">Envio</th>
                     <th scope="col">Prova</th>
                     <th scope="col">Avaliação</th>
                     <th scope="col">Observação</th>
@@ -135,7 +135,7 @@
                         <td>@item.cursoProfessor</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
+                        <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
                         <td>@item.ObservacaoDaProva</td>
@@ -312,6 +312,19 @@
                     return "";
                 }
             }
+            function getImpressaemColor(impressaem){
+                if(impressaem === "Não Impressa"){
+                    return "Red";
+                }
+            }
+            // Atualiza a cor do texto na tabela com base no status (Data)
+            $("tbody td:nth-child(4)").each(function () { // mudar (7) para quando alterar numero de tabela, +1 -1
+                var impressaem = $(this).text().trim();
+                var color = getImpressaemColor(impressaem);
+                if (color !== "") {
+                    $(this).css("color", color);
+                }
+            });
 
             // Atualiza a cor do texto na tabela com base no status
             $("tbody td:nth-child(8)").each(function () { // mudar (7) para quando alterar numero de tabela, +1 -1

@@ -1,97 +1,50 @@
-﻿@*@model ProfessorModel
-@using ProvaPortal.Models.Enum
+﻿@model ProvaPortal.Models.ProfessorModel
 
 @{
-    Layout = "_layoutNovoUsuario";
-    ViewData["Title"] = "Criar Novo Usuario";
-}
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" role="alert">
-        @TempData["MensagemSucesso"]
-    </div>
-}
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["MensagemErro"]
-    </div>
+    ViewData["Title"] = "Criar Novo Professor";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Se você tiver um layout compartilhado
 }
 
-<h1>Criar Usuário</h1>
+<h2>@ViewData["Title"]</h2>
 
-<form method="post" asp-action="Create" asp-controller="Professor" class="needs-validation" novalidate>
-    <div class="form-check mb-3">
-        <input asp-for="Matricula" type="number" class="form-control" placeholder="Digite sua matrícula" required>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-check mb-3">
-        <input asp-for="NomeCompleto" type="text" class="form-control" placeholder="Digite seu nome completo" required>
-        <div class="invalid-feedback">Preencha este campo</div>
+    <div class="form-group">
+        <label asp-for="Matricula" class="control-label">Matrícula</label>
+        <input asp-for="Matricula" class="form-control" />
+        <span asp-validation-for="Matricula" class="text-danger"></span>
     </div>
 
-    <div class="form-check mb-3">
-        <input asp-for="Email" class="form-control" placeholder="Digite seu Email" required>
-        <div class="invalid-feedback">Preencha este campo</div>
+    <div class="form-group">
+        <label asp-for="NomeCompleto" class="control-label">Nome Completo</label>
+        <input asp-for="NomeCompleto" class="form-control" />
+        <span asp-validation-for="NomeCompleto" class="text-danger"></span>
     </div>
 
-    <div class="form-check mb-3">
-        <input asp-for="SenhaProfessor" class="form-control" type="password" placeholder="Digite sua senha" required>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div>
-    <div class="form-check mb-3">
-        <input asp-for="UsuarioLogin" class="form-control" type="text" placeholder="Digite seu Usuário" required>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div>
-    <div class="form-check mb-3">
-        <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<Perfil>()" class="form-control mb-3"></select>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div><div class="form-check mb-3">
-        <select asp-for="CursoOptions" asp-items="Html.GetEnumSelectList<Curso>()" class="form-control mb-3"></select>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div>
-    <div class="form-check mb-3">
-        <select asp-for="PeriodoOptions" asp-items="Html.GetEnumSelectList<Periodo>()" class="form-control mb-3"></select>
-        <div class="invalid-feedback">Preencha este campo</div>
-    </div>
-    <div class="form-check mb-3">
-        <select asp-for="DisciplinaOptions" asp-items="Html.GetEnumSelectList<Disciplina>()" class="form-control mb-3"></select>
-        <div class="invalid-feedback">Preencha este campo</div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
+    <div class="form-group">
+        <label asp-for="Perfil" class="control-label">Perfil</label>
+        <select asp-for="Perfil" asp-items="Html.GetEnumSelectList<ProvaPortal.Models.Enum.Perfil>()" class="form-control">
+            <option value="">Selecione o Perfil</option>
+        </select>
+        <span asp-validation-for="Perfil" class="text-danger"></span>
+    </div>
 
-    <div class="text-center fs-6">
-        <a asp-controller="Professor" asp-action="ListarProfessores" class="btn btn-primary">Voltar</a>
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <!-- Adicione outros campos do seu modelo aqui -->
+
+    <div class="form-group">
+        <input type="submit" value="Criar Professor" class="btn btn-primary" />
     </div>
 </form>
 
-
-@section Scripts{
-    <script type="text/javascript">
-
-
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (() => {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('keyup', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-
-
-    </script>
-}*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
