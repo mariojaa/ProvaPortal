@@ -58,6 +58,7 @@
                 <tbody>
                     @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Enviado)))
                     {
+                        item.StatusDaProva = StatusDaProva.Recebida; // altera o status do adm de Enviado para Recebida (apenas visualmente)
                         <tr>
                             <td>@item.Professor.UsuarioLogin</td>
                             <td>@item.cursoProfessor</td>
@@ -347,6 +348,8 @@
             // Função para obter a cor com base no status
             function getStatusColor(status) {
                 if (status === "Enviada") {
+                    return "blue";
+                } else if (status === "Recebida") {
                     return "blue";
                 } else if (status === "Aguardando Impressão") {
                     return "orange";
