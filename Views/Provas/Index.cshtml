@@ -308,7 +308,7 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(7)").each(function () {
+            $("tbody td:nth-child(7)").each(function () { // mudar (7) para quando alterar numero de tabela, +1 -1
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);
                 if (color !== "") {
