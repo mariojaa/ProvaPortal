@@ -38,11 +38,12 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Curso</th>
-                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Envio</th>
+                    <th scope="col">Prova</th>
+                    <th scope="col">Avaliação</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -57,6 +58,7 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnDeletar deletarProva" data-value="@item.Id" data-nome="@item.NomeArquivo" title="Excluir" onclick="openConfirmDialog('@item.NomeArquivo')"></a>
@@ -73,11 +75,12 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Curso</th>
-                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
-                    <th scope="col">Data de Impressão</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Impressa em</th>
+                    <th scope="col">Prova</th>
+                    <th scope="col">Avaliação</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -98,6 +101,7 @@
                         <td>@item.DataImpressao</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
@@ -114,11 +118,12 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Curso</th>
-                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Prova</th>
+                    <th scope="col">Avaliação</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -133,7 +138,8 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
-                        <td>@item.StatusDaProva</td>
+                        <td>@item.ObservacaoDaProva</td>
+                        <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnReverse" data-value="@item.Id" title="Restaurar" data-tab="Restaurar"></a>
                             <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir Permanente" data-tab="deletadas" onclick="openConfirmDialog()"></a>
@@ -300,7 +306,7 @@
                     return "green";
                 } else if (status === "Aguardando Impressão") {
                     return "orange";
-                } else if (status === "Deletado") {
+                } else if (status === "Deletada") {
                     return "red";
                 } else {
                     return "";
@@ -308,7 +314,7 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(7)").each(function () { // mudar (7) para quando alterar numero de tabela, +1 -1
+            $("tbody td:nth-child(8)").each(function () { // mudar (7) para quando alterar numero de tabela, +1 -1
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);
                 if (color !== "") {

@@ -44,11 +44,12 @@
                     <tr>
                         <th scope="col">Professor</th>
                         <th scope="col">Curso</th>
-                        <th scope="col">Nome Arquivo</th>
+                        <th scope="col">Arquivo</th>
                         <th scope="col">Cópias</th>
-                        <th scope="col">Data do Envio</th>
+                        <th scope="col">Envio</th>
                         <th scope="col">Prova</th>
                         <th scope="col">Avaliação</th>
+                        <th scope="col">Observação</th>
                         <th scope="col">Status</th>
                         <th></th>
                     </tr>
@@ -65,6 +66,7 @@
                             <td>@item.DataEnvio</td>
                             <td>@item.TipoDeProva</td>
                             <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.ObservacaoDaProva</td>
                             <td>@item.StatusDaProva.GetDisplayName()</td>
                             <td class="align-items-baseline">
                                 @*<a href="#" class="btnDeletarAdmin" data-value="@item.Id" title="Excluir"></a>*@
@@ -83,11 +85,12 @@
                 <tr>
                     <th scope="col">Professor</th>
                     <th scope="col">Curso</th>
-                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
+                    <th scope="col">Envio</th>
                     <th scope="col">Prova</th>
                     <th scope="col">Avaliação</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -104,6 +107,7 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
@@ -123,11 +127,12 @@
                 <tr>
                     <th scope="col">Professor</th>
                     <th scope="col">Curso</th>
-                    <th scope="col">Nome Arquivo</th>
+                    <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
-                    <th scope="col">Data do Envio</th>
-                    <th scope="col">Tipo de Prova</th>
-                    <th scope="col">Tipo da Avaliação</th>
+                    <th scope="col">Envio</th>
+                    <th scope="col">Prova</th>
+                    <th scope="col">Avaliação</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Status</th>
                     <th></th>
                 </tr>
@@ -143,6 +148,7 @@
                         <td>@item.DataEnvio</td>
                         <td>@item.TipoDeProva</td>
                         <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
                             <a href="#" class="btnReimprimir" data-value="@item.Id" title="Reimprimir" data-tab="Reimprimir"></a>
@@ -352,7 +358,7 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(8)").each(function () { // 7 localização da coluna Status
+            $("tbody td:nth-child(9)").each(function () { // quantidade alterada (alterar numero de colunas) localização da coluna Status
                 //(se a adc ou remover coluna, deve alterar o nr de acordo com a coluna)
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);
