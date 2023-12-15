@@ -17,7 +17,7 @@ public class ProvaModel //Dependente //Contato
     public TipoDeProva TipoDeProva { get; set; }
     public string ObservacaoDaProva { get; set; }
     public ProfessorModel Professor { get; set; }
-    public Curso cursoProfessor { get; set; }
-    public Disciplina disciplinaProfessor { get; set; }
-    public Periodo periodoProfessor { get; set; }
+    public Curso Curso { get; set; }
+    public Disciplina Disciplina { get; set; }
+    public Periodo Periodo { get; set; }
 }

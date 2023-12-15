@@ -79,9 +79,9 @@ namespace ProvaPortal.Migrations
                     StatusDaProva = table.Column<int>(type: "int", nullable: false),
                     TipoDeProva = table.Column<int>(type: "int", nullable: false),
                     ObservacaoDaProva = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cursoProfessor = table.Column<int>(type: "int", nullable: false),
-                    disciplinaProfessor = table.Column<int>(type: "int", nullable: false),
-                    periodoProfessor = table.Column<int>(type: "int", nullable: false)
+                    Curso = table.Column<int>(type: "int", nullable: false),
+                    Disciplina = table.Column<int>(type: "int", nullable: false),
+                    Periodo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

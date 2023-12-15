@@ -52,7 +52,7 @@
                 @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Enviado)))
                 {
                     <tr>
-                        <td>@item.cursoProfessor</td>
+                        <td>@item.Curso.GetDisplayName()</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
@@ -95,7 +95,7 @@
                 }))
                 {
                     <tr>
-                        <td>@item.cursoProfessor</td>
+                        <td>@item.Curso.GetDisplayName()</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@(item.DataImpressao == DateTime.MinValue ? "Não Impressa" : item.DataImpressao.ToString("dd/MM/yy HH:mm"))</td>
@@ -132,7 +132,7 @@
                 @foreach (var item in Model.Where(item => item.StatusDaProva.Equals(StatusDaProva.Deletado)))
                 {
                     <tr>
-                        <td>@item.cursoProfessor</td>
+                        <td>@item.Curso.GetDisplayName()</td>
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>

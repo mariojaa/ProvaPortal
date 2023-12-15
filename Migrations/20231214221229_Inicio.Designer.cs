@@ -12,7 +12,7 @@ using ProvaPortal.Data;
 namespace ProvaPortal.Migrations
 {
     [DbContext(typeof(ProvaPortalContext))]
-    [Migration("20231213233053_Inicio")]
+    [Migration("20231214221229_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,11 +36,17 @@ namespace ProvaPortal.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("Curso")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataImpressao")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Disciplina")
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeArquivo")
                         .IsRequired()
@@ -53,6 +59,9 @@ namespace ProvaPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Periodo")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProfessorId")
                         .HasColumnType("int");
 
@@ -63,15 +72,6 @@ namespace ProvaPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TipoDeProva")
-                        .HasColumnType("int");
-
-                    b.Property<int>("cursoProfessor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("disciplinaProfessor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("periodoProfessor")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

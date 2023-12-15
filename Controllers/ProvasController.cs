@@ -49,8 +49,9 @@ namespace ProvaPortal.Controllers
 
         [HttpPost]
         [RequestSizeLimit(20 * 1024 * 1024)] // 20MB limite
-        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias, string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
-    TipoDeProva tipoDeProva, Disciplina disciplina, Periodo periodo)
+        public IActionResult EnviarProva(IFormFile arquivo, int numeroCopias,
+            string obsProva, Curso curso, TipoDaAvaliacao tipoDaAvaliacao,
+            TipoDeProva tipoDeProva, Disciplina disciplina, Periodo periodo)
         {
             if (arquivo != null && arquivo.Length > 0)
             {
@@ -100,9 +101,9 @@ namespace ProvaPortal.Controllers
                     Conteudo = conteudoArquivo,
                     TipoDaAvaliacao = tipoDaAvaliacao,
                     TipoDeProva = tipoDeProva,
-                    cursoProfessor = curso,
-                    disciplinaProfessor = disciplina,
-                    periodoProfessor = periodo
+                    Curso = curso,
+                    Disciplina = disciplina,
+                    Periodo = periodo
                 };
                 if (ModelState.IsValid)
                 {
