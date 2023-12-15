@@ -11,7 +11,12 @@
             color: red;
             font-weight: bold;
             margin-top: 3px;
-            display: none; /* Inicialmente oculto */
+            display: none;
+        }
+
+        .form-group select {
+            width: auto;
+            display: inline-block;
         }
     </style>
 </head>
@@ -39,39 +44,49 @@
                 <label for="inputArquivo">Escolha um arquivo (PDF):</label>
                 <input type="file" id="inputArquivo" accept=".pdf" name="Arquivo" class="form-control" />
                 <span class="aviso-tamanho" id="avisoTamanho">O arquivo não pode ser maior que 20MB</span>
+            </div>
 
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="numeroCopias">Quantidade de Cópias:</label>
+                    <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
+                    <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="TipoDeProva">Tipo de Prova:</label>
+                    <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="numeroCopias">Quantidade de Cópias:</label>
-                <input type="number" id="numeroCopias" name="numeroCopias" required class="form-control" />
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="CursoProfessor">Curso:</label>
+                    <select asp-for="Curso" asp-items="Html.GetEnumSelectList<Curso>()" id="cursoProfessor" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="DsiciplinaProfessor">Disciplina:</label>
+                    <select asp-for="Disciplina" asp-items="Html.GetEnumSelectList<Disciplina>()" id="disciplinaProfessor" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="PeriodoProfessor">Periodo:</label>
+                    <select asp-for="Periodo" asp-items="Html.GetEnumSelectList<Periodo>()" id="periodoProfessor" class="form-control"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="TipoDaAvaliacao">Tipo de Avaliação:</label>
-                <select asp-for="TipoDaAvaliacao" asp-items="Html.GetEnumSelectList<TipoDaAvaliacao>()" id="tipoDaAvaliacao" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label for="TipoDeProva">Tipo de Prova:</label>
-                <select asp-for="TipoDeProva" asp-items="Html.GetEnumSelectList<TipoDeProva>()" id="tipoDeProva" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label for="CursoProfessor">Curso:</label>
-                <select asp-for="Curso" asp-items="Html.GetEnumSelectList<Curso>()" id="cursoProfessor" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label for="DsiciplinaProfessor">Disciplina:</label>
-                <select asp-for="Disciplina" asp-items="Html.GetEnumSelectList<Disciplina>()" id="disciplinaProfessor" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label for="PeriodoProfessor">Periodo:</label>
-                <select asp-for="Periodo" asp-items="Html.GetEnumSelectList<Periodo>()" id="periodoProfessor" class="form-control"></select>
-            </div>
+
             <div class="form-group">
                 <label for="obsProva">Observação:</label>
                 <input type="text" id="obsProva" name="obsProva" required class="form-control" />
             </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar Arquivo</button>
-                @*<button type="reset" class="btn btn-secondary" id="btnReset">Resetar Formulário</button>*@
             </div>
         </form>
 
@@ -82,7 +97,6 @@
                 <p>Data de Envio: @Model.DataEnvio</p>
             </div>
         }
-        @*<a href="@Url.Action("Index", "Provas")" class="btn btn-info mt-4" role="button">Lista de Provas</a>*@
     </div>
 
     <div id="loadingOverlay" class="overlay">
@@ -96,17 +110,15 @@
             var avisoTamanho = document.getElementById("avisoTamanho");
             var numeroCopias = document.getElementById("numeroCopias");
             var btnEnviar = document.getElementById("btnEnviar");
-            var btnReset = document.getElementById("btnReset");
             var obsProva = document.getElementById("obsProva");
             var tipoDeProva = document.getElementById("tipoDeProva");
             var tipoDaAvaliacao = document.getElementById("tipoDaAvaliacao");
             var loadingOverlay = document.getElementById("loadingOverlay");
             var enviarArquivoForm = document.getElementById("enviarArquivoForm");
-            var cursoProfessor = document.getElementById("cursoProfessor")
-            var disciplinaProfessor = document.getElementById("disciplinaProfessor")
-            var periodoProfessor = document.getElementById("periodoProfessor")
+            var cursoProfessor = document.getElementById("cursoProfessor");
+            var disciplinaProfessor = document.getElementById("disciplinaProfessor");
+            var periodoProfessor = document.getElementById("periodoProfessor");
 
-            // Função para desabilitar os campos e botão
             function desabilitarCampos() {
                 avisoTamanho.style.display = "block";
                 numeroCopias.disabled = true;
@@ -119,7 +131,6 @@
                 periodoProfessor.disabled = true;
             }
 
-            // Função para habilitar os campos e botão
             function habilitarCampos() {
                 avisoTamanho.style.display = "none";
                 numeroCopias.disabled = false;
@@ -132,47 +143,27 @@
                 periodoProfessor.disabled = false;
             }
 
-            // Inicialmente, desabilitar os campos e o botão
             desabilitarCampos();
 
-            // Quando o botão "reset" for clicado, habilitar os campos e o botão
-            //btnReset.addEventListener("click", function () {
-            //    habilitarCampos();
-            //});
-
-            var avisoTamanho = document.getElementById("avisoTamanho");
-            avisoTamanho.style.display = "none";  // Adicione esta linha para ocultar o aviso no início
+            avisoTamanho.style.display = "none";
 
             inputArquivo.addEventListener("change", function () {
-                var avisoTamanho = document.getElementById("avisoTamanho");
-                avisoTamanho.style.display = "none";  // Adicione esta linha para ocultar o aviso no início
+                avisoTamanho.style.display = "none";
 
                 var arquivo = inputArquivo.files[0];
-
-                // Tamanho máximo permitido em bytes (20MB)
                 var tamanhoMaximo = 20 * 1024 * 1024;
 
-                // Verifica se o arquivo está presente
                 if (arquivo) {
-                    // Verifica se o arquivo é maior que 20MB
                     if (arquivo.size > tamanhoMaximo) {
-                        // Mostra a mensagem de aviso
                         desabilitarCampos();
                         return;
                     }
                 }
 
-                // Esconde o aviso se não houver arquivo ou o arquivo estiver dentro do limite
                 avisoTamanho.style.display = "none";
-
-                // Habilita todos os campos
                 habilitarCampos();
             });
 
-
-
-
-            // Adicionando evento ao formulário para mostrar o overlay de carregamento ao enviar
             enviarArquivoForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 mostrarLoading();
@@ -181,14 +172,6 @@
                     enviarArquivoForm.submit();
                 }, 100);
             });
-
-            // Ocultar o overlay de carregamento ao resetar o formulário
-            btnReset.addEventListener("click", function () {
-                ocultarLoading();
-            });
-
-            // Ocultar mensagem temporária após 2 segundos
-            $(".mensagem-temporaria").delay(2000).fadeOut("slow");
 
             function mostrarLoading() {
                 loadingOverlay.style.display = "block";

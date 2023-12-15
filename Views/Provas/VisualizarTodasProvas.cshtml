@@ -44,6 +44,7 @@
                     <tr>
                         <th scope="col">Professor</th>
                         <th scope="col">Curso</th>
+                        <th scope="col">Disciplina</th>
                         <th scope="col">Arquivo</th>
                         <th scope="col">Cópias</th>
                         <th scope="col">Envio</th>
@@ -61,12 +62,13 @@
                         item.StatusDaProva = StatusDaProva.Recebida; // altera o status do adm de Enviado para Recebida (apenas visualmente)
                         <tr>
                             <td>@item.Professor.UsuarioLogin</td>
-                            <td>@item.Curso</td>
-                            <td>@item.NomeArquivo</td>
+                            <td>@item.Curso.GetDisplayName()</td>
+                            <td>@item.Disciplina.GetDisplayName()</td>
+                            <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                             <td>@item.NumeroCopias</td>
-                            <td>@item.DataEnvio</td>
-                            <td>@item.TipoDeProva</td>
-                            <td>@item.TipoDaAvaliacao</td>
+                            <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
+                            <td>@item.TipoDeProva.GetDisplayName()</td>
+                            <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                             <td>@item.ObservacaoDaProva</td>
                             <td>@item.StatusDaProva.GetDisplayName()</td>
                             <td class="align-items-baseline">
@@ -86,6 +88,7 @@
                 <tr>
                     <th scope="col">Professor</th>
                     <th scope="col">Curso</th>
+                    <th scope="col">Disciplina</th>
                     <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Envio</th>
@@ -102,12 +105,13 @@
                 {
                     <tr>
                         <td>@item.Professor.UsuarioLogin</td>
-                        <td>@item.Curso</td>
-                        <td>@item.NomeArquivo</td>
+                        <td>@item.Curso.GetDisplayName()</td>
+                        <td>@item.Disciplina.GetDisplayName()</td>
+                        <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                         <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
+                        <td>@item.TipoDeProva.GetDisplayName()</td>
+                        <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
@@ -128,6 +132,7 @@
                 <tr>
                     <th scope="col">Professor</th>
                     <th scope="col">Curso</th>
+                    <th scope="col">Disciplina</th>
                     <th scope="col">Arquivo</th>
                     <th scope="col">Cópias</th>
                     <th scope="col">Envio</th>
@@ -143,12 +148,13 @@
                 {
                     <tr>
                         <td>@item.Professor.UsuarioLogin</td>
-                        <td>@item.Curso</td>
-                        <td>@item.NomeArquivo</td>
+                        <td>@item.Curso.GetDisplayName()</td>
+                        <td>@item.Disciplina.GetDisplayName()</td>
+                        <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                         <td>@item.NumeroCopias</td>
-                        <td>@item.DataEnvio</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
+                        <td>@item.TipoDeProva.GetDisplayName()</td>
+                        <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
@@ -361,7 +367,7 @@
             }
 
             // Atualiza a cor do texto na tabela com base no status
-            $("tbody td:nth-child(9)").each(function () { // quantidade alterada (alterar numero de colunas) localização da coluna Status
+            $("tbody td:nth-child(10)").each(function () { // quantidade alterada (alterar numero de colunas) localização da coluna Status
                 //(se a adc ou remover coluna, deve alterar o nr de acordo com a coluna)
                 var status = $(this).text().trim();
                 var color = getStatusColor(status);

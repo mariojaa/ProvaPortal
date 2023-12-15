@@ -2,7 +2,7 @@
 @using ProvaPortal.Models.Enum
 @model List<ProvaModel>
 
-<h1 class="text-center display-6">Lista de Provas</h1>
+@*<h1 class="text-center display-6">Lista de Provas</h1>*@
 
 @if (TempData["MensagemSucesso"] != null)
 {
@@ -17,7 +17,9 @@
         @TempData["MensagemErro"]
     </div>
 }
-
+<br />
+<br />
+<br />
 <a title="Enviar Prova" type="button" class="btnEnviarProva" asp-controller="Provas" asp-action="EnviarProva"></a>
 
 <ul class="nav nav-tabs" id="myTabs" role="tablist">
@@ -56,8 +58,8 @@
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.TipoDeProva.GetDisplayName()</td>
+                        <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
@@ -99,8 +101,8 @@
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@(item.DataImpressao == DateTime.MinValue ? "Não Impressa" : item.DataImpressao.ToString("dd/MM/yy HH:mm"))</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.TipoDeProva.GetDisplayName()</td>
+                        <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
@@ -136,8 +138,8 @@
                         <td>@item.NomeArquivo</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
-                        <td>@item.TipoDeProva</td>
-                        <td>@item.TipoDaAvaliacao</td>
+                        <td>@item.TipoDeProva.GetDisplayName()</td>
+                        <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
                         <td class="align-items-baseline">
