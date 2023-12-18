@@ -4,10 +4,10 @@ namespace ProvaPortal.Models.Enum
 {
     public enum Curso : int
     {
-        [Display(Name = "Sistemas de Informação")]
+        [Display(Name = "Sis. Informação")]
         Sistemas = 0,
 
-        [Display(Name = "Engenharia de Produção")]
+        [Display(Name = "Eng. Produção")]
         EngenhariadeProducao = 1,
 
         [Display(Name = "Geografia")]

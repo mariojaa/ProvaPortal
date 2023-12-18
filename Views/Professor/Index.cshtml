@@ -1,0 +1,34 @@
+﻿@using ProvaPortal.Models.DTOs;
+@model IEnumerable<ProfessorDTO>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+<h1>Lista de Professores</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Matrícula</th>
+            <th>Nome Completo</th>
+            <th>Email Acadêmico</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var professor in Model)
+        {
+            <tr>
+                <td>@professor.MatriculaProfessor</td>
+                <td>@professor.NomeCompletoProfessor</td>
+                <td>@professor.EmailAcademicoProfessor</td>
+                <td>
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = professor.Id }, new { @class = "btn btn-info" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

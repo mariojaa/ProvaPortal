@@ -55,7 +55,7 @@
                 {
                     <tr>
                         <td>@item.Curso.GetDisplayName()</td>
-                        <td>@item.NomeArquivo</td>
+                        <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
                         <td>@item.TipoDeProva.GetDisplayName()</td>
@@ -98,7 +98,7 @@
                 {
                     <tr>
                         <td>@item.Curso.GetDisplayName()</td>
-                        <td>@item.NomeArquivo</td>
+                        <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                         <td>@item.NumeroCopias</td>
                         <td>@(item.DataImpressao == DateTime.MinValue ? "Não Impressa" : item.DataImpressao.ToString("dd/MM/yy HH:mm"))</td>
                         <td>@item.TipoDeProva.GetDisplayName()</td>
@@ -135,15 +135,15 @@
                 {
                     <tr>
                         <td>@item.Curso.GetDisplayName()</td>
-                        <td>@item.NomeArquivo</td>
+                        <td>@(@item.NomeArquivo.Length > 20 ? @item.NomeArquivo.Substring(0, 20) : @item.NomeArquivo)</td>
                         <td>@item.NumeroCopias</td>
                         <td>@item.DataEnvio.ToString("dd/MM/yy HH:mm")</td>
                         <td>@item.TipoDeProva.GetDisplayName()</td>
                         <td>@item.TipoDaAvaliacao.GetDisplayName()</td>
                         <td>@item.ObservacaoDaProva</td>
                         <td>@item.StatusDaProva.GetDisplayName()</td>
-                        <td class="align-items-baseline">
-                            <a href="#" class="btnReverse" data-value="@item.Id" title="Restaurar" data-tab="Restaurar"></a>
+                        <td class="align-items-baseline btn-group">
+                            <a href="#" class="btnReverse" data-value="@item.Id" title="Restaurar" data-tab="Restaurar"></a> &nbsp &nbsp
                             <a href="#" class="btnDeletar" data-value="@item.Id" title="Excluir Permanente" data-tab="deletadas" onclick="openConfirmDialog()"></a>
 
                         </td>

@@ -5,6 +5,8 @@ using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
 using ProvaPortal.Models.ViewModel;
 using ProvaPortal.Filters;
+using System.Net.Http;
+using ProvaPortal.Models.DTOs;
 
 namespace ProvaPortal.Controllers
 {
@@ -12,120 +14,51 @@ namespace ProvaPortal.Controllers
     public class ProfessorController : Controller
     {
         private readonly IProfessorRepository _professorRepository;
+        private readonly HttpClient _httpClient;
+        private readonly string API_ENDPOINT = "https://localhost:44389/api/professor";
 
         public ProfessorController(IProfessorRepository professorRepository)
         {
             _professorRepository = professorRepository;
-        }
-
-        public IActionResult Create()
-        {
-            var cursoOptions = Enum.GetValues(typeof(Curso))
-                .Cast<Curso>()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.ToString(),
-                    Text = e.ToString()
-                })
-                .ToList();
-
-            var periodoOptions = Enum.GetValues(typeof(Periodo))
-                .Cast<Periodo>()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.ToString(),
-                    Text = e.ToString()
-                })
-                .ToList();
-
-            var disciplinaOptions = Enum.GetValues(typeof(Disciplina))
-                .Cast<Disciplina>()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.ToString(),
-                    Text = e.ToString()
-                })
-                .ToList();
-
-            var viewModel = new CreateProfessorViewModel
+            _httpClient = new HttpClient
             {
-                CursoOptions = cursoOptions,
-                PeriodoOptions = periodoOptions,
-                DisciplinaOptions = disciplinaOptions
+                BaseAddress = new Uri(API_ENDPOINT)
             };
-
-            return View(viewModel);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Create(CreateProfessorViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var professor = new ProfessorModel
-        //        {
-        //            Matricula = model.Matricula,
-        //            NomeCompleto = model.NomeCompleto,
-        //            Email = model.Email,
-        //            Perfil = model.Perfil,
-        //            SenhaProfessor = model.SenhaProfessor,
-        //            UsuarioLogin = model.UsuarioLogin
-        //        };
-
-        //        _professorRepository.AddProfessor(professor);
-
-        //        return RedirectToAction("ListarProfessores");
-        //    }
-        //    return View(model);
-        //}
-        public IActionResult ListarProfessores()
+        public async Task<IActionResult> Index()
         {
-            var professores = _professorRepository.GetAllProfessores();
-            return View(professores);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateProfessorViewModel model)
-        {
-            if (ModelState.IsValid)
+            try
             {
-                var nomeAbreviado = Abreviate(model.NomeCompleto);
+                HttpResponseMessage response = await _httpClient.GetAsync("/api/professor");
+                response.EnsureSuccessStatusCode();
 
-                var professor = new ProfessorModel
-                {
-                    Matricula = model.Matricula,
-                    NomeCompleto = model.NomeCompleto,
-                    Email = model.Email,
-                    Perfil = model.Perfil,
-                    SenhaProfessor = model.SenhaProfessor,
-                    UsuarioLogin = model.UsuarioLogin,
-                    //NomeProfessor = nomeAbreviado // Adicionando o nome abreviado à nova coluna
-                };
-
-                _professorRepository.AddProfessor(professor);
-
-                return RedirectToAction("ListarProfessores");
+                var professores = await response.Content.ReadAsAsync<IEnumerable<ProfessorDTO>>();
+                return View(professores);
             }
-            return View(model);
-        }
-
-        // Método para abreviar o nome
-        public static string Abreviate(string nome)
-        {
-            var meio = " ";
-            var nomes = nome.Split(' ');
-            for (var i = 1; i < nomes.Length - 1; i++)
+            catch (Exception ex)
             {
-                if (!nomes[i].Equals("de", StringComparison.OrdinalIgnoreCase) &&
-                    !nomes[i].Equals("da", StringComparison.OrdinalIgnoreCase) &&
-                    !nomes[i].Equals("do", StringComparison.OrdinalIgnoreCase) &&
-                    !nomes[i].Equals("das", StringComparison.OrdinalIgnoreCase) &&
-                    !nomes[i].Equals("dos", StringComparison.OrdinalIgnoreCase))
-                    meio += nomes[i][0] + ". ";
+                ViewBag.Error = "Erro ao buscar professores: " + ex.Message;
+                return View(new List<ProfessorDTO>());
             }
-            return nomes[0] + meio + nomes[nomes.Length - 1];
         }
+
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"/api/professor/{id}");
+                response.EnsureSuccessStatusCode();
+
+                var professor = await response.Content.ReadAsAsync<ProfessorDTO>();
+                return View(professor);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Erro ao buscar detalhes do professor: " + ex.Message;
+                return View(new ProfessorDTO());
+            }
+        }
+
     }
 }

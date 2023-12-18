@@ -39,16 +39,16 @@ namespace ProvaPortal.Models
         {
             SenhaProfessor = SenhaProfessor.GerarHash();
         }
-        public void SetNovaSenha(string novaSenha)
-        {
-            SenhaProfessor = novaSenha.GerarHash();
-        }
-        public string GerarNovaSenha()
-        {
-            string novaSenha = Guid.NewGuid().ToString().Substring(0, 8);
-            SenhaProfessor = novaSenha.GerarHash();
-            return novaSenha;
-        }
+        //public void SetNovaSenha(string novaSenha)
+        //{
+        //    SenhaProfessor = novaSenha.GerarHash();
+        //}
+        //public string GerarNovaSenha()
+        //{
+        //    string novaSenha = Guid.NewGuid().ToString().Substring(0, 8);
+        //    SenhaProfessor = novaSenha.GerarHash();
+        //    return novaSenha;
+        //}
 
     }
 }
