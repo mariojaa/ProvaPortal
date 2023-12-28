@@ -1,6 +1,11 @@
+using AutoMapper;
+using Cqrs.Hosts;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProvaPortal.Controllers;
 using ProvaPortal.Data;
+using ProvaPortal.Data.Map;
 using ProvaPortal.Filters;
 using ProvaPortal.Repository;
 using ProvaPortal.Repository.Interface;
@@ -22,8 +27,6 @@ namespace ProvaPortal
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
             });
-            
-            builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IProvaRepository, ProvaRepository>();
             builder.Services.AddScoped<ISessao, Sessao>();
@@ -31,6 +34,9 @@ namespace ProvaPortal
             builder.Services.AddScoped<ProfessorRepository>();
             builder.Services.AddScoped<PaginaSomenteAdmin>();
             builder.Services.AddScoped<IEmail, Email>();
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            builder.Services.AddHttpClient();
 
             builder.Services.AddSession(o =>
             {

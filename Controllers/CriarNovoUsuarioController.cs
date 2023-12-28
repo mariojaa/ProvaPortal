@@ -24,32 +24,32 @@ namespace ProvaPortal.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CriarNovoUsuarioDeslogado(ProfessorModel professor)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    if(professor.SenhaProfessor == professor.ConfirmarSenhaProfessor)
-                    {
-                        TempData["MensagemSucesso"] = "Novo usuário adicionado com sucesso!";
-                        _professorRepository.AddProfessor(professor);
-                        return RedirectToAction("Index", "Login");
-                    }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CriarNovoUsuarioDeslogado(ProfessorModel professor)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            if(professor.SenhaProfessor == professor.ConfirmarSenhaProfessor)
+        //            {
+        //                TempData["MensagemSucesso"] = "Novo usuário adicionado com sucesso!";
+        //                _professorRepository.AddProfessor(professor);
+        //                return RedirectToAction("Index", "Login");
+        //            }
 
-                    TempData["MensagemErro"] = "Senha não confere! Verifique as senhas e tente novamente.";
-                }
-                return View();
-            }
-            catch (Exception)
-            {
-                TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
-                return View("Erro", "Usuario");
-            }
+        //            TempData["MensagemErro"] = "Senha não confere! Verifique as senhas e tente novamente.";
+        //        }
+        //        return View();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["MensagemErro"] = "Ops, sem conexão com o banco de dados! Aguarde alguns minutos e tente novamente.";
+        //        return View("Erro", "Usuario");
+        //    }
 
-        }
+        //}
 
     }
 }

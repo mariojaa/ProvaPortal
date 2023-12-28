@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProvaPortal.Data.Map;
 using ProvaPortal.Models;
 
@@ -17,6 +18,17 @@ namespace ProvaPortal.Data
         public DbSet<DisciplinaModel> Disciplinas { get; set; }
         public DbSet<Log> Logs { get; set; }
 
+        public class MappingConfig
+        {
+            public static MapperConfiguration RegisterMaps()
+            {
+                var mappingConfig = new MapperConfiguration(config =>
+                {
+                    config.AddProfile(new AutoMapperProfile());
+                });
+                return mappingConfig;
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProfessorMap());
@@ -27,5 +39,7 @@ namespace ProvaPortal.Data
 
             base.OnModelCreating(modelBuilder);
         }
+       
+
     }
 }

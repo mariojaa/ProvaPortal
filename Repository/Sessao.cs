@@ -21,9 +21,9 @@ namespace ProvaPortal.Repository
             return JsonConvert.DeserializeObject<ProfessorModel>(sessaoUsuario);
         }
 
-        public void CriarSessaoUsuario(ProfessorModel usuario)
+        public void CriarSessaoUsuario(ProfessorDTO ProfessorDTO)
         {
-            string valor = JsonConvert.SerializeObject(usuario);
+            string valor = JsonConvert.SerializeObject(ProfessorDTO);
             _httpContext.HttpContext.Session.SetString("sessaoUsuarioLogado", valor);
         }
 

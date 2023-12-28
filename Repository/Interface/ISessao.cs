@@ -4,7 +4,7 @@ namespace ProvaPortal.Repository.Interface
 {
     public interface ISessao
     {
-        void CriarSessaoUsuario(ProfessorModel professorModel);
+        void CriarSessaoUsuario(ProfessorDTO professorDTO);
         void RemoverSessaoUsuario();
         string BuscarDadosDaSessaoParaNomearArquivo(int numeroCopias);
         ProfessorModel BuscarSessaoUsuario();

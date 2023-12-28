@@ -1,4 +1,4 @@
-﻿@using ProvaPortal.Models.DTOs;
+﻿@using ProvaPortal.Models;
 @model IEnumerable<ProfessorDTO>
 @if (ViewBag.Error != null)
 {
@@ -22,9 +22,9 @@
         @foreach (var professor in Model)
         {
             <tr>
-                <td>@professor.MatriculaProfessor</td>
-                <td>@professor.NomeCompletoProfessor</td>
-                <td>@professor.EmailAcademicoProfessor</td>
+                <td>@professor.Matricula</td>
+                <td>@professor.NomeAbreviado</td>
+                <td>@professor.Email</td>
                 <td>
                     @Html.ActionLink("Detalhes", "Detalhes", new { id = professor.Id }, new { @class = "btn btn-info" })
                 </td>

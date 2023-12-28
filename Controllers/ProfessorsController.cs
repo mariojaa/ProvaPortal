@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ProvaPortal.Models;
-using ProvaPortal.Models.Enum;
 using ProvaPortal.Repository.Interface;
-using ProvaPortal.Models.ViewModel;
 using ProvaPortal.Filters;
-using System.Net.Http;
-using ProvaPortal.Models.DTOs;
 
 namespace ProvaPortal.Controllers
 {

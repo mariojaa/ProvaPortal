@@ -1,15 +1,12 @@
 ﻿using ProvaPortal.Models.Enum;
 
-namespace ProvaPortal.Models.DTOs
+public class ProfessorDTO
 {
-    public class ProfessorDTO
-    {
-        public int Id { get; set; }
-        public string NomeCompletoProfessor { get; set; }
-        public string EmailAcademicoProfessor { get; set; }
-        public int MatriculaProfessor { get; set; }
-        public string NomeProfessorAbreviado { get; set; }
-        public Perfil Perfil { get; set; }
-
-    }
+    public int Id { get; set; }
+    public int Matricula { get; set; }
+    public string NomeCompleto { get; set; }
+    public string Email { get; set; }
+    public Perfil Perfil { get; set; }
+    public string UsuarioLogin { get; set; }
+    public string NomeAbreviado { get; set; }
 }
